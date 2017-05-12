@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="box">
+        <div class="left-part">
+            <div class="btn-group">
+                <button (click)="decrement()">
+                    Prew
+                </button>
+                <button (click)="today()">
+                    Today
+                </button>
+                <button (click)="increment()">
+                    Next
+                </button>
+            </div>
+        </div>
+        <div class="center-part">
+            <div>{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</div>
+        </div>
+        <div class="right-part">
+            <div class="btn-group">
+                <button (click)="viewChange.emit('month')" [class.active]="view === 'month'">
+                    Месяц
+                </button>
+                <button (click)="viewChange.emit('week')" [class.active]="view === 'week'">
+                    Неделя
+                </button>
+                <button (click)="viewChange.emit('day')" [class.active]="view === 'day'">
+                    День
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

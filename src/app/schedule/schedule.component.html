@@ -1,0 +1,76 @@
+<!--TODO temporary-->
+<!--<ng-template #loading>
+<div class="text-center">
+    <i class="fa fa-spin fa-spinner fa-5x"></i>
+    <br>
+    Loading events...
+</div>
+</ng-template>-->
+
+<div class="schedule">
+
+    <mwl-calendar-header 
+        [(view)]="view" 
+        [(viewDate)]="viewDate">
+    </mwl-calendar-header>
+
+    <div [ngSwitch]="view">
+        <div *ngSwitchCase="'month'">
+            <mwl-calendar-month-view 
+                [weekStartsOn]="weekStartsOn" 
+                [locale]="locale" 
+                [viewDate]="viewDate" 
+                [events]="events"
+                [activeDayIsOpen]="activeDayIsOpen"
+                [openDayEventsTemplate]="customOneDayViewTemplate"
+                (dayClicked)="dayClicked($event.day)">
+            </mwl-calendar-month-view>
+        </div>
+        <div *ngSwitchCase="'week'">
+            <mwl-calendar-week-view 
+                [weekStartsOn]="weekStartsOn" 
+                [locale]="locale" 
+                [viewDate]="viewDate" 
+                [events]="events"
+                (dayClicked)="clickedDate = $event.date">
+            </mwl-calendar-week-view>
+        </div>
+        <div *ngSwitchCase="'day'">
+            <mwl-calendar-day-view 
+                [locale]="locale" 
+                [viewDate]="viewDate" 
+                [events]="events"
+                [dayStartHour]="9"
+                [dayEndHour]="18"    
+                (hourSegmentClicked)="onHourClick($event)">
+            </mwl-calendar-day-view>
+            <div>
+                <input [ngModel]="momentValue | date: 'short'" [dateTimePicker]="momentValue" (dateTimePickerChange)="setMoment($event)" readonly />
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--template for One Day View-->
+<ng-template #customOneDayViewTemplate>
+    <div class="appointment">
+        {{viewDate}}
+        <div class="events">
+            <div *ngFor="let event of oneDayEvents">
+                {{event.start}} - {{event.end}} : {{event.title}}
+            </div>
+        </div>
+        <div class="appointment-form">
+            <button *ngIf="!showAppointmentForm" (click)="showAppointmentForm = !showAppointmentForm">Записаться</button>
+            <div *ngIf="showAppointmentForm">
+                <div [formGroup]="newAppointmentForm">
+                    <input formControlName="title" type="text">
+                    <input formControlName="start" type="text">
+                    <input formControlName="end" type="text">
+                </div>
+                <button (click)="addEvent();showAppointmentForm = false">Сохранить</button>
+                <button (click)="showAppointmentForm = false">Отмена</button>
+            </div>
+        </div>
+    </div>
+</ng-template>

@@ -1,0 +1,27 @@
+.container {
+    overflow: hidden;
+    padding-bottom: 1%;
+}
+
+.box {
+    white-space: nowrap
+}
+
+.left-part, .center-part, .right-part {
+    width: 30%;
+    display: inline-block;
+}
+
+.center-part {
+    margin: 0% 5%;
+    text-align: center;
+}
+
+.btn-group {
+    width: 100%
+}
+
+.btn-group button {
+    width: 30%;
+    cursor: pointer;
+} 

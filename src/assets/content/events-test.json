@@ -1,0 +1,29 @@
+[
+    {
+        "start": "Fri May 12 2017 12:30:00 GMT+0300 (RTZ 2 (зима))",
+        "end": "Fri May 12 2017 15:30:00 GMT+0300 (RTZ 2 (зима))",
+        "title": "Запись 1",
+        "color": {
+            "primary": "#e3bc08",
+            "secondary": "#FDF1BA"
+        }
+    },
+    {
+        "start": "Fri May 12 2017 17:30:00 GMT+0300 (RTZ 2 (зима))",
+        "end": "Fri May 12 2017 18:00:00 GMT+0300 (RTZ 2 (зима))",
+        "title": "Запись 2",
+        "color": {
+            "primary": "#e3bc08",
+            "secondary": "#FDF1BA"
+        }
+    },
+    {
+        "start": "2017-05-12T06:30:00.000Z",
+        "end": "2017-05-12T08:00:00.000Z",
+        "title": "Запись 2",
+        "color": {
+            "primary": "#e3bc08",
+            "secondary": "#FDF1BA"
+        }
+    }
+]

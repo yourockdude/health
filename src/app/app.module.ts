@@ -4,6 +4,16 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
+import { AppRoutingModule } from './app-routing.module';
+import { SharedModule } from './shared/shared.module';
+
+import { ScheduleModule } from './schedule/schedule.module';
+import { PricesModule } from './prices/prices.module';
+import { AuthModule } from './auth/auth.module';
+import { SidenavModule } from './sidenav/sidenav.module';
+import { DocumentsModule } from './documents/documents.module';
+import { RecordingModule } from './recording/recording.module';
+import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
   declarations: [
@@ -12,9 +22,17 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule,
     FormsModule,
-    HttpModule
+    HttpModule,
+    SharedModule,
+    AppRoutingModule,
+    PricesModule,
+    SidenavModule,
+    DocumentsModule,
+    ScheduleModule,
+    RecordingModule,
+    AuthModule,
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

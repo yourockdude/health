@@ -1,0 +1,10 @@
+<div class="sidenav">
+    <ul>
+        <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
+        <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
+    </ul>
+</div>
+
+<div class="routing">
+    <router-outlet name="sidebar"></router-outlet>
+</div>
