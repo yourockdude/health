@@ -1,0 +1,6 @@
+.file-to-upload {
+    width: 100%;
+}
+.file-name, .file-delete-btn, .file-edit-btn {
+    display: inline-block;
+}

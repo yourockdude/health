@@ -14,6 +14,17 @@
         [(viewDate)]="viewDate">
     </mwl-calendar-header>
 
+    <!--<health-timepicker></health-timepicker>-->
+    <!--<input 
+        [ngModel]="momentValue | date: 'short'" 
+        [(dateTimePicker)]="momentValue" 
+        [pickerType]="'time'" 
+        [mode]="'dropdown'" 
+        [hourTime]="'24'"
+        [locale]="'ru'"
+        [position]="'top'"
+        readonly/>-->
+
     <div [ngSwitch]="view">
         <div *ngSwitchCase="'month'">
             <mwl-calendar-month-view 
@@ -32,6 +43,7 @@
                 [locale]="locale" 
                 [viewDate]="viewDate" 
                 [events]="events"
+                [eventTemplate]="customWeekEventTemplate"
                 (dayClicked)="clickedDate = $event.date">
             </mwl-calendar-week-view>
         </div>
@@ -41,23 +53,30 @@
                 [viewDate]="viewDate" 
                 [events]="events"
                 [dayStartHour]="9"
-                [dayEndHour]="18"    
+                [dayEndHour]="18"
+                [hourSegments]="6"    
                 (hourSegmentClicked)="onHourClick($event)">
             </mwl-calendar-day-view>
             <div>
-                <input [ngModel]="momentValue | date: 'short'" [dateTimePicker]="momentValue" (dateTimePickerChange)="setMoment($event)" readonly />
+                <!--<input [ngModel]="momentValue | date: 'short'" [dateTimePicker]="momentValue" (dateTimePickerChange)="setMoment($event)" readonly />-->
             </div>
         </div>
     </div>
 </div>
 
+<!--template for event in week view-->
+<ng-template #customWeekEventTemplate>
+    {{event}}
+</ng-template>
+<!---->
+
 <!--template for One Day View-->
 <ng-template #customOneDayViewTemplate>
     <div class="appointment">
-        {{viewDate}}
         <div class="events">
+            {{viewDate | dateTimeFormat}}
             <div *ngFor="let event of oneDayEvents">
-                {{event.start}} - {{event.end}} : {{event.title}}
+                {{event.start | timeFormat}} - {{event.end | timeFormat}} : {{event.title}}
             </div>
         </div>
         <div class="appointment-form">

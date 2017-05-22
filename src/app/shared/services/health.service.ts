@@ -21,7 +21,12 @@ export class HealthService {
     }
 
     deleteEvent(id) {
-        return this.http.delete(`${environment}/events/${id}`)
+        return this.http.delete(`${environment.api}/events/${id}`)
+            .map(res => res.json());
+    }
+
+    getClients() {
+        return this.http.get(`${environment.api}/users`)
             .map(res => res.json());
     }
 }

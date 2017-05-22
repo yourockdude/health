@@ -1,3 +1,25 @@
 <div class="documents">
-    documents
+    <div class="upload-wrapper">
+        <div class="dropzone">
+            <input #fileUploader class="file-uploader" (change)="fileChange($event)" (click)="onFileChangeClick($event)" type="file"
+                multiple>
+        </div>
+        <div class="dropzone-footer">
+            <div class="files-to-upload">
+                <health-file-to-upload *ngFor="let file of filesToUpload" [file]="file" (deleteFileEvent)="deleteFileToUpload($event)"></health-file-to-upload>
+                <button (click)="clear()" *ngIf="filesToUpload.length>0">clear</button>
+            </div>
+            <div class="upload-btn-wrapper">
+                <button class="upload-btn" (click)="uploadFiles()">upload</button>
+            </div>
+        </div>
+    </div>
+    <div class="user-documents-wrapper">
+        your's files:
+        <ul>
+            <li *ngFor="let file of userFiles">
+                {{file.name}}
+            </li>
+        </ul>
+    </div>
 </div>

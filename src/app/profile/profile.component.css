@@ -1,0 +1,45 @@
+.profile-wrapper, .info-item {
+    display: flex;
+    width: 100%;
+}
+
+.photo-wrapper, .info-wrapper, .info-item-name, .info-item-value {
+    display: inline-block;
+}
+
+.photo-wrapper {
+    background-color: lightgrey;
+    width: 40%;
+}
+
+.info-wrapper {
+    background-color: lightgoldenrodyellow;
+    width: 60%;
+}
+
+.photo {
+    width: 250px;
+    height: 250px;
+    display: block;
+    margin: auto;
+}
+
+.items {
+    width: 80%;
+    display: block;
+    margin: auto;
+}
+
+.info-item {
+    font-size: 1.4em;
+    text-align: center;
+    width: 100%;
+    display: block;
+    margin: auto;
+    margin-bottom: 5%;
+}
+
+.profile-btn {
+    height: 50px;
+    background-color: lightcyan;
+}

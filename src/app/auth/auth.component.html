@@ -1,6 +1,7 @@
 <div class="auth-wrapper">
     <div class="auth">
-        <div class="form-wrapper">
+        <button (click)="switch()">Регистрация</button>
+        <div class="form-wrapper" *ngIf="isSignIn;else signUp">
             <form class="auth-input">
                 <input type="text" placeholder="username">
                 <input type="password" placeholder="password">
@@ -20,3 +21,9 @@
         </div>
     </div>
 </div>
+
+<ng-template #signUp>
+    <div class="form-wrapper">
+        signup
+    </div>
+</ng-template>

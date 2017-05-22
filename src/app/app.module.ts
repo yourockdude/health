@@ -13,6 +13,8 @@ import { AuthModule } from './auth/auth.module';
 import { SidenavModule } from './sidenav/sidenav.module';
 import { DocumentsModule } from './documents/documents.module';
 import { RecordingModule } from './recording/recording.module';
+import { ProfileModule } from './profile/profile.module';
+import { ClientsModule } from './clients/clients.module';
 import { AuthService } from './shared/services/auth.service';
 
 @NgModule({
@@ -30,6 +32,8 @@ import { AuthService } from './shared/services/auth.service';
     DocumentsModule,
     ScheduleModule,
     RecordingModule,
+    ProfileModule,
+    ClientsModule,
     AuthModule,
   ],
   providers: [AuthService],

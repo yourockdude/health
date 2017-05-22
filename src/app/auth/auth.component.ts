@@ -8,7 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 
 export class AuthComponent implements OnInit {
+    isSignIn = true;
     constructor() { }
 
     ngOnInit() { }
+
+    switch() {
+        this.isSignIn = !this.isSignIn;
+    }
 }

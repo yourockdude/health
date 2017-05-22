@@ -5,6 +5,8 @@ import { SidenavComponent } from './sidenav.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { DocumentsComponent } from '../documents/documents.component';
 import { RecordingComponent } from '../recording/recording.component';
+import { ProfileComponent } from '../profile/profile.component';
+import { ClientsComponent } from '../clients/clients.component';
 
 const routes: Routes = [
     {
@@ -31,6 +33,16 @@ const routes: Routes = [
                 path: 'recording',
                 component: RecordingComponent,
                 outlet: 'sidebar',
+            },
+            {
+                path: 'profile',
+                component: ProfileComponent,
+                outlet: 'sidebar',
+            },
+            {
+                path: 'clients',
+                component: ClientsComponent,
+                outlet: 'sidebar'
             }
         ]
     },

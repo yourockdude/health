@@ -1,3 +1,26 @@
 .schedule {
     margin: 2%;
 }
+
+.appointment {
+    height: 100%;
+    width: 100%;
+    display: flex;
+}
+
+.events, .appointment-form {
+    width: 50%;
+    display: inline-block
+}
+
+.events {
+    background-color: lightgreen
+}
+
+.appointment-form {
+    background-color: lightblue;
+}
+
+.client-name {
+    width: 100%;
+}

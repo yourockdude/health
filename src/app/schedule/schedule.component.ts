@@ -34,13 +34,20 @@ export class ScheduleComponent implements OnInit {
     // --------------------------begin calendar option ------------------------
     view = 'month';
     viewDate: Date = new Date();
-    // events$: Observable<CalendarEvent[]>;
     events: CalendarEvent[] = [];
     clickedDate: Date;
     locale = 'ru';
     weekStartsOn = 1;
     activeDayIsOpen = false;
     // --------------------------end calendar option --------------------------
+
+    // --------------------------begin timepicker option ------------------------
+    pickerType = 'time';
+    mode = 'dropdown';
+    hourTime = '24';
+    position = 'left';
+    // --------------------------end timepicker option --------------------------
+
 
     showAppointmentForm = false;
     oneDayEvents: any[] = [];
@@ -96,6 +103,11 @@ export class ScheduleComponent implements OnInit {
         this.healthService.addEvent(event).subscribe(res => {
             if (res.success) {
                 this.fetchEvents();
+                this.oneDayEvents.push({
+                    title: event.title,
+                    start: event.start,
+                    end: event.end
+                });
                 this.buildForm();
             } else {
                 console.log(res);
@@ -110,15 +122,20 @@ export class ScheduleComponent implements OnInit {
         return newDate;
     }
 
-    dayClicked({ date, events }: { date: Date, events: CalendarEvent[] }) {
-        this.oneDayEvents = [];
+    fetchOneDayEvents(events: CalendarEvent[]) {
+        const oneDayEvents = [];
         for (const event of events) {
-            this.oneDayEvents.push({
+            oneDayEvents.push({
                 title: event.title,
-                start: new Intl.DateTimeFormat(this.locale, { hour: 'numeric', minute: 'numeric' }).format(event.start),
-                end: new Intl.DateTimeFormat(this.locale, { hour: 'numeric', minute: 'numeric' }).format(event.end)
+                start: event.start,
+                end: event.end
             });
         }
+        return oneDayEvents;
+    }
+
+    dayClicked({ date, events }: { date: Date, events: CalendarEvent[] }) {
+        this.oneDayEvents = this.fetchOneDayEvents(events);
         if (isSameDay(this.viewDate, date)) {
             this.activeDayIsOpen = !this.activeDayIsOpen;
         } else {
