@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
     moduleId: module.id,
@@ -9,10 +10,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 
 export class SidenavComponent implements OnInit {
+    user: any;
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
-    ) { }
+        private authService: AuthService,
+    ) {
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.user = res.data;
+            }
+        });
+    }
 
     ngOnInit() { }
 
@@ -27,5 +36,10 @@ export class SidenavComponent implements OnInit {
                 relativeTo: this.activatedRoute,
             }
         );
+    }
+
+    signOut() {
+        this.authService.signOut();
+        this.user = null;
     }
 }

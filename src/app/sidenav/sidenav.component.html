@@ -1,12 +1,21 @@
 <div class="sidenav">
-    <ul>
-        <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
-        <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
-        <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
-        <li><a (click)="onItemClick($event, 'clients')">Клиенты</a></li>
-    </ul>
-</div>
+    <div class="sidenav-panel">
+        <div *ngIf="user" class="user-info">
+            <img class="photo" src="assets/images/profile.jpg" alt="profile">
+            <div class="user-name">{{user.name}}</div>
+            <button class="sign-out-btn" (click)="signOut()">sign out</button>
+        </div>
+        <div class="navigation">
+            <ul>
+                <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
+                <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
+                <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
+                <li><a (click)="onItemClick($event, 'clients')">Клиенты</a></li>
+            </ul>
+        </div>
+    </div>
 
-<div class="routing">
-    <router-outlet name="sidebar"></router-outlet>
+    <div class="routing">
+        <router-outlet name="sidebar"></router-outlet>
+    </div>
 </div>

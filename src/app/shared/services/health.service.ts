@@ -5,18 +5,22 @@ import { CalendarEvent } from 'angular-calendar';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import { environment } from '../../../environments/environment';
+import { AuthHttp } from 'angular2-jwt';
 
 @Injectable()
 export class HealthService {
-    constructor(private http: Http) { }
+    constructor(
+        private http: Http,
+        private authHttp: AuthHttp,
+    ) { }
 
     getEvents() {
-        return this.http.get(`${environment.api}/events`)
+        return this.authHttp.get(`${environment.api}/events`)
             .map(res => res.json());
     }
 
     addEvent(event) {
-        return this.http.post(`${environment.api}/events`, event)
+        return this.authHttp.post(`${environment.api}/events`, event)
             .map(res => res.json());
     }
 
