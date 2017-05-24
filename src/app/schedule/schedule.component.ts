@@ -41,17 +41,16 @@ export class ScheduleComponent implements OnInit {
     activeDayIsOpen = false;
     // --------------------------end calendar option --------------------------
 
-    // --------------------------begin timepicker option ------------------------
-    pickerType = 'time';
-    mode = 'dropdown';
-    hourTime = '24';
-    position = 'left';
-    // --------------------------end timepicker option --------------------------
-
-
     showAppointmentForm = false;
     oneDayEvents: any[] = [];
     newAppointmentForm: FormGroup;
+    time = '';
+    payed = false;
+    workTime = {
+        start: '08:00',
+        end: '18:00'
+    };
+    validTime = false;
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -64,6 +63,14 @@ export class ScheduleComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    mask(time) {
+        if (time.charAt(0) === '2') {
+            return [/[0-2]/, /[0-3]/, ':', /[0-5]/, /[0-9]/];
+        } else {
+            return [/[0-2]/, /[0-9]/, ':', /[0-5]/, /[0-9]/];
+        }
+    }
 
     fetchEvents(): void {
         this.healthService.getEvents().subscribe(res => {
@@ -87,7 +94,6 @@ export class ScheduleComponent implements OnInit {
 
     buildForm() {
         this.newAppointmentForm = this.formBuilder.group({
-            'title': [''],
             'start': [''],
             'end': ['']
         });
@@ -95,7 +101,7 @@ export class ScheduleComponent implements OnInit {
 
     addEvent() {
         const event = {
-            title: this.newAppointmentForm.value.title,
+            title: 'olololo',
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
             color: colors.red,
@@ -144,5 +150,52 @@ export class ScheduleComponent implements OnInit {
         this.viewDate = new Date(date);
     }
 
-
+    get timeValidation() {
+        this.validTime = false;
+        const workTime = {
+            start: this.combineDate(this.workTime.start, this.viewDate).getTime(),
+            end: this.combineDate(this.workTime.end, this.viewDate).getTime()
+        };
+        const userTime = {
+            start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate).getTime(),
+            end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate).getTime()
+        };
+        const reservedTime = this.oneDayEvents.map(res => ({ 'start': res.start.getTime(), 'end': res.end.getTime() }));
+        if (isNaN(userTime.start) || isNaN(userTime.end)) {
+            console.log('введите время');
+            return 'введите время';
+        } else {
+            if (userTime.start >= userTime.end) {
+                console.log('ну так нельзя');
+                return 'ну так нельзя';
+            } else {
+                if (
+                    userTime.start < workTime.start ||
+                    userTime.start > workTime.end ||
+                    userTime.end < workTime.start ||
+                    userTime.end > workTime.end
+                ) {
+                    console.log('это не рабочее время');
+                    return 'это не рабочее время';
+                } else {
+                    for (const item of reservedTime) {
+                        if (item.start <= userTime.start && item.end > userTime.start) {
+                            console.log('start wrong');
+                            return 'start wrong';
+                        }
+                        if (item.start < userTime.end && item.end >= userTime.end) {
+                            console.log('end wrong');
+                            return 'end wrong';
+                        };
+                        if (userTime.start < item.start && userTime.end > item.end) {
+                            console.log('both wrong');
+                            return 'both wrong';
+                        }
+                    };
+                }
+            }
+        }
+        this.validTime = true;
+        return 'все валидно';
+    }
 }

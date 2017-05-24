@@ -14,17 +14,6 @@
         [(viewDate)]="viewDate">
     </mwl-calendar-header>
 
-    <health-timepicker></health-timepicker>
-    <!--<input 
-        [ngModel]="momentValue | date: 'short'" 
-        [(dateTimePicker)]="momentValue" 
-        [pickerType]="'time'" 
-        [mode]="'dropdown'" 
-        [hourTime]="'24'"
-        [locale]="'ru'"
-        [position]="'top'"
-        readonly/>-->
-
     <div [ngSwitch]="view">
         <div *ngSwitchCase="'month'">
             <mwl-calendar-month-view 
@@ -82,10 +71,19 @@
         <div class="appointment-form">
             <button *ngIf="!showAppointmentForm" (click)="showAppointmentForm = !showAppointmentForm">Записаться</button>
             <div *ngIf="showAppointmentForm">
+                Укажите время:
                 <div [formGroup]="newAppointmentForm">
-                    <input formControlName="title" type="text">
-                    <input formControlName="start" type="text">
-                    <input formControlName="end" type="text">
+                    <input formControlName="start" [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}" type="text" placeholder="00:00">
+                    <input formControlName="end" [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}" type="text" placeholder="00:00">
+                </div>
+                <div>
+                    <label for="pay">Оплатить</label>
+                    <input id="pay" type="checkbox" [checked]="payed" (change)="payed = !payed">
+                    {{payed}}
+                    <div>
+                        {{timeValidation}}
+                        !!{{validTime}}!!
+                    </div>
                 </div>
                 <button (click)="addEvent();showAppointmentForm = false">Сохранить</button>
                 <button (click)="showAppointmentForm = false">Отмена</button>
