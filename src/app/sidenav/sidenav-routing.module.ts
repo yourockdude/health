@@ -4,7 +4,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { SidenavComponent } from './sidenav.component';
 import { ScheduleComponent } from '../schedule/schedule.component';
 import { DocumentsComponent } from '../documents/documents.component';
-import { RecordingComponent } from '../recording/recording.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { ClientsComponent } from '../clients/clients.component';
 
@@ -27,11 +26,6 @@ const routes: Routes = [
             {
                 path: 'documents',
                 component: DocumentsComponent,
-                outlet: 'sidebar',
-            },
-            {
-                path: 'recording',
-                component: RecordingComponent,
                 outlet: 'sidebar',
             },
             {

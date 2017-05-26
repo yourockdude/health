@@ -10,7 +10,8 @@
 <div class="schedule">
 
     <mwl-calendar-header 
-        [(view)]="view" 
+        [(view)]="view"
+        (viewDateChange)="selectToday($event)"
         [(viewDate)]="viewDate">
     </mwl-calendar-header>
 
@@ -23,6 +24,7 @@
                 [events]="events"
                 [activeDayIsOpen]="activeDayIsOpen"
                 [openDayEventsTemplate]="customOneDayViewTemplate"
+                [dayModifier]="selectDay"
                 (dayClicked)="dayClicked($event.day)">
             </mwl-calendar-month-view>
         </div>
@@ -73,19 +75,27 @@
             <div *ngIf="showAppointmentForm">
                 Укажите время:
                 <div [formGroup]="newAppointmentForm">
-                    <input formControlName="start" [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}" type="text" placeholder="00:00">
-                    <input formControlName="end" [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}" type="text" placeholder="00:00">
+                    <input 
+                        formControlName="start" 
+                        [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}" 
+                        type="text" 
+                        (focusout)="onFocusOut(true)"
+                        placeholder="00:00">
+                    <input 
+                        formControlName="end" 
+                        [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
+                        type="text"
+                        (focusout)="onFocusOut(false)"
+                        placeholder="00:00">
                 </div>
                 <div>
                     <label for="pay">Оплатить</label>
                     <input id="pay" type="checkbox" [checked]="payed" (change)="payed = !payed">
-                    {{payed}}
                     <div>
                         {{timeValidation}}
-                        !!{{validTime}}!!
                     </div>
                 </div>
-                <button (click)="addEvent();showAppointmentForm = false">Сохранить</button>
+                <button (click)="addEvent();showAppointmentForm = false" [disabled]="!allowToSaveEvent">Сохранить</button>
                 <button (click)="showAppointmentForm = false">Отмена</button>
             </div>
         </div>

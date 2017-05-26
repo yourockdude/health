@@ -1,0 +1,52 @@
+.dropzone {
+    width: 100%;
+    height: 100%;
+    border: 1px solid transparent;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+.drag-n-drop:hover {
+    opacity: 1
+}
+
+.drag-n-drop {
+    width: 90%;
+    margin: 2% auto 2px auto;
+    border: 2px dashed rgba(0,0,0,1);
+    box-sizing: border-box;
+    min-height: 80px;
+    background-color: white;
+    display: table;
+    cursor: pointer;
+}
+
+.text-wrapper {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.text-centered {
+    text-align: center;
+    font-size: 1.2em;
+}
+
+.drag-n-drop input {
+    display: none;
+}
+
+/*.dropzone {
+    min-height: 100px;
+    min-width: 400px;
+    display: table;
+    width: 100%;
+    background-color: #eee;
+    border: dotted 2px #aaa;
+    box-sizing: border-box;
+}
+
+
+
+
+
+*/

@@ -1,10 +1,11 @@
 import { Component, OnInit, TemplateRef } from '@angular/core';
-import { CalendarEvent } from 'angular-calendar';
+import { CalendarEvent, CalendarMonthViewDay } from 'angular-calendar';
 import { Router, ActivatedRoute } from '@angular/router';
 import { startOfDay, endOfDay, isSameMonth, isSameDay } from 'date-fns';
 import { HealthService } from '../shared/services/health.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from '../shared/services/auth.service';
 
 const colors: any = {
     red: {
@@ -26,7 +27,7 @@ const colors: any = {
     selector: 'health-schedule',
     templateUrl: 'schedule.component.html',
     styleUrls: ['schedule.component.css'],
-    providers: [HealthService],
+    providers: [HealthService, AuthService],
 })
 
 export class ScheduleComponent implements OnInit {
@@ -51,13 +52,32 @@ export class ScheduleComponent implements OnInit {
         end: '18:00'
     };
     validTime = false;
+    username: string;
+
+    selectedDay: CalendarMonthViewDay;
+    selectDay: (day: CalendarMonthViewDay) => void;
 
     constructor(
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private healthService: HealthService,
         private formBuilder: FormBuilder,
+        private authService: AuthService,
     ) {
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.username = res.data.name;
+            }
+        });
+        this.selectDay = (day: CalendarMonthViewDay): void => {
+            if (this.selectedDay && day.date.getTime() === this.selectedDay.date.getTime()) {
+                day.cssClass = 'cal-day-selected';
+            }
+            const today = this.getToday();
+            if (day.date < today) {
+                day.cssClass = 'cal-day-disabled';
+            }
+        };
         this.fetchEvents();
         this.buildForm();
     }
@@ -92,16 +112,17 @@ export class ScheduleComponent implements OnInit {
         });
     }
 
-    buildForm() {
+    buildForm(start = '', end = '') {
         this.newAppointmentForm = this.formBuilder.group({
-            'start': [''],
-            'end': ['']
+            'start': [start],
+            'end': [end]
         });
     }
 
     addEvent() {
+        this.payed = false;
         const event = {
-            title: 'olololo',
+            title: this.username,
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
             color: colors.red,
@@ -113,6 +134,9 @@ export class ScheduleComponent implements OnInit {
                     title: event.title,
                     start: event.start,
                     end: event.end
+                });
+                this.oneDayEvents.sort((a, b) => {
+                    return a.start.getTime() - b.start.getTime();
                 });
                 this.buildForm();
             } else {
@@ -140,14 +164,51 @@ export class ScheduleComponent implements OnInit {
         return oneDayEvents;
     }
 
-    dayClicked({ date, events }: { date: Date, events: CalendarEvent[] }) {
-        this.oneDayEvents = this.fetchOneDayEvents(events);
-        if (isSameDay(this.viewDate, date)) {
+    selectToday(event) {
+        this.activeDayIsOpen = false;
+        if (isSameDay(event, new Date())) {
+            const today = this.getToday();
+            const tomorrow = new Date(new Date().setHours(0, 0, 0, 0) + 24 * 60 * 60 * 1000);
+            const day = {
+                date: today,
+                events: this.events.filter(f => (f.start >= today && f.start <= tomorrow)),
+            };
+            this.dayClicked(day as CalendarMonthViewDay);
+        }
+    }
+
+    dayClicked(day: CalendarMonthViewDay) {
+        if (day.date < this.getToday()) {
+            return;
+        }
+        this.showAppointmentForm = false;
+        this.buildForm();
+        if (day.cssClass) {
+            this.selectedDay = undefined;
+        } else {
+            this.selectedDay = day;
+            day.cssClass = 'cal-day-selected';
+        }
+        this.oneDayEvents = this.fetchOneDayEvents(day.events);
+        if (isSameDay(this.viewDate, day.date)) {
             this.activeDayIsOpen = !this.activeDayIsOpen;
         } else {
             this.activeDayIsOpen = true;
         }
-        this.viewDate = new Date(date);
+        this.viewDate = new Date(day.date);
+    }
+
+    onFocusOut(isStart) {
+        if (isStart && this.newAppointmentForm.value.start.indexOf('_') >= 0) {
+            this.buildForm('', this.newAppointmentForm.value.end);
+        }
+        if (!isStart && this.newAppointmentForm.value.end.indexOf('_') >= 0) {
+            this.buildForm(this.newAppointmentForm.value.start, '');
+        }
+    }
+
+    getToday() {
+        return new Date(new Date().setHours(0, 0, 0, 0));
     }
 
     get timeValidation() {
@@ -160,14 +221,15 @@ export class ScheduleComponent implements OnInit {
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate).getTime(),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate).getTime()
         };
-        const reservedTime = this.oneDayEvents.map(res => ({ 'start': res.start.getTime(), 'end': res.end.getTime() }));
+        const reservedTime = this.oneDayEvents.map(res => ({
+            'start': res.start.getTime(),
+            'end': res.end.getTime()
+        }));
         if (isNaN(userTime.start) || isNaN(userTime.end)) {
-            console.log('введите время');
-            return 'введите время';
+            return 'Время не введено';
         } else {
             if (userTime.start >= userTime.end) {
-                console.log('ну так нельзя');
-                return 'ну так нельзя';
+                return 'Время начала должно быть меншьше времени окончания';
             } else {
                 if (
                     userTime.start < workTime.start ||
@@ -175,27 +237,28 @@ export class ScheduleComponent implements OnInit {
                     userTime.end < workTime.start ||
                     userTime.end > workTime.end
                 ) {
-                    console.log('это не рабочее время');
-                    return 'это не рабочее время';
+                    return 'Выбрано нерабочее время';
                 } else {
                     for (const item of reservedTime) {
-                        if (item.start <= userTime.start && item.end > userTime.start) {
-                            console.log('start wrong');
-                            return 'start wrong';
-                        }
-                        if (item.start < userTime.end && item.end >= userTime.end) {
-                            console.log('end wrong');
-                            return 'end wrong';
-                        };
-                        if (userTime.start < item.start && userTime.end > item.end) {
-                            console.log('both wrong');
-                            return 'both wrong';
+                        if (
+                            item.start <= userTime.start && item.end > userTime.start ||
+                            item.start < userTime.end && item.end >= userTime.end ||
+                            userTime.start < item.start && userTime.end > item.end
+                        ) {
+                            return 'Время занято';
                         }
                     };
                 }
             }
         }
         this.validTime = true;
-        return 'все валидно';
+        return '';
+    }
+
+    get allowToSaveEvent() {
+        if (this.validTime && this.payed) {
+            return true;
+        }
+        return false;
     }
 }

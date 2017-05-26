@@ -1,0 +1,12 @@
+<div class="dropzone">
+    <div class="drag-n-drop" (click)="onUploadFileInputClick()" (filesDropped)="filesDropped($event)" healthDragNDrop>
+        <input #uploadFileInput multiple type="file" (change)="filesDropped($event.target.files)">
+        <div class="text-wrapper">
+            <div class="text-centered">
+                Загрузить файлы
+            </div>
+        </div>
+    </div>
+    <div *ngIf="hint" class="hint">{{hint}}</div>
+    <div *ngIf="error" claas="error">{{error}}</div>
+</div>

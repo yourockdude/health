@@ -8,3 +8,24 @@
 body {
     margin: initial;
 }
+
+/*-----rewrite calendar styles-----*/
+.cal-day-cell {
+    cursor: pointer !important;
+}
+
+.cal-day-selected {
+    background-color: rgba(18, 43, 64, 0.18) !important;
+}
+.cal-day-selected:hover {
+    background-color: #ededed !important;
+}
+
+.cal-day-disabled {
+    cursor: initial !important;
+}
+
+.cal-day-disabled .cal-day-number {
+    opacity: 0.2;
+}
+/*----------------------------------*/

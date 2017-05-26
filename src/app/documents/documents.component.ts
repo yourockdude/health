@@ -4,12 +4,15 @@ import {
     ViewChild,
     ElementRef
 } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { CheckUploadService } from '../shared/services/check-upload.service';
 
 @Component({
     moduleId: module.id,
     selector: 'health-documents',
     templateUrl: 'documents.component.html',
-    styleUrls: ['documents.component.css']
+    styleUrls: ['documents.component.css'],
+    providers: [CheckUploadService]
 })
 
 export class DocumentsComponent implements OnInit {
@@ -18,21 +21,17 @@ export class DocumentsComponent implements OnInit {
     filesToUpload: File[] = [];
     userFiles: File[] = [];
 
-    constructor() { }
+    allowedFiles: string[] = [];
+    hint: string;
+
+    constructor(
+        private checkUploadService: CheckUploadService
+    ) {
+        this.allowedFiles = environment.allowedFiles;
+        this.hint = `Поддерживаемые файлы: ${this.allowedFiles.join(', ')}.`;
+    }
 
     ngOnInit() { }
-
-    fileChange(event: any) {
-        // TODO allow duplicate files ??
-        for (const file of event.target.files) {
-            console.log(file);
-            this.filesToUpload.push(file);
-        }
-    }
-
-    onFileChangeClick(event) {
-        this.fileUploader.nativeElement.value = null;
-    }
 
     clear() {
         this.filesToUpload = [];
@@ -42,14 +41,18 @@ export class DocumentsComponent implements OnInit {
         for (const file of this.filesToUpload) {
             this.userFiles.push(file);
         }
-    }
-
-    editFileToUpload(file: File) {
-        console.log(file);
+        this.checkUploadService.changeState(true);
+        this.filesToUpload = [];
     }
 
     deleteFileToUpload(file: File) {
         this.filesToUpload.splice(this.filesToUpload.indexOf(file), 1);
         console.log(file);
+    }
+
+    getFilesFromDropzone(files) {
+        for (const file of files) {
+            this.filesToUpload.push(file);
+        }
     }
 }

@@ -5,5 +5,11 @@
 
 export const environment = {
   production: false,
-  api: 'http://localhost:3000/yourockhosp_api'
+  api: 'http://localhost:3000/yourockhosp_api',
+  allowedFiles: [
+    'pdf',
+    'doc',
+    'docx',
+    'png'
+  ]
 };
