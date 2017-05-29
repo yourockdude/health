@@ -1,0 +1,17 @@
+<div #chatWindow class="chat-window">
+  <div class="header">
+    <div class="name">chat - {{client?.name}}</div>
+    <div class="controls">
+      <div class="hide" (click)="hide()">-</div>
+      <div class="close" (click)="close()">x</div>
+    </div>
+  </div>
+  <div #chatBody class="body">
+    <!--<div class="users-box">users</div>-->
+    <div class="messages-box">messages</div>
+    <div class="sending-box">
+      <input type="text">
+      <button>send</button>
+    </div>
+  </div>
+</div>

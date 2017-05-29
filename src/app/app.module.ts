@@ -31,7 +31,7 @@ export function authHttpServiceFactory(
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,

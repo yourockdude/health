@@ -1,3 +1,6 @@
 <div class="clients">
-    <health-client *ngFor="let client of clients" [client]="client"></health-client>
+    <health-client *ngFor="let client of clients" [client]="client" (showChatEvent)="showChat($event)"></health-client>
+    <div *ngIf="chatIsShow">
+        <health-chat-window [client]="client" (closeEvent)="close($event)"></health-chat-window>
+    </div>
 </div>

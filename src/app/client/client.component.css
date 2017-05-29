@@ -16,5 +16,10 @@
 
 .client-info {
     background-color: lightgray;
-    width: 70%;
+    width: 60%;
+}
+
+.client-toolbar {
+    background-color: lightcyan;
+    width: 10%;
 }

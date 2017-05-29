@@ -1,0 +1,51 @@
+.chat-window {
+    border: 1px solid;
+    position: fixed;
+    right: 10px;
+    bottom: 30px;
+    width: 250px;
+    height: 300px;
+}
+
+.header {
+    background-color: red;
+    height: 10%;
+    display: flex;
+}
+
+.name {
+    display: inline-block;
+    width: 70%;
+}
+
+.controls {
+    display: inline-flex;
+    width: 30%;
+}
+
+.close, .hide {
+    display: inline-block;
+    width: 50%;
+    cursor: pointer;
+    text-align: center;
+}
+
+.body {
+    background-color: blue;
+    height: 90%;
+}
+
+/*.users-box {
+    background-color: yellow;
+    height: 20%;
+}*/
+
+.messages-box {
+    background-color: orange;
+    height: 85%;
+}
+
+.sending-box {
+    background-color: green;
+    height: 15%;
+}

@@ -12,6 +12,8 @@ import { HealthService } from '../shared/services/health.service';
 
 export class ClientsComponent implements OnInit {
     clients: Client[];
+    chatIsShow = false;
+    client: Client;
 
     constructor(
         private healthService: HealthService
@@ -24,4 +26,15 @@ export class ClientsComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    showChat(client: Client) {
+        this.client = client;
+        this.chatIsShow = !this.chatIsShow;
+    }
+
+    close(c) {
+        if (c) {
+            this.chatIsShow = false;
+        }
+    }
 }
