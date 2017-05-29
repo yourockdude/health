@@ -43,6 +43,7 @@
 .messages-box {
     background-color: orange;
     height: 85%;
+    overflow: auto;
 }
 
 .sending-box {

@@ -6,6 +6,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { SearchComponent } from './search/search.component';
 /**
  * Do not specify providers for modules that might be imported by a lazy loaded module.
  */
@@ -21,6 +22,7 @@ import { FooterComponent } from './footer/footer.component';
     declarations: [
         NavbarComponent,
         FooterComponent,
+        SearchComponent,
     ],
     exports: [
         CommonModule,
@@ -30,6 +32,7 @@ import { FooterComponent } from './footer/footer.component';
         BrowserAnimationsModule,
         NavbarComponent,
         FooterComponent,
+        SearchComponent,
     ]
 })
 export class SharedModule {

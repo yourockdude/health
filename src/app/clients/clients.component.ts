@@ -12,6 +12,7 @@ import { HealthService } from '../shared/services/health.service';
 
 export class ClientsComponent implements OnInit {
     clients: Client[];
+    clientsFound: Client[];
     chatIsShow = false;
     client: Client;
 
@@ -21,6 +22,7 @@ export class ClientsComponent implements OnInit {
         this.healthService.getClients().subscribe(res => {
             if (res.success) {
                 this.clients = res.data;
+                this.clientsFound = res.data;
             }
         });
     }
@@ -36,5 +38,9 @@ export class ClientsComponent implements OnInit {
         if (c) {
             this.chatIsShow = false;
         }
+    }
+
+    onItemsFound(clients) {
+        this.clientsFound = clients;
     }
 }

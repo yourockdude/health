@@ -11,5 +11,6 @@ export const environment = {
     'doc',
     'docx',
     'png'
-  ]
+  ],
+  socketUrl: 'http://localhost:5000'
 };
