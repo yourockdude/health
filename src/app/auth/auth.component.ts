@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { Router } from '@angular/router';
+import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
+import { environment } from '../../environments/environment';
+import { AuthService as GoogleService } from 'angular2-social-login';
+declare const VK;
 
 @Component({
     moduleId: module.id,
@@ -19,8 +23,20 @@ export class AuthComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
         private router: Router,
+        private facebookService: FacebookService,
+        private googleService: GoogleService,
     ) {
         this.buildSignInForm();
+        const initParams: InitParams = {
+            appId: environment.facebookClientId,
+            xfbml: true,
+            version: environment.facebookApiVersion,
+        };
+
+        facebookService.init(initParams);
+        VK.init({
+            apiId: environment.vkontakteClientId,
+        });
     }
 
     ngOnInit() { }
@@ -73,6 +89,29 @@ export class AuthComponent implements OnInit {
                 console.log(res);
             }
 
+        });
+    }
+
+    signInViaFacebook() {
+        this.facebookService.login()
+            .then((res: LoginResponse) => console.log(res))
+            .catch(err => console.log(err));
+    }
+
+    signInViaGoogle() {
+        this.googleService.login('google').subscribe(
+            res => {
+                console.log(res);
+            },
+            err => {
+                console.log(err);
+            }
+        );
+    }
+
+    signInViaVkontakte() {
+        VK.Auth.login((res) => {
+            console.log(res);
         });
     }
 }
