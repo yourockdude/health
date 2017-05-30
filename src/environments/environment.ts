@@ -16,5 +16,13 @@ export const environment = {
   googleClientId: '922589824238-oun24bfdtqradtddtunhat91ifm09mb1.apps.googleusercontent.com',
   facebookClientId: '1904601646427730',
   facebookApiVersion: 'v2.9',
+  facebookApi: 'https://graph.facebook.com',
+  facebookFields: [
+    'id',
+    'email',
+    'name',
+    'first_name',
+    'last_name'
+  ],
   vkontakteClientId: '6052961',
 };

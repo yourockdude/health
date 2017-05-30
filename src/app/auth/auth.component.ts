@@ -93,10 +93,16 @@ export class AuthComponent implements OnInit {
     }
 
     signInViaFacebook() {
-        this.facebookService.login()
-            .then((res: LoginResponse) => console.log(res))
+        this.facebookService.login(
+            { scope: 'email, public_profile' }
+        )
+            .then((res: LoginResponse) => {
+                console.log(res);
+                this.authService.getFbProfile(res.authResponse.accessToken, res.authResponse.userID).subscribe(r => console.log(r));
+            })
             .catch(err => console.log(err));
     }
+    // "https://graph.facebook.com/me?access_token="
 
     signInViaGoogle() {
         this.googleService.login('google').subscribe(

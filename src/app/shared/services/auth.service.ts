@@ -49,4 +49,10 @@ export class AuthService {
             .map(res => res.json());
         // return localStorage.getItem('token');
     }
+
+    getFbProfile(token: string, id) {
+        const fields = environment.facebookFields.join(',');
+        return this.http.get(`${environment.facebookApi}/me?fields=${fields}&access_token=${token}`)
+            .map(res => res.json());
+    }
 }
