@@ -6,6 +6,7 @@ import { HealthService } from '../shared/services/health.service';
 import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
+import { toggleLoader } from '../shared/utils/toggle-loader';
 
 const colors: any = {
     red: {
@@ -64,6 +65,7 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
+        toggleLoader(true, 'main-router', 'loader');
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.username = res.data.name;
@@ -92,7 +94,7 @@ export class ScheduleComponent implements OnInit {
         }
     }
 
-    fetchEvents(): void {
+    fetchEvents() {
         this.healthService.getEvents().subscribe(res => {
             if (res.success) {
                 this.events = res.data.map(result => {
@@ -106,6 +108,7 @@ export class ScheduleComponent implements OnInit {
                 this.events.sort((a, b) => {
                     return a.start.getTime() - b.start.getTime();
                 });
+                toggleLoader(false, 'main-router', 'loader');
             } else {
                 console.log(res);
             }
