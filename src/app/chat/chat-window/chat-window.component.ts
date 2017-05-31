@@ -9,13 +9,11 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Client } from '../../shared/models/client';
-import { ChatService } from '../../shared/services/chat.service';
 
 @Component({
     selector: 'health-chat-window',
     templateUrl: './chat-window.component.html',
     styleUrls: ['./chat-window.component.css'],
-    providers: [ChatService],
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
     @Input() client: Client;
@@ -29,12 +27,10 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
     isHide = false;
 
-    constructor(private chatService: ChatService) { }
+    constructor() { }
 
     ngOnInit() {
-        this.connection = this.chatService.getMessages().subscribe(messages => {
-            this.messages.push(messages);
-        });
+
     }
 
     ngOnDestroy() {
@@ -42,7 +38,6 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-        this.chatService.sendMessage(this.message);
         this.message = '';
     }
 

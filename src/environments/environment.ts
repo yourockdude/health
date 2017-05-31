@@ -12,7 +12,7 @@ export const environment = {
     'docx',
     'png'
   ],
-  socketUrl: 'http://localhost:5000',
+  socketUrl: 'http://localhost:8080',
   googleClientId: '922589824238-oun24bfdtqradtddtunhat91ifm09mb1.apps.googleusercontent.com',
   facebookClientId: '1904601646427730',
   facebookApiVersion: 'v2.9',
@@ -25,4 +25,5 @@ export const environment = {
     'last_name'
   ],
   vkontakteClientId: '6052961',
+  adminId: '5'
 };
