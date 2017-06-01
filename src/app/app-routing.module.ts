@@ -1,8 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './shared/services/auth-guard.service';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'sidenav', pathMatch: 'full' },
+    {
+        path: '',
+        redirectTo: 'sidenav',
+        canActivate: [AuthGuard],
+        pathMatch: 'full'
+    },
 ];
 
 @NgModule({

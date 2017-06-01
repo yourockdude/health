@@ -50,6 +50,15 @@ export class AuthService {
         // return localStorage.getItem('token');
     }
 
+    getUsers() {
+        return this.authHttp.get(`${environment.api}/users`)
+            .map(res => res.json());
+    }
+
+    checkToken() {
+        return localStorage.getItem('token');
+    }
+
     getFbProfile(token: string, id) {
         const fields = environment.facebookFields.join(',');
         return this.http.get(`${environment.facebookApi}/me?fields=${fields}&access_token=${token}`)

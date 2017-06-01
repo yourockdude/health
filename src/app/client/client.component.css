@@ -23,3 +23,7 @@
     background-color: lightcyan;
     width: 10%;
 }
+
+.unread-message {
+    background-color: red;
+}

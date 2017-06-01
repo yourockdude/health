@@ -7,10 +7,14 @@ import { DocumentsComponent } from '../documents/documents.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { ClientsComponent } from '../clients/clients.component';
 
+import { AuthGuard } from '../shared/services/auth-guard.service';
+import { RoleGuard } from '../shared/services/role-guard.service';
+
 const routes: Routes = [
     {
         path: 'sidenav',
         component: SidenavComponent,
+        canActivate: [AuthGuard],
         children: [
             {
                 path: '',
@@ -36,7 +40,9 @@ const routes: Routes = [
             {
                 path: 'clients',
                 component: ClientsComponent,
-                outlet: 'sidebar'
+                outlet: 'sidebar',
+                canActivate: [RoleGuard],
+                data: { roles: ['admin'] },
             }
         ]
     },

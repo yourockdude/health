@@ -45,9 +45,9 @@ class Server {
         this.io.on('connect', (socket: any) => {
             console.log('connected client on %s', this.port);
 
-            socket.on('enter-room', (room) => {
-                console.log('joining room', room);
-                socket.join(room);
+            socket.on('enter-room', (data) => {
+                console.log(`user ${data.user} joined on room ${data.room}`);
+                socket.join(data.room);
             });
 
             socket.on('send-message', (data) => {

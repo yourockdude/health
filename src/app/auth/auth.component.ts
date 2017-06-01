@@ -81,7 +81,7 @@ export class AuthComponent implements OnInit {
         this.authService.signUp({
             name: this.signUpForm.value.name,
             password: this.signUpForm.value.password,
-            userGroup: this.signUpForm.value.role,
+            userGroup: this.signUpForm.value.role === '' ? 1 : this.signUpForm.value.role,
         }).subscribe(res => {
             if (res.success) {
                 console.log(res.data);

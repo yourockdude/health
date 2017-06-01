@@ -25,5 +25,5 @@ export const environment = {
     'last_name'
   ],
   vkontakteClientId: '6052961',
-  adminId: '5'
+  adminId: 5
 };

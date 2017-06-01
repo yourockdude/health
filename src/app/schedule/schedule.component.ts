@@ -65,7 +65,7 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
-        toggleLoader(true, 'main-router', 'loader');
+        // toggleLoader(true, 'main-router', 'loader');
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.username = res.data.name;
@@ -108,7 +108,7 @@ export class ScheduleComponent implements OnInit {
                 this.events.sort((a, b) => {
                     return a.start.getTime() - b.start.getTime();
                 });
-                toggleLoader(false, 'main-router', 'loader');
+                // toggleLoader(false, 'main-router', 'loader');
             } else {
                 console.log(res);
             }

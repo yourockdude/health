@@ -2,7 +2,7 @@
     <div class="client-name">{{client.name}}</div>
     <div class="client-info">info</div>
     <div class="client-toolbar">
-        <button (click)="showChat()">chat</button>
+        <button [ngClass]="{'unread-message': haveUnread}" #chatButton (click)="showChat()">chat</button>
         <button>delete</button>
     </div>
 </div>

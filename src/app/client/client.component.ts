@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
 import { Client } from '../shared/models/client';
 
 @Component({
@@ -9,8 +9,11 @@ import { Client } from '../shared/models/client';
 })
 
 export class ClientComponent implements OnInit {
+    @ViewChild('chatButton') chatButton: ElementRef;
     @Output() showChatEvent = new EventEmitter();
     @Input() client: Client;
+    @Input() haveUnread: boolean;
+
     constructor() { }
 
     ngOnInit() { }

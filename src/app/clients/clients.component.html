@@ -1,7 +1,8 @@
 <div *ngIf="clients" class="clients">
     <health-search [allItems]="clients" (itemsFoundEvent)="onItemsFound($event)"></health-search>
-    <health-client *ngFor="let client of clientsFound" [client]="client" (showChatEvent)="showChat($event)"></health-client>
+    <health-client *ngFor="let client of clientsFound" [haveUnread]="isUnread(client.id)" [client]="client"
+        (showChatEvent)="showChat($event)"></health-client>
     <div *ngIf="chatIsShow">
-        <health-chat-window [client]="client" (closeEvent)="close($event)"></health-chat-window>
+        <health-chat-window [client]="client" [messages]="getMessages(client.id)" (closeEvent)="close($event)"></health-chat-window>
     </div>
 </div>

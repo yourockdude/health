@@ -9,6 +9,9 @@ import {
     OnDestroy
 } from '@angular/core';
 import { Client } from '../../shared/models/client';
+import { SocketService } from '../../shared/services/socket.service';
+import { AuthService } from '../../shared/services/auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
     selector: 'health-chat-window',
@@ -17,28 +20,66 @@ import { Client } from '../../shared/models/client';
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
     @Input() client: Client;
+    @Input() messages;
     @Output() closeEvent = new EventEmitter();
     @ViewChild('chatWindow') chatWindow: ElementRef;
     @ViewChild('chatBody') chatBody: ElementRef;
 
-    messages = [];
-    connection;
     message;
+    chatMessages = [];
 
     isHide = false;
+    currentUser;
 
-    constructor() { }
+    room;
+    fromId;
+    toId;
+
+    constructor(
+        private socketService: SocketService,
+        private authService: AuthService,
+    ) {
+        console.log('new chat window opened');
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.currentUser = res.data;
+            } else {
+                console.log('error');
+            }
+        });
+    }
 
     ngOnInit() {
-
+        // console.log(this.messages);
+        // this.chatMessages = this.messages ? this.messages : [];
+        // this.getMessages();
     }
 
     ngOnDestroy() {
-        this.connection.unsubscribe();
     }
 
+    // getMessages() {
+    //     this.socketService.getMessages().subscribe(message => {
+    //         this.chatMessages.push(message);
+    //     });
+    // }
+
     sendMessage() {
-        this.message = '';
+        if (this.currentUser.id === environment.adminId) {
+            this.room = this.client.id;
+            this.toId = this.client.id;
+        } else {
+            this.room = this.currentUser.id;
+            this.toId = environment.adminId;
+        }
+        const data = {
+            date: new Date(),
+            fromId: this.currentUser.id,
+            toId: this.toId,
+            room: this.room,
+            message: this.message,
+        };
+        this.socketService.sendMessage(data);
     }
 
     close() {

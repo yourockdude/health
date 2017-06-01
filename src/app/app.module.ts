@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -15,6 +16,7 @@ import { DocumentsModule } from './documents/documents.module';
 import { ProfileModule } from './profile/profile.module';
 import { ClientsModule } from './clients/clients.module';
 import { AuthService } from './shared/services/auth.service';
+import { RoleGuard } from './shared/services/role-guard.service';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
@@ -49,6 +51,7 @@ export function authHttpServiceFactory(
   ],
   providers: [
     AuthService,
+    RoleGuard,
     AuthHttp,
     {
       provide: AuthHttp,
