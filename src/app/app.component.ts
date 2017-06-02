@@ -27,7 +27,7 @@ export class AppComponent implements OnInit {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.currentUser = res.data;
-                    if (this.currentUser.id === environment.adminId) {
+                    if (this.currentUser.userGroup === 0) {
                         this.authService.getUsers().subscribe(r => {
                             if (r.success) {
                                 for (const u of r.data) {
@@ -53,7 +53,6 @@ export class AppComponent implements OnInit {
         this.socketService.getMessages().subscribe(message => {
             this.messages.push(message);
             this.messagesService.sendMessages({ isNew: true, messages: message });
-            console.log(message);
         });
     }
 

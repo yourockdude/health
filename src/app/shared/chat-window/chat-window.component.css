@@ -5,10 +5,11 @@
     bottom: 30px;
     width: 250px;
     height: 300px;
+    z-index: 1000;
 }
 
 .header {
-    background-color: red;
+    background-color: white;
     height: 10%;
     display: flex;
 }
@@ -35,18 +36,43 @@
     height: 90%;
 }
 
-/*.users-box {
+.users-box {
     background-color: yellow;
     height: 20%;
-}*/
+    overflow-x: scroll;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
 
 .messages-box {
-    background-color: orange;
-    height: 85%;
+    background-color: lightcyan;
+    height: 65%;
     overflow: auto;
 }
 
 .sending-box {
     background-color: green;
     height: 15%;
+}
+
+.user {
+    display: inline-block;
+    height: 100%;
+    border: 1px solid;
+    min-width: 60px;
+    margin: 5px 5px;
+}
+
+.message {
+    border: 1px red solid;
+    box-sizing: border-box;
+    margin: 2%;
+}
+
+.incoming {
+    border: 1px blue solid;
+}
+
+.unread-user {
+    background-color: lightgray;
 }

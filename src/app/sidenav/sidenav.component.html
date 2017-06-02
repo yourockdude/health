@@ -10,8 +10,7 @@
                 <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
                 <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
                 <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
-                <li *ngIf="isAdmin"><a (click)="onItemClick($event, 'clients')">Клиенты {{isNew ? 'new' : ''}}</a></li>
-                <li *ngIf="!isAdmin"><a (click)="showChat()">Связаться {{isNew ? 'new' : ''}}</a></li>
+                <li *ngIf="isAdmin"><a (click)="onItemClick($event, 'clients')">Клиенты</a></li>
             </ul>
         </div>
     </div>

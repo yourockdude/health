@@ -34,17 +34,17 @@ export class ClientsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.messagesService.receive$.subscribe(res => {
-            this.unreadId = res.messages.fromId;
-            this.messages.push(res.messages);
-        });
+        // this.messagesService.receive$.subscribe(res => {
+        //     this.unreadId = res.messages.fromId;
+        //     this.messages.push(res.messages);
+        // });
         // this.getMessages();
     }
 
-    getMessages(id) {
-        console.log(this.messages, id);
-        return this.messages.filter(m => m.fromId === id || m.toId === id);
-    }
+    // getMessages(id) {
+    //     console.log(this.messages, id);
+    //     return this.messages.filter(m => m.fromId === id || m.toId === id);
+    // }
 
     // getMessages() {
     //     this.socketService.getMessages().subscribe(message => {
@@ -58,11 +58,11 @@ export class ClientsComponent implements OnInit {
         this.chatIsShow = !this.chatIsShow;
     }
 
-    close(c) {
-        if (c) {
-            this.chatIsShow = false;
-        }
-    }
+    // close(c) {
+    //     if (c) {
+    //         this.chatIsShow = false;
+    //     }
+    // }
 
     onItemsFound(clients) {
         this.clientsFound = clients;

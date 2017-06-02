@@ -4,12 +4,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { SearchComponent } from './search/search.component';
-/**
- * Do not specify providers for modules that might be imported by a lazy loaded module.
- */
+
+import { NavbarModule } from './navbar/navbar.module';
 
 @NgModule({
     imports: [
@@ -18,9 +16,9 @@ import { SearchComponent } from './search/search.component';
         ReactiveFormsModule,
         RouterModule,
         BrowserAnimationsModule,
+        NavbarModule,
     ],
     declarations: [
-        NavbarComponent,
         FooterComponent,
         SearchComponent,
     ],
@@ -30,7 +28,7 @@ import { SearchComponent } from './search/search.component';
         ReactiveFormsModule,
         RouterModule,
         BrowserAnimationsModule,
-        NavbarComponent,
+        NavbarModule,
         FooterComponent,
         SearchComponent,
     ]

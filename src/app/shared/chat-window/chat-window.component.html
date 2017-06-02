@@ -1,0 +1,24 @@
+<div #chatWindow class="chat-window">
+  <div class="header">
+    <div class="name">Чат с {{interlocutor?.name}}</div>
+    <div class="controls">
+      <div class="hide" (click)="hide()">-</div>
+      <div class="close" (click)="close()">x</div>
+    </div>
+  </div>
+  <div #chatBody class="body">
+    <div class="messages-box">
+      <div class="message" [ngClass]="{'incoming': isIncoming(msg)}" *ngFor="let msg of getCurrentChatMessages">
+        <div class="text">{{member(msg)}}:{{msg.message}}</div>
+        <div class="time">{{msg.date}}</div>
+      </div>
+    </div>
+    <div class="sending-box">
+      <input type="text" [(ngModel)]="message">
+      <button (click)="sendMessage()">send</button>
+    </div>
+    <div class="users-box" *ngIf="isAdmin()">
+      <div class="user" [ngClass]="{'unread-user': isUnreadUser(client.id)}" *ngFor="let client of clients" (click)="onClientClick(client)">{{client | client}}</div>
+    </div>
+  </div>
+</div>

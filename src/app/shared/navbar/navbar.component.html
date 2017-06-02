@@ -3,5 +3,15 @@
         <li><a [routerLink]="['/sidenav']">Расписание</a></li>
         <li><a [routerLink]="['/prices']">Цены</a></li>
         <li><a [routerLink]="['/auth']">Логин</a></li>
+        <li><a (click)="openChat()">Чат {{newMessageIndicator}}</a></li>
     </ul>
+
+    <div *ngIf="isOpen">
+        <health-chat-window 
+            [messages]="messages"
+            [unreadMessages]="fromId" 
+            [currentUser]="currentUser" 
+            (closeEvent)="close($event)">
+        </health-chat-window>
+    </div>
 </div>

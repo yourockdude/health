@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
-import { MessagesService } from '../shared/services/messages.service';
 
 @Component({
     moduleId: module.id,
@@ -19,7 +18,6 @@ export class SidenavComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private messagesService: MessagesService,
     ) {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
@@ -29,11 +27,7 @@ export class SidenavComponent implements OnInit {
         });
     }
 
-    ngOnInit() {
-        this.messagesService.receive$.subscribe(res => {
-            this.isNew = res.isNew;
-        });
-    }
+    ngOnInit() { }
 
     onItemClick(e: MouseEvent, part: string) {
         // if (part === '') {

@@ -51,7 +51,7 @@ class Server {
             });
 
             socket.on('send-message', (data) => {
-                console.log(data);
+                console.log(`user ${data.fromId} send message "${data.message}" in romm ${data.room}`);
                 this.io.in(data.room).emit('receive-message', data);
             });
 
