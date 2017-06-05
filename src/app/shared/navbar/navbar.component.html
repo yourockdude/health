@@ -9,7 +9,7 @@
     <div *ngIf="isOpen">
         <health-chat-window 
             [messages]="messages"
-            [unreadMessages]="fromId" 
+            [unreadMessages]="passUnreadMessages()" 
             [currentUser]="currentUser" 
             (closeEvent)="close($event)">
         </health-chat-window>

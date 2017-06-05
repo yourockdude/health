@@ -16,6 +16,6 @@ export class ReadMessageService {
 
     chatToNavbarChange(value: any) {
         console.log('read-service ', value);
-        this.navbarToChatSource.next(value);
+        this.chatToNavbarSource.next(value);
     }
 }

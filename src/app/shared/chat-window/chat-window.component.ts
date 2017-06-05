@@ -57,7 +57,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
                     this.clients = res.data;
                     this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
                     if (this.unreadMessages.length > 0) {
-                        this.interlocutor = this.clients.find(c => c.id === this.unreadMessages[0]);
+                        this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
                         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
                     } else {
                         this.interlocutor = this.clients[0];
@@ -76,23 +76,19 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
                 }
             });
         };
-        // this.getCurrentChatMessages();
-        // console.log(this.messages);
-        // this.chatMessages = this.messages ? this.messages : [];
-        // this.getMessages();
     }
 
-    ngOnDestroy() {
-    }
+    ngOnDestroy() { }
 
     onClientClick(client) {
         this.interlocutor = client;
         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
-        // this.getCurrentChatMessages();
     }
 
     isAdmin() {
-        return this.currentUser.userGroup === 0 ? true : false;
+        if (this.currentUser) {
+            return this.currentUser.userGroup === 0 ? true : false;
+        }
     }
 
     isIncoming(msg) {
@@ -101,11 +97,14 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
 
     isUnreadUser(id) {
-        return this.unreadMessages.includes(id) ? true : false;
+        if (this.unreadMessages) {
+            return this.unreadMessages.map(u => u.fromId).includes(id) ? true : false;
+        }
     }
 
     get getCurrentChatMessages() {
         if (this.interlocutor) {
+            this.readMessageService.chatToNavbarChange(this.interlocutor.id);
             return this.messages
                 .filter(m => m.fromId === this.interlocutor.id || m.toId === this.interlocutor.id);
         }
@@ -122,12 +121,6 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
             }
         }
     }
-
-    // getMessages() {
-    //     this.socketService.getMessages().subscribe(message => {
-    //         this.chatMessages.push(message);
-    //     });
-    // }
 
     sendMessage() {
         if (this.isAdmin()) {

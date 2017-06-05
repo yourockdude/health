@@ -1,4 +1,4 @@
-<div #chatWindow class="chat-window">
+<!--<div #chatWindow class="chat-window">
   <div class="header">
     <div class="name">Чат с {{interlocutor?.name}}</div>
     <div class="controls">
@@ -7,6 +7,7 @@
     </div>
   </div>
   <div #chatBody class="body">
+    <div class="user-box"></div>
     <div class="messages-box">
       <div class="message" [ngClass]="{'incoming': isIncoming(msg)}" *ngFor="let msg of getCurrentChatMessages">
         <div class="text">{{member(msg)}}:{{msg.message}}</div>
@@ -19,6 +20,32 @@
     </div>
     <div class="users-box" *ngIf="isAdmin()">
       <div class="user" [ngClass]="{'unread-user': isUnreadUser(client.id)}" *ngFor="let client of clients" (click)="onClientClick(client)">{{client | client}}</div>
+    </div>
+  </div>
+</div>-->
+
+<div class="chat-window">
+  <div class="users-box">
+    <div class="search-box">
+      <input class="search-input" type="search" placeholder="Поиск...">
+    </div>
+    <div class="users-list"></div>
+  </div>
+  <div class="chat-box">
+    <div class="header">
+      <div class="title">Иванов</div>
+      <div class="control">
+        <div class="close">x</div>
+        <div class="hide">-</div>
+      </div>
+    </div>
+    <div class="body"></div>
+    <div class="footer">
+      <div class="new-message-box">
+        <div class="new-message">
+          <input class="new-message-input" type="text" placeholder="Ваше сообщение...">
+        </div>
+      </div>
     </div>
   </div>
 </div>

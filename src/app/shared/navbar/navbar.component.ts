@@ -18,14 +18,20 @@ export class NavbarComponent implements OnInit {
     currentUser: Client;
     jwtHelper = new JwtHelper();
     messages = [];
-    fromId = [];
+    unreadMessages = [];
 
     constructor(
         private authService: AuthService,
         private messagesService: MessagesService,
         private readMessageService: ReadMessageService,
     ) {
-        readMessageService.chatToNavbarObservable$.subscribe(res => console.log('parent ', res));
+        readMessageService.chatToNavbarObservable$.subscribe(res => {
+            const index = this.unreadMessages.map(u => u.fromId).indexOf(res);
+            if (res && index > -1) {
+                this.unreadMessages.splice(index, 1);
+            }
+        });
+
         if (localStorage.getItem('token') !== null && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
@@ -34,29 +40,24 @@ export class NavbarComponent implements OnInit {
                     console.log('error');
                 }
             });
-
         }
     }
 
     ngOnInit() {
         this.messagesService.receive$.subscribe(res => {
-            this.fromId.push(res.messages.fromId);
+            this.unreadMessages.push(res.messages);
             this.messages.push(res.messages);
-        });
-        this.readMessageService.chatToNavbarObservable$.subscribe(res => {
-            console.log(res);
-            console.log(this.fromId);
-            this.fromId.splice(this.fromId.indexOf(res), 1);
-            console.log(this.fromId);
+            console.log('pushed');
         });
     }
 
     get newMessageIndicator() {
-        if (this.fromId.length > 0 && this.currentUser) {
-            if (this.fromId.includes(this.currentUser.id)) {
-                return '';
-            } else {
+        console.log(this.unreadMessages);
+        if (this.unreadMessages.length > 0 && this.currentUser) {
+            if (this.unreadMessages.map(u => u.toId).includes(this.currentUser.id)) {
                 return 'new';
+            } else {
+                return '';
             }
         } else {
             return '';
@@ -65,6 +66,13 @@ export class NavbarComponent implements OnInit {
 
     openChat() {
         this.isOpen = !this.isOpen;
+    }
+
+    passUnreadMessages() {
+        // let unreadMessages = [];
+        // unreadMessages = this.unreadMessages.filter(u => u.toId === this.currentUser.id);
+        // return unreadMessages;
+        return this.unreadMessages;
     }
 
     close(c) {
