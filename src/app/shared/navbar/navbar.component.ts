@@ -45,14 +45,15 @@ export class NavbarComponent implements OnInit {
 
     ngOnInit() {
         this.messagesService.receive$.subscribe(res => {
-            this.unreadMessages.push(res.messages);
+            if (this.currentUser.id === res.messages.toId) {
+                this.unreadMessages.push(res.messages);
+            };
             this.messages.push(res.messages);
-            console.log('pushed');
+            this.readMessageService.navbarToChatChange(res.messages);
         });
     }
 
     get newMessageIndicator() {
-        console.log(this.unreadMessages);
         if (this.unreadMessages.length > 0 && this.currentUser) {
             if (this.unreadMessages.map(u => u.toId).includes(this.currentUser.id)) {
                 return 'new';

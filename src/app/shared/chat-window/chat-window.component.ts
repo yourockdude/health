@@ -27,8 +27,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     @Input() messages;
     @Input() unreadMessages;
     @Output() closeEvent = new EventEmitter();
-    @ViewChild('chatWindow') chatWindow: ElementRef;
-    @ViewChild('chatBody') chatBody: ElementRef;
+    @ViewChild('scrollBody') scrollBody: ElementRef;
 
     message;
     chatMessages = [];
@@ -43,6 +42,11 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     clients = [];
     currentChatMessages;
 
+    isShowUserBox = false;
+    queryUser;
+    clientsFound = [];
+    isAdmin: boolean;
+
     constructor(
         private socketService: SocketService,
         private authService: AuthService,
@@ -51,10 +55,12 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        if (this.isAdmin()) {
+        this.isAdmin = this.currentUser.userGroup === 0 ? true : false;
+        if (this.isAdmin) {
             this.healthService.getClients().subscribe(res => {
                 if (res.success) {
                     this.clients = res.data;
+                    this.clientsFound = res.data;
                     this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
                     if (this.unreadMessages.length > 0) {
                         this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
@@ -62,6 +68,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
                     } else {
                         this.interlocutor = this.clients[0];
                     }
+                    this.roll();
                 } else {
                     console.log('error: ', res.error);
                 }
@@ -71,6 +78,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
             this.healthService.getClients().subscribe(res => {
                 if (res.success) {
                     this.interlocutor = res.data.find(c => c.userGroup === 0);
+                    this.roll();
                 } else {
                     console.log('error', res.error);
                 }
@@ -80,16 +88,29 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() { }
 
+    roll() {
+        this.readMessageService.navbarToChatObservable$.subscribe(res => {
+            if (res.fromId === this.interlocutor.id || res.toId === this.interlocutor.id) {
+                console.log(this.scrollBody.nativeElement)
+                this.scrollBody.nativeElement.scrollTop = this.scrollBody.nativeElement.scrollHeight - 221;
+            }
+        });
+    }
+
+    onScroll(event) {
+        console.log(event);
+    }
+
     onClientClick(client) {
         this.interlocutor = client;
         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
     }
 
-    isAdmin() {
-        if (this.currentUser) {
-            return this.currentUser.userGroup === 0 ? true : false;
-        }
-    }
+    // isAdmin() {
+    //     if (this.currentUser) {
+    //         return this.currentUser.userGroup === 0 ? true : false;
+    //     }
+    // }
 
     isIncoming(msg) {
         return msg.fromId === this.currentUser.id ? false : true;
@@ -114,7 +135,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
         if (msg.fromId === this.currentUser.id) {
             return 'Вы';
         } else {
-            if (this.isAdmin()) {
+            if (this.isAdmin) {
                 return 'Клиент';
             } else {
                 return 'Док';
@@ -123,7 +144,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-        if (this.isAdmin()) {
+        if (this.isAdmin) {
             this.room = this.interlocutor.id;
         } else {
             this.room = this.currentUser.id;
@@ -135,6 +156,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
             room: this.room,
             message: this.message,
         };
+        if (this.message === '' || !this.message) {
+            return;
+        }
         this.socketService.sendMessage(data);
         this.message = '';
     }
@@ -144,13 +168,28 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     hide() {
-        if (this.isHide) {
-            this.chatBody.nativeElement.style.display = 'block';
-            this.chatWindow.nativeElement.style.height = '300px';
-        } else {
-            this.chatBody.nativeElement.style.display = 'none';
-            this.chatWindow.nativeElement.style.height = 'initial';
-        }
         this.isHide = !this.isHide;
+    }
+
+    showUserBox() {
+        this.isShowUserBox = !this.isShowUserBox;
+    }
+
+    onSearchKeyUp() {
+        this.clientsFound = this.clients.filter(
+            c => c.name.toLowerCase().includes(this.queryUser.toLowerCase())
+        );
+    }
+
+    onTextAreaKeyUp(event) {
+        if (event.keyCode === 13) {
+            this.sendMessage();
+        }
+    }
+
+    preventEnter(event: KeyboardEvent) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+        }
     }
 }

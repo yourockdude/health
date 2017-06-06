@@ -10,12 +10,10 @@ export class ReadMessageService {
     chatToNavbarObservable$ = this.chatToNavbarSource.asObservable();
 
     navbarToChatChange(value: any) {
-        console.log('read-service ', value);
         this.navbarToChatSource.next(value);
     }
 
     chatToNavbarChange(value: any) {
-        console.log('read-service ', value);
         this.chatToNavbarSource.next(value);
     }
 }
