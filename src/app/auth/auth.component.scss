@@ -1,0 +1,120 @@
+$body-bg: #c1bdba;
+$form-bg: #333;
+$white: #ffffff;
+
+$main: #1ab188;
+$main-light: lighten($main,5%);
+$main-dark: darken($main,5%);
+
+$gray-light: #a0b3b0;
+$gray: #ddd;
+
+$br: 5px;
+
+.auth-page {
+
+}
+
+.auth-container {
+    background: rgba($form-bg,.9);
+    padding: 40px;
+    max-width: 600px;
+    margin: 40px auto;
+    border-radius: $br;
+    box-shadow: 0 4px 10px 4px rgba($form-bg,.3);
+}
+
+.switch-box,
+.social-box,
+.sending-box {
+    display: flex;
+    height: 50px;
+    margin-bottom: 20px; 
+}
+
+.social-box {
+    justify-content: space-around;
+}
+
+.switch-button,
+.social-button,
+.sending-button, {
+    cursor: pointer;
+    display: flex;
+}
+
+.switch-button {
+    color: $gray-light;
+    background: rgba($gray-light,.25);
+    font-size: 20px;
+    width: 50%;
+    &.active {
+        background: $main-light;
+        color:$white
+    }
+}
+
+.social-button {
+    color: $gray-light;
+    background: rgba($gray-light, .25);
+    border-radius: $br;
+    width: 50px;
+}
+
+.sending-button {
+    background: $main;
+    color: $white;
+    width: 100%;
+    transition: all .5s ease;
+    font-size: 2rem;
+    &:hover {
+        background: $main-dark;
+    }
+}
+
+.switch-button div, 
+.social-button div,
+.sending-button div {
+    margin: auto;
+}
+
+.switch-button:hover, 
+.social-button:hover {
+    background: $main-dark;
+    color: $white;
+}
+
+.title-box {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.title-box div {
+    margin: auto;
+    font-size: 2rem;
+    color: $white;
+}
+
+.form-row {
+    height: 40px;
+    margin-bottom: 20px;
+}
+
+.two-in-row {
+    display: flex;
+}
+
+.form-row input {
+    font-size: 20px;
+    width: 100%;
+    height: 100%;
+    padding: 5px 10px;
+    background: initial;
+    border: 1px solid $gray-light;
+    color: $white;
+    box-sizing: border-box;
+    &:focus {
+        outline: initial;
+        border-color: $main;
+    }
+}

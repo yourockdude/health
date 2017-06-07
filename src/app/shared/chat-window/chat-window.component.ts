@@ -91,7 +91,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     roll() {
         this.readMessageService.navbarToChatObservable$.subscribe(res => {
             if (res.fromId === this.interlocutor.id || res.toId === this.interlocutor.id) {
-                console.log(this.scrollBody.nativeElement)
+                console.log(this.scrollBody.nativeElement);
                 this.scrollBody.nativeElement.scrollTop = this.scrollBody.nativeElement.scrollHeight - 221;
             }
         });

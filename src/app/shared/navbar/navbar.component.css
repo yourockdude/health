@@ -1,4 +1,51 @@
-ul {
+.header-page {
+    height: 100%;
+    width: 100%;
+    background-color: #333;
+}
+
+.header-container {
+    height: 100%;
+    width: 80%;
+    margin: auto;
+    display: flex;
+}
+
+.logo-box, .link-box {
+    width: 50%;
+    display: flex;
+}
+
+.logo-box {
+    margin: auto;
+}
+
+.title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+}
+
+.link {
+    width: 100%;
+    cursor: pointer;
+    display: flex;
+    height: 100%;
+    outline: initial;
+}
+
+.link:hover {
+    background-color: black;
+}
+
+.link div {
+    margin: auto;
+    color: white;
+    text-decoration: initial;
+}
+
+/*ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -18,7 +65,6 @@ li a {
     text-decoration: none;
 }
 
-/* Change the link color to #111 (black) on hover */
 li a:hover {
     background-color: #111;
-}
+}*/

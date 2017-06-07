@@ -1,4 +1,4 @@
-<div class="auth-wrapper">
+<!--<div class="auth-wrapper">
     <div class="auth">
         <button (click)="switch()">{{isSignIn ? 'sign up' : 'sign in'}}</button>
         <div class="form-wrapper" *ngIf="isSignIn;else signUpTemplate">
@@ -32,4 +32,77 @@
             <button class="login-btn" (click)="signUp()">Sign Up</button>
         </div>
     </div>
-</ng-template>
+</ng-template>-->
+
+<div class="auth-page">
+    <div class="auth-container">
+
+        <div class="switch-box">
+            <div class="switch-button" (click)="switch('signIn')" [ngClass]="{active: isSignIn}">
+                <div>Войти</div>
+            </div>
+            <div class="switch-button" (click)="switch('signUp')" [ngClass]="{active: !isSignIn}">
+                <div>Регистрация</div>
+            </div>
+        </div>
+
+        <div class="social-box">
+            <div class="social-button">
+                <div>
+                    <fa [name]="'facebook'"></fa>
+                </div>
+            </div>
+            <div class="social-button">
+                <div>
+                    <fa [name]="'vk'"></fa>
+                </div>
+            </div>
+            <div class="social-button">
+                <div>
+                    <fa [name]="'google'"></fa>
+                </div>
+            </div>
+        </div>
+
+        <div class="form container">
+            <div class="title-box">
+                <div>{{isSignIn ? 'Войти' : 'Регистрация'}}</div>
+            </div>
+
+            <div class="form-box">
+                <form *ngIf="isSignIn;else signUpTemplate">
+                    <div class="form-row">
+                        <input type="text" placeholder="Почта">
+                    </div>
+                    <div class="form-row">
+                        <input type="text" placeholder="Пароль">
+                    </div>
+                </form>
+
+                <ng-template #signUpTemplate>
+                    <form>
+                        <div class="form-row">
+                            <input type="text" placeholder="Почта">
+                        </div>
+                        <div class="form-row two-in-row">
+                            <input type="text" placeholder="Фамилия">
+                            <input type="text" placeholder="Имя">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Пароль">
+                        </div>
+                        <div class="form-row">
+                            <input type="text" placeholder="Пароль еще раз">
+                        </div>
+                    </form>
+                </ng-template>
+            </div>
+
+            <div class="sending-box">
+                <div class="sending-button" (click)="sending()">
+                    <div>{{isSignIn ? 'Войти' : 'Зарегистрироваться'}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

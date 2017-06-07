@@ -11,7 +11,7 @@ declare const VK;
     moduleId: module.id,
     selector: 'health-auth',
     templateUrl: 'auth.component.html',
-    styleUrls: ['auth.component.css'],
+    styleUrls: ['auth.component.scss'],
 })
 
 export class AuthComponent implements OnInit {
@@ -56,12 +56,21 @@ export class AuthComponent implements OnInit {
         });
     }
 
-    switch() {
-        this.isSignIn = !this.isSignIn;
-        if (this.isSignIn) {
-            this.buildSignInForm();
-        } else {
+    switch(state: string) {
+        if (state === 'signIn') {
+            this.isSignIn = true;
             this.buildSignUpForm();
+        } else {
+            this.isSignIn = false;
+            this.buildSignInForm();
+        }
+    }
+
+    sending() {
+        if (this.isSignIn) {
+            console.log('Вход');
+        } else {
+            console.log('Регистрация')
         }
     }
 

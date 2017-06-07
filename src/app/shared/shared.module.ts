@@ -8,6 +8,7 @@ import { FooterComponent } from './footer/footer.component';
 import { SearchComponent } from './search/search.component';
 
 import { NavbarModule } from './navbar/navbar.module';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 
 @NgModule({
     imports: [
@@ -17,6 +18,7 @@ import { NavbarModule } from './navbar/navbar.module';
         RouterModule,
         BrowserAnimationsModule,
         NavbarModule,
+        Angular2FontawesomeModule
     ],
     declarations: [
         FooterComponent,
@@ -31,6 +33,7 @@ import { NavbarModule } from './navbar/navbar.module';
         NavbarModule,
         FooterComponent,
         SearchComponent,
+        Angular2FontawesomeModule
     ]
 })
 export class SharedModule {

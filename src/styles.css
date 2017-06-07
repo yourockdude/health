@@ -1,9 +1,9 @@
 @import "../node_modules/angular-calendar/dist/css/angular-calendar.css";
 
-/*body, html { 
+body, html { 
     width: 100%;
     height: 100%;
-}*/
+}
 
 body {
     margin: initial;
