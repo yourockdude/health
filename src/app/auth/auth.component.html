@@ -47,17 +47,17 @@
         </div>
 
         <div class="social-box">
-            <div class="social-button">
+            <div class="social-button" (click)="choiceSocial('facebook')">
                 <div>
                     <fa [name]="'facebook'"></fa>
                 </div>
             </div>
-            <div class="social-button">
+            <div class="social-button" (click)="choiceSocial('vk')">
                 <div>
                     <fa [name]="'vk'"></fa>
                 </div>
             </div>
-            <div class="social-button">
+            <div class="social-button" (click)="choiceSocial('google')">
                 <div>
                     <fa [name]="'google'"></fa>
                 </div>
@@ -68,31 +68,52 @@
             <div class="title-box">
                 <div>{{isSignIn ? 'Войти' : 'Регистрация'}}</div>
             </div>
+            <div class="info-box" *ngIf="info.length>0">
+                <div class="info">
+                    {{info}}
+                </div>
+                <div class="addition-info" *ngIf="isSocialSignUp" (click)="switch('signIn', true)">Связать с существующим аккаунтом?</div>
+            </div>
 
             <div class="form-box">
-                <form *ngIf="isSignIn;else signUpTemplate">
+                <form [formGroup]="signInForm" *ngIf="isSignIn;else signUpTemplate">
                     <div class="form-row">
-                        <input type="text" placeholder="Почта">
+                        <input formControlName="email" type="text" placeholder="Почта">
+                        <div class="error-box">
+                            <health-error-message [control]="signInForm.controls.email"></health-error-message>
+                        </div>
                     </div>
                     <div class="form-row">
-                        <input type="text" placeholder="Пароль">
+                        <input formControlName="password" type="password" placeholder="Пароль">
+                        <div class="error-box">
+                            <health-error-message [control]="signInForm.controls.password"></health-error-message>
+                        </div>
                     </div>
                 </form>
 
                 <ng-template #signUpTemplate>
-                    <form>
+                    <form [formGroup]="signUpForm">
                         <div class="form-row">
-                            <input type="text" placeholder="Почта">
+                            <input formControlName="email" type="text" placeholder="Почта">
                         </div>
                         <div class="form-row two-in-row">
-                            <input type="text" placeholder="Фамилия">
-                            <input type="text" placeholder="Имя">
+                            <div>
+                                <input formControlName="firstName" type="text" placeholder="Фамилия">
+                                <div class="error-box">
+                                    <health-error-message [control]="signInForm.controls.firstName"></health-error-message>
+                                </div>
+                            </div>
+                            <div>
+                                <input formControlName="lastName" type="text" placeholder="Имя">
+                                <div class="error-box">
+                                </div>
+                            </div>
                         </div>
                         <div class="form-row">
-                            <input type="text" placeholder="Пароль">
+                            <input formControlName="password" type="password" placeholder="Пароль">
                         </div>
                         <div class="form-row">
-                            <input type="text" placeholder="Пароль еще раз">
+                            <input formControlName="passwordRepeat" type="password" placeholder="Пароль еще раз">
                         </div>
                     </form>
                 </ng-template>

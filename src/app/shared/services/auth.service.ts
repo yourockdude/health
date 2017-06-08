@@ -21,22 +21,29 @@ export class AuthService {
 
     signIn(user: User) {
         return this.http.post(`${environment.api}/auth`, user)
+            .map(res => res.json());
+    }
+
+    signInViaSocial(user: User) {
+        return this.http.post(`${environment.api}/authSocial`, user)
             .map(res => {
-                const response = res.json();
-                if (response.success) {
-                    localStorage.setItem('token', response.data);
-                }
-                return response;
+                const flags = ['newUser', 'emailExist'];
+                const index = Math.floor(Math.random() * flags.length);
+                console.log(flags[index]);
+                return {
+                    success: true,
+                    data: {
+                        flag: flags[index],
+                        token: '',
+                    }
+                };
             });
+        // .map(res => res.json());
     }
 
     signUp(newUser: User) {
         return this.http.post(`${environment.api}/users`, newUser)
-            .map(res => {
-                const response = res.json();
-                console.log(response);
-                return response;
-            });
+            .map(res => res.json());
     }
 
     signOut() {

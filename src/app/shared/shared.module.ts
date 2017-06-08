@@ -9,6 +9,7 @@ import { SearchComponent } from './search/search.component';
 
 import { NavbarModule } from './navbar/navbar.module';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
+import { ErrorMessagesComponent } from './error-message/error-message.component';
 
 @NgModule({
     imports: [
@@ -18,11 +19,12 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
         RouterModule,
         BrowserAnimationsModule,
         NavbarModule,
-        Angular2FontawesomeModule
+        Angular2FontawesomeModule,
     ],
     declarations: [
         FooterComponent,
         SearchComponent,
+        ErrorMessagesComponent,
     ],
     exports: [
         CommonModule,
@@ -33,7 +35,8 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawe
         NavbarModule,
         FooterComponent,
         SearchComponent,
-        Angular2FontawesomeModule
+        Angular2FontawesomeModule,
+        ErrorMessagesComponent,
     ]
 })
 export class SharedModule {
