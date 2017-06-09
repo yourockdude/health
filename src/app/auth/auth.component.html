@@ -95,32 +95,42 @@
                     <form [formGroup]="signUpForm">
                         <div class="form-row">
                             <input formControlName="email" type="text" placeholder="Почта">
+                            <div class="error-box">
+                                <health-error-message [control]="signUpForm.controls.email"></health-error-message>
+                            </div>
                         </div>
                         <div class="form-row two-in-row">
                             <div>
                                 <input formControlName="firstName" type="text" placeholder="Фамилия">
                                 <div class="error-box">
-                                    <health-error-message [control]="signInForm.controls.firstName"></health-error-message>
+                                    <health-error-message [control]="signUpForm.controls.firstName"></health-error-message>
                                 </div>
                             </div>
                             <div>
                                 <input formControlName="lastName" type="text" placeholder="Имя">
                                 <div class="error-box">
+                                    <health-error-message [control]="signUpForm.controls.lastName"></health-error-message>
                                 </div>
                             </div>
                         </div>
                         <div class="form-row">
                             <input formControlName="password" type="password" placeholder="Пароль">
+                            <div class="error-box">
+                                <health-error-message [control]="signUpForm.controls.password"></health-error-message>
+                            </div>
                         </div>
                         <div class="form-row">
                             <input formControlName="passwordRepeat" type="password" placeholder="Пароль еще раз">
+                            <div class="error-box">
+                                <health-error-message [control]="signUpForm.controls.passwordRepeat"></health-error-message>
+                            </div>
                         </div>
                     </form>
                 </ng-template>
             </div>
 
             <div class="sending-box">
-                <div class="sending-button" (click)="sending()">
+                <div class="sending-button" (click)="sending()" [ngClass]="{disabled: disabledSendingButton()}">
                     <div>{{isSignIn ? 'Войти' : 'Зарегистрироваться'}}</div>
                 </div>
             </div>

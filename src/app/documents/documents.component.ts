@@ -6,29 +6,40 @@ import {
 } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { CheckUploadService } from '../shared/services/check-upload.service';
+import { AuthService } from '../shared/services/auth.service';
+import { HealthService } from '../shared/services/health.service';
 
 @Component({
     moduleId: module.id,
     selector: 'health-documents',
     templateUrl: 'documents.component.html',
     styleUrls: ['documents.component.css'],
-    providers: [CheckUploadService]
+    providers: [CheckUploadService, HealthService]
 })
 
 export class DocumentsComponent implements OnInit {
     @ViewChild('fileUploader') fileUploader: ElementRef;
 
     filesToUpload: File[] = [];
-    userFiles: File[] = [];
+    userFiles = [];
 
     allowedFiles: string[] = [];
     hint: string;
 
     constructor(
-        private checkUploadService: CheckUploadService
+        private checkUploadService: CheckUploadService,
+        private authService: AuthService,
+        private healthService: HealthService,
     ) {
         this.allowedFiles = environment.allowedFiles;
         this.hint = `Поддерживаемые файлы: ${this.allowedFiles.join(', ')}.`;
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.userFiles = res.data.files;
+            } else {
+                console.log('error', res.error);
+            }
+        });
     }
 
     ngOnInit() { }
@@ -39,10 +50,19 @@ export class DocumentsComponent implements OnInit {
 
     uploadFiles() {
         for (const file of this.filesToUpload) {
-            this.userFiles.push(file);
+            this.healthService.uploadFile(file).subscribe(res => {
+                if (res.success) {
+                    console.log('success', res);
+                } else {
+                    console.log('error', res.error);
+                }
+            });
         }
-        this.checkUploadService.changeState(true);
-        this.filesToUpload = [];
+        // for (const file of this.filesToUpload) {
+        //     this.userFiles.push(file);
+        // }
+        // this.checkUploadService.changeState(true);
+        // this.filesToUpload = [];
     }
 
     deleteFileToUpload(file: File) {

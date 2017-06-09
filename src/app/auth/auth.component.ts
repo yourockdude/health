@@ -48,8 +48,8 @@ export class AuthComponent implements OnInit {
 
     buildSignInForm({ email = '', gId = '', vId = '', fId = '' }) {
         this.signInForm = this.formBuilder.group({
-            'email': [email, [ValidationService.emailValidator]],
-            'password': ['', [ValidationService.passwordValidator]],
+            'email': [email, [ValidationService.emailValidator, ValidationService.emptyFieldValidator]],
+            'password': ['', [ValidationService.passwordValidator, ValidationService.emptyFieldValidator]],
             'gId': [gId],
             'fId': [fId],
             'vId': [vId],
@@ -58,15 +58,17 @@ export class AuthComponent implements OnInit {
 
     buildSignUpForm({ email = '', firstName = '', lastName = '', gId = '', vId = '', fId = '' }) {
         this.signUpForm = this.formBuilder.group({
-            'email': [email, [ValidationService.emailValidator]],
-            'firstName': [firstName, [ValidationService.firstNameValidator]],
-            'lastName': [lastName],
-            'password': [''],
-            'passwordRepeat': [''],
+            'email': [email, [ValidationService.emailValidator, ValidationService.emptyFieldValidator]],
+            'firstName': [firstName, [ValidationService.firstNameValidator, ValidationService.emptyFieldValidator]],
+            'lastName': [lastName, [ValidationService.lastNameValidator, ValidationService.emptyFieldValidator]],
+            'password': ['', [ValidationService.passwordValidator, ValidationService.emptyFieldValidator]],
+            'passwordRepeat': ['', [ValidationService.emptyFieldValidator]],
             'gId': [gId],
             'fId': [fId],
             'vId': [vId],
-        });
+        }, {
+                validator: ValidationService.confirmPasswordValidator,
+            });
     }
 
     switch(state: string, social?: boolean) {
@@ -94,7 +96,6 @@ export class AuthComponent implements OnInit {
     }
 
     signIn() {
-        console.log(this.signInForm.value);
         this.authService.signIn(this.signInForm.value).subscribe(res => {
             if (res.success) {
                 this.saveTokenAndRedirect(res.data);
@@ -209,5 +210,15 @@ export class AuthComponent implements OnInit {
     saveTokenAndRedirect(token: string) {
         localStorage.setItem('token', token);
         this.router.navigate(['/sidenav']);
+    }
+
+    disabledSendingButton() {
+        if (
+            this.isSignIn && this.signInForm.valid ||
+            !this.isSignIn && this.signUpForm.valid
+        ) {
+            return false;
+        }
+        return true;
     }
 }

@@ -33,4 +33,11 @@ export class HealthService {
         return this.http.get(`${environment.api}/users`)
             .map(res => res.json());
     }
+
+    uploadFile(file: File) {
+        const body = new FormData();
+        body.append('hosp_chart', file);
+        return this.authHttp.post(`${environment.api}/files`, body)
+            .map(res => res.json());
+    }
 }

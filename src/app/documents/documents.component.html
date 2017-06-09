@@ -4,10 +4,6 @@
             (filesDroppedEvent)=getFilesFromDropzone($event)
             [hint]="hint" 
             [allowedFiles]="allowedFiles"></health-drag-n-drop>
-        <!--<div class="dropzone">
-            <input #fileUploader class="file-uploader" (change)="fileChange($event)" (click)="onFileChangeClick($event)" type="file"
-                multiple>
-        </div>-->
         <div class="dropzone-footer">
             <div class="files-to-upload">
                 <health-file-to-upload *ngFor="let file of filesToUpload" [file]="file" (deleteFileEvent)="deleteFileToUpload($event)"></health-file-to-upload>
@@ -22,7 +18,7 @@
         your's files:
         <ul>
             <li *ngFor="let file of userFiles">
-                {{file.name}}
+                {{file}}
             </li>
         </ul>
     </div>

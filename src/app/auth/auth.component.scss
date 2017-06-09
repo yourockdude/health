@@ -143,6 +143,15 @@ $br: 5px;
     font-weight: bold;
 }
 
-.error-box {
-    color: rgba(236, 78, 78, 0.65);
+.disabled {
+    background: rgba(160, 179, 176, 0.25);
+    color: rgb(160, 179, 176);
+    cursor: context-menu;
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none; 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
 }

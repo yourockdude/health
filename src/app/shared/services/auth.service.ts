@@ -20,12 +20,21 @@ export class AuthService {
     ) { }
 
     signIn(user: User) {
-        return this.http.post(`${environment.api}/auth`, user)
+        // TODO temporary
+        const newUser = {
+            username: user.email,
+            password: user.password,
+        };
+        return this.http.post(`${environment.api}/auth`, newUser)
             .map(res => res.json());
+
+        // return this.http.post(`${environment.api}/auth`, user)
+        //     .map(res => res.json());
     }
 
     signInViaSocial(user: User) {
         return this.http.post(`${environment.api}/authSocial`, user)
+            // TODO temporary
             .map(res => {
                 const flags = ['newUser', 'emailExist'];
                 const index = Math.floor(Math.random() * flags.length);
