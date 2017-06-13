@@ -1,25 +1,12 @@
-<div class="documents">
-    <div class="upload-wrapper">
-        <health-drag-n-drop 
-            (filesDroppedEvent)=getFilesFromDropzone($event)
-            [hint]="hint" 
-            [allowedFiles]="allowedFiles"></health-drag-n-drop>
-        <div class="dropzone-footer">
-            <div class="files-to-upload">
-                <health-file-to-upload *ngFor="let file of filesToUpload" [file]="file" (deleteFileEvent)="deleteFileToUpload($event)"></health-file-to-upload>
-                <button (click)="clear()" *ngIf="filesToUpload.length>0">clear</button>
-            </div>
-            <div class="upload-btn-wrapper">
-                <button class="upload-btn" (click)="uploadFiles()">upload</button>
+<div class="documents-page">
+    <div class="documents-container">
+        <div class="upload-box">
+            <health-drag-n-drop (uploadEvent)=uploadFiles($event) [hint]="hint" [allowedFiles]="allowedFiles"></health-drag-n-drop>
+        </div>
+        <div class="documents-box">
+            <div class="documents-list">
+                <health-user-file *ngFor="let file of userFiles" [file]="file"></health-user-file>
             </div>
         </div>
-    </div>
-    <div class="user-documents-wrapper">
-        your's files:
-        <ul>
-            <li *ngFor="let file of userFiles">
-                {{file}}
-            </li>
-        </ul>
     </div>
 </div>

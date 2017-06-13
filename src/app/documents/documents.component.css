@@ -1,34 +1,8 @@
-.documents {
-    height: 100%;
-    width: 100%;
-}
-
-.dropzone {
-    background-color: lightblue;
-    height: 100px;
-    width: 100%;
-}
-
-.dropzone-footer {
+.documents-box {
     display: flex;
 }
 
-.files-to-upload, .upload-btn-wrapper {
-    display: inline-block;
-    min-height: 100px;
-}
-
-.files-to-upload {
-    background-color: lightgray;
-    width: 90%;
-}
-
-.upload-btn-wrapper {
-    background-color: lightcoral;
-    width: 10%;
-}
-
-.user-documents-wrapper {
-    background-color: lightgoldenrodyellow;
-    min-height: 100px;
+.documents-list {
+    width: 95%;
+    margin: auto;
 }

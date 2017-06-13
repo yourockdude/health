@@ -1,4 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter
+} from '@angular/core';
+import { setIcon } from '../shared/utils/set-icon';
 
 @Component({
     moduleId: module.id,
@@ -9,11 +16,16 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 export class FileToUploadComponent implements OnInit {
     @Input() file: File;
+    @Input() allowed: boolean;
     @Output() deleteFileEvent = new EventEmitter();
+
+    icon;
 
     constructor() { }
 
-    ngOnInit() { }
+    ngOnInit() {
+        this.icon = setIcon(this.file.name.split('.').pop());
+    }
 
     delteFile() {
         this.deleteFileEvent.emit(this.file);

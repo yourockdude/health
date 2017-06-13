@@ -1,52 +1,134 @@
-.dropzone {
-    width: 100%;
-    height: 100%;
-    border: 1px solid transparent;
-    box-sizing: border-box;
-    text-align: center;
+.dropzone-page {
+    margin-bottom: 20px;
 }
 
-.drag-n-drop:hover {
-    opacity: 1
+.dropzone-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.wrapper {
+    display: flex;
+    height: 150px;
+    width: 100%;
+    margin: 10px auto;
+}
+
+.dropzone-box {
+    width: 65%;
+    display: flex;
+}
+
+.drag-n-drop-container {
+    margin: auto;
+    height: 80%;
+    width: 95%;
+    box-shadow: -7px 6px 20px 0px rgba(0,0,0,0.3);
+    display: flex;
 }
 
 .drag-n-drop {
-    width: 90%;
-    margin: 2% auto 2px auto;
+    width: 95%;
+    margin: auto;
     border: 2px dashed rgba(0,0,0,1);
     box-sizing: border-box;
-    min-height: 80px;
+    height: 80%;
     background-color: white;
-    display: table;
     cursor: pointer;
+    opacity: .5;
+    display: flex;
+    transition: all .5s ease;
 }
 
-.text-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-}
-
-.text-centered {
-    text-align: center;
-    font-size: 1.2em;
+.drag-n-drop:hover {
+    opacity: 1;
 }
 
 .drag-n-drop input {
     display: none;
 }
 
-/*.dropzone {
-    min-height: 100px;
-    min-width: 400px;
-    display: table;
-    width: 100%;
-    background-color: #eee;
-    border: dotted 2px #aaa;
+.text-wrapper {
+    margin: auto;
+    text-align: center;
+}
+
+.upload-text {
+    font-size: 1.2em;
+}
+
+.files-list-box {
+    width: 35%;
+    display: flex;
+}
+
+.files-list {
+    max-height: 120px;
+    width: 95%;
+    height: 80%;
+    margin: auto;
+    overflow: auto;
+    box-shadow: -7px 6px 20px 0px rgba(0,0,0,0.3);
+    padding: 0px 10px;
     box-sizing: border-box;
 }
 
+.files-list::-webkit-scrollbar {
+    width: 5px;
+}
 
+.files-list::-webkit-scrollbar-thumb{
+    background-color: #333;
+    border-radius: 10px;
+}
 
+.error-box {
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+}
 
+.error-text {
+    margin: auto auto 10px auto;
+}
 
-*/
+.invalid-files-list-box {
+   margin: auto
+}
+
+.invalid-files-list {
+    max-height: 120px;
+}
+
+.upload-button-box {
+    height: 50px;
+    width: 100%;
+    margin-bottom: 10px;
+    display: flex;
+}
+
+.upload-button {
+    margin: auto;
+    height: 100%;
+    width: 200px;
+    display: flex;
+    cursor: pointer;
+    box-shadow: -7px 6px 20px 0px rgba(0,0,0,0.3);
+}
+
+.upload-button div {
+    margin: auto;
+}
+
+.disabled {
+    cursor: context-menu;
+    opacity: 0.5;
+    transition: all .5s ease;
+    pointer-events: none;
+    user-select: none; 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none; 
+}

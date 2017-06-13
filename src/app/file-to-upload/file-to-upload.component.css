@@ -1,6 +1,26 @@
-.file-to-upload {
-    width: 100%;
+.file {
+    display: flex;
+    margin: 10px 0px;
 }
-.file-name, .file-delete-btn, .file-edit-btn {
-    display: inline-block;
+
+.file-icon {
+    width: 10%;
+    display: flex;
+}
+
+.delete-button {
+    display: flex;
+    width: 5%;
+    cursor: pointer;
+}
+
+.file-icon fa, .delete-button fa {
+    margin: auto;
+}
+
+.file-name {
+    width: 85%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }

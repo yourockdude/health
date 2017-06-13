@@ -9,7 +9,7 @@ import {
     OnDestroy,
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { CheckUploadService } from '../shared/services/check-upload.service';
+import { DragNDropService } from '../shared/services/drag-n-drop.service';
 
 @Component({
     moduleId: module.id,
@@ -19,27 +19,23 @@ import { CheckUploadService } from '../shared/services/check-upload.service';
 })
 
 export class DragNDropComponent implements OnInit, OnDestroy {
-    @Output() filesDroppedEvent = new EventEmitter();
     @Input() hint: string;
     @Input() allowedFiles: string[];
+    @Output() uploadEvent = new EventEmitter();
     @ViewChild('uploadFileInput') uploadFileInput: ElementRef;
 
-    error: string;
     forbiddenFiles: string[] = [];
     allowFilesToUpload: File[] = [];
     subscription: Subscription;
 
     constructor(
-        private checkUploadService: CheckUploadService,
+        private dragNDropService: DragNDropService,
     ) {
-        this.subscription = this.checkUploadService.upload$.subscribe(
-            res => {
-                console.log('child');
-                if (res === true) {
-                    this.error = '';
-                    this.allowFilesToUpload = [];
-                }
-            });
+        this.subscription = this.dragNDropService.observable$.subscribe(res => {
+            if (res) {
+                this.allowFilesToUpload = this.forbiddenFiles = [];
+            }
+        });
     }
 
     ngOnInit() { }
@@ -54,23 +50,27 @@ export class DragNDropComponent implements OnInit, OnDestroy {
     }
 
     filesDropped(fileList: any) {
-        this.allowFilesToUpload = [];
         this.forbiddenFiles = [];
         for (const file of fileList) {
             const fileExtension = file.name.split('.').pop();
             if (this.allowedFiles.indexOf(fileExtension) === -1) {
-                this.forbiddenFiles.push(file.name);
+                this.forbiddenFiles.push(file);
             } else {
                 this.allowFilesToUpload.push(file);
             }
         }
-        if (this.forbiddenFiles.length > 0) {
-            this.error = `Следующие файлы нельзя загрузить: ${this.forbiddenFiles.join(', ')}`;
-        } else {
-            this.error = '';
-        }
+    }
 
-        this.filesDroppedEvent.emit(this.allowFilesToUpload);
+    deleteFileToUpload(file: File) {
+        this.allowFilesToUpload.splice(this.allowFilesToUpload.indexOf(file), 1);
+    }
+
+    upload() {
+        this.uploadEvent.emit(this.allowFilesToUpload);
+    }
+
+    disabledUploadButton() {
+        return this.allowFilesToUpload.length > 0 ? false : true;
     }
 
 }

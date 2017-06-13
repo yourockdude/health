@@ -1,4 +1,9 @@
-<div class="file-to-upload">
-    <div class="file-name">{{file?.name}}</div>
-    <button class="file-delete-btn" (click)="delteFile()">delete</button>
+<div class="file" *ngIf="file">
+    <div class="file-icon">
+        <fa [name]="icon"></fa>
+    </div>
+    <div class="file-name">{{file.name}}</div>
+    <div class="delete-button" *ngIf="allowed" (click)="delteFile()">
+        <fa [name]="'trash-o'"></fa>
+    </div>
 </div>

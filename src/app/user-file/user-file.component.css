@@ -1,0 +1,63 @@
+.file {
+    display: flex;
+    margin: 10px;
+    height: 70px;
+    box-shadow: -7px 6px 20px 0px rgba(0,0,0,0.3);
+}
+
+.file-icon {
+    width: 10%;
+    display: flex;
+}
+
+.file-icon fa {
+    margin: auto;
+}
+
+.file-name {
+    width: 80%;
+    display: flex;
+}
+
+.file-name div {
+    margin: auto;
+    width: 100%;
+    font-size: 20px;
+}
+
+.control-box {
+    width: 10%;
+    display: flex;
+    flex-direction: column;
+    transition: 0.5 all ease;
+}
+
+.delete, .rename {
+    height: 50%;
+    display: flex;
+    cursor: pointer;
+}
+
+.delete div, .rename div {
+    margin: auto;
+}
+
+.delete {
+    background: rgba(128, 0, 0, 0.5);
+}
+
+.rename {
+    background: rgba(0, 128, 0, 0.5);
+}
+
+.switch {
+    height: 100%;
+}
+
+.input-name {
+    font-size: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    outline: initial;
+    width: 50%;
+    box-sizing: border-box;
+}

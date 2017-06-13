@@ -1,12 +1,37 @@
-<div class="dropzone">
-    <div class="drag-n-drop" (click)="onUploadFileInputClick()" (filesDropped)="filesDropped($event)" healthDragNDrop>
-        <input #uploadFileInput multiple type="file" (change)="filesDropped($event.target.files)">
-        <div class="text-wrapper">
-            <div class="text-centered">
-                Загрузить файлы
+<div class="dropzone-page">
+    <div class="dropzone-continer">
+        <div class="wrapper">
+            <div class="dropzone-box">
+                <div class="drag-n-drop-container">
+                    <div class="drag-n-drop" (click)="onUploadFileInputClick()" (filesDropped)="filesDropped($event)" healthDragNDrop>
+                        <input #uploadFileInput multiple type="file" (change)="filesDropped($event.target.files)">
+                        <div class="text-wrapper">
+                            <div class="upload-text">Выбрать файлы</div>
+                            <div class="hint-text">{{hint}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="files-list-box">
+                <div class="files-list">
+                    <health-file-to-upload *ngFor="let file of allowFilesToUpload" [file]="file" [allowed]="true" (deleteFileEvent)="deleteFileToUpload($event)"></health-file-to-upload>
+                </div>
+            </div>
+        </div>
+        <div class="error-box" *ngIf="forbiddenFiles.length>0">
+            <div class="error-text">
+                Следующие файлы не могут быть загружены:
+            </div>
+            <div class="files-list-box invalid-files-list-box">
+                <div class="files-list">
+                    <health-file-to-upload *ngFor="let file of forbiddenFiles" [file]="file" [allowed]="false"></health-file-to-upload>
+                </div>
+            </div>
+        </div>
+        <div class="upload-button-box">
+            <div class="upload-button" (click)="upload()" [ngClass]="{disabled: disabledUploadButton()}">
+                <div>Загрузить</div>
             </div>
         </div>
     </div>
-    <div *ngIf="hint" class="hint">{{hint}}</div>
-    <div *ngIf="error" claas="error">{{error}}</div>
 </div>
