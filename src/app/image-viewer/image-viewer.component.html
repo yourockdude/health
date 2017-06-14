@@ -1,0 +1,27 @@
+<div class="image-viewer-container" *ngIf="show">
+    <div class="close-button" (click)="close()">
+        <fa [name]="'times'" [size]="2"></fa>
+    </div>
+    <div class="image-box" [subject]="subject" healthImageViewer>
+        <img src="https://static.devli.ru/image_proxy?url=http://i.imgur.com/7IQbWD9.png" alt="">
+    </div>
+    <div class="control-box">
+        <div class="control-panel">
+            <div class="control-button" (click)="controlAction('left')">
+                <fa [name]="'undo'" [size]="2"></fa>
+            </div>
+            <div class="control-button" (click)="controlAction('increase')">
+                <fa [name]="'plus'" [size]="2"></fa>
+            </div>
+            <div class="control-button" (click)="controlAction('initial')">
+                <fa [name]="'window-maximize'" [size]="2"></fa>
+            </div>
+            <div class="control-button" (click)="controlAction('decrease')">
+                <fa [name]="'minus'" [size]="2"></fa>
+            </div>
+            <div class="control-button" (click)="controlAction('right')">
+                <fa [name]="'repeat'" [size]="2"></fa>
+            </div>
+        </div>
+    </div>
+</div>

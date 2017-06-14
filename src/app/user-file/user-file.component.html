@@ -1,6 +1,7 @@
+<health-image-viewer [show]="view" (onCloseEvent)="close($event)"></health-image-viewer>
 <div class="file">
     <div class="file-icon">
-        <fa [name]="icon" [size]="3"></fa>
+        <fa [name]="icon" [size]="3" (click)="view = !view"></fa>
     </div>
     <div class="file-name">
         <div *ngIf="!renaming;else renameInput">

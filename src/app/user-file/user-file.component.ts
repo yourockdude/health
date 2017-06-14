@@ -15,6 +15,8 @@ export class UserFileComponent implements OnInit {
     deleting = false;
     renaming = false;
 
+    view = false;
+
     constructor() { }
 
     ngOnInit() {
@@ -53,6 +55,12 @@ export class UserFileComponent implements OnInit {
             this.deleting = false;
         } else {
             this.renaming = false;
+        }
+    }
+
+    close(event) {
+        if (event) {
+            this.view = false;
         }
     }
 }

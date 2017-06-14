@@ -22,7 +22,7 @@ import 'rxjs/add/observable/forkJoin';
 export class DocumentsComponent implements OnInit {
     @ViewChild('fileUploader') fileUploader: ElementRef;
 
-    userFiles = [];
+    userFiles = ['test'];
 
     allowedFiles: string[] = [];
     hint: string;
@@ -34,13 +34,13 @@ export class DocumentsComponent implements OnInit {
     ) {
         this.allowedFiles = environment.allowedFiles;
         this.hint = `Поддерживаемые файлы: ${this.allowedFiles.join(', ')}.`;
-        this.authService.getUser().subscribe(res => {
-            if (res.success) {
-                this.userFiles = res.data.files;
-            } else {
-                console.log('error', res.error);
-            }
-        });
+        // this.authService.getUser().subscribe(res => {
+        //     if (res.success) {
+        //         this.userFiles = res.data.files;
+        //     } else {
+        //         console.log('error', res.error);
+        //     }
+        // });
     }
 
     ngOnInit() { }
