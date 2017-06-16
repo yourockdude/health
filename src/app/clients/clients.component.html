@@ -1,6 +1,14 @@
-<div *ngIf="clients" class="clients">
-    <health-search [allItems]="clients" (itemsFoundEvent)="onItemsFound($event)"></health-search>
-    <health-client *ngFor="let client of clientsFound" [haveUnread]="isUnread(client.id)" [client]="client"
-        (showChatEvent)="showChat($event)"></health-client>
-    
+<div class="clients-page">
+    <div class="clients-container">
+        <div class="search-box">
+            <health-search [allItems]="clients" (itemsFoundEvent)="onItemsFound($event)"></health-search>
+        </div>
+        <div class="clients-box" *ngIf="clients">
+            <health-client 
+                *ngFor="let client of clientsFound" 
+                [haveUnread]="isUnread(client.id)" 
+                [client]="client"
+                (showChatEvent)="showChat($event)"></health-client>
+        </div>
+    </div>
 </div>

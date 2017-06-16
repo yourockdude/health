@@ -6,6 +6,7 @@ import { ScheduleComponent } from '../schedule/schedule.component';
 import { DocumentsComponent } from '../documents/documents.component';
 import { ProfileComponent } from '../profile/profile.component';
 import { ClientsComponent } from '../clients/clients.component';
+import { ClientPageComponent } from '../client-page/client-page.component';
 
 import { AuthGuard } from '../shared/services/auth-guard.service';
 import { RoleGuard } from '../shared/services/role-guard.service';
@@ -41,8 +42,13 @@ const routes: Routes = [
                 path: 'clients',
                 component: ClientsComponent,
                 outlet: 'sidebar',
-                canActivate: [RoleGuard],
+                // canActivate: [RoleGuard],
                 data: { roles: ['admin'] },
+            },
+            {
+                path: 'clients/:id',
+                component: ClientPageComponent,
+                outlet: 'sidebar',
             }
         ]
     },

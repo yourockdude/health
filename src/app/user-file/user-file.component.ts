@@ -1,61 +1,46 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { setIcon } from '../shared/utils/set-icon';
+import { HealthService } from 'app/shared/services/health.service';
 
 @Component({
     moduleId: module.id,
     selector: 'health-user-file',
     templateUrl: 'user-file.component.html',
-    styleUrls: ['user-file.component.css']
+    styleUrls: ['user-file.component.css'],
+    providers: [HealthService],
 })
 
 export class UserFileComponent implements OnInit {
     @Input() file: any;
 
     icon;
-    deleting = false;
-    renaming = false;
 
     view = false;
+    pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf';
+    extension;
 
-    constructor() { }
+    constructor(
+        private healthService: HealthService,
+    ) { }
 
     ngOnInit() {
-        this.icon = setIcon(this.file.split('.').pop());
+        this.extension = this.file.name.split('.').pop();
+        this.icon = setIcon(this.extension);
     }
 
     deleteFile() {
-        this.deleting = false;
+        this.healthService.deleteFile(this.file.id).subscribe(res => {
+            if (res.success) {
+                console.log(res);
+            } else {
+                console.log('error', res);
+            }
+        });
         console.log('delete', this.file);
     }
 
     renameFile() {
-        this.renaming = false;
         console.log('rename', this.file);
-    }
-
-    choiceAction(value) {
-        if (value === 'delete') {
-            this.deleting = true;
-        } else {
-            this.renaming = true;
-        }
-    }
-
-    switchControlBox() {
-        if (this.deleting) {
-            return 'delete';
-        };
-        if (this.renaming) {
-            return 'rename';
-        }
-    }
-
-    cancel(value) {
-        if (value === 'delete') {
-            this.deleting = false;
-        } else {
-            this.renaming = false;
-        }
     }
 
     close(event) {

@@ -1,4 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter,
+    ElementRef,
+    ViewChild
+} from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Client } from '../shared/models/client';
 
 @Component({
@@ -14,11 +23,23 @@ export class ClientComponent implements OnInit {
     @Input() client: Client;
     @Input() haveUnread: boolean;
 
-    constructor() { }
+    constructor(
+        private activatedRoute: ActivatedRoute,
+        private router: Router,
+    ) { }
 
     ngOnInit() { }
 
     showChat() {
         this.showChatEvent.emit(this.client);
+    }
+
+    showClient() {
+        this.router.navigate(
+            [{ outlets: { 'sidebar': ['clients', this.client.id] } }],
+            {
+                relativeTo: this.activatedRoute.parent,
+            }
+        );
     }
 }

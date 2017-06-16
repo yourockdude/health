@@ -9,14 +9,15 @@ import {
 @Component({
     moduleId: module.id,
     selector: 'health-search',
-    templateUrl: 'search.component.html'
+    templateUrl: 'search.component.html',
+    styleUrls: ['search.component.css']
 })
 
 export class SearchComponent implements OnInit {
     @Input() allItems: any[];
     @Output() itemsFoundEvent = new EventEmitter();
 
-    query: string;
+    query = '';
 
     constructor() { }
 
@@ -28,6 +29,10 @@ export class SearchComponent implements OnInit {
     }
 
     onKeyUp() {
-        this.itemsFoundEvent.emit(this.allItems.filter(f => f.name.toLowerCase().includes(this.query.toLowerCase())));
+        this.itemsFoundEvent.emit(this.allItems.filter(f => {
+            return f.firstName.toLowerCase().includes(this.query.toLowerCase()) ||
+                f.lastName.toLowerCase().includes(this.query.toLowerCase()) ||
+                f.middleName.toLowerCase().includes(this.query.toLowerCase());
+        }));
     }
 }

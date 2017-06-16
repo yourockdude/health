@@ -1,54 +1,27 @@
-<health-image-viewer [show]="view" (onCloseEvent)="close($event)"></health-image-viewer>
+<health-image-viewer [show]="view" [extension]="extension" (onCloseEvent)="close($event)"></health-image-viewer>
 <div class="file">
     <div class="file-icon">
-        <fa [name]="icon" [size]="3" (click)="view = !view"></fa>
+        <fa [name]="icon" [size]="3"></fa>
     </div>
     <div class="file-name">
         <div *ngIf="!renaming;else renameInput">
-            {{file}}
+            {{file.name}}
         </div>
         <ng-template #renameInput>
             <div>
-                <input class="input-name" type="text" [(ngModel)]="file" autofocus>
+                <input class="input-name" type="text" [(ngModel)]="file.name" autofocus>
             </div>
         </ng-template>
     </div>
-    <div class="control-box" [ngSwitch]="switchControlBox()">
-        <div class="switch" *ngSwitchCase="'delete'">
-            <div class="rename" (click)="deleteFile()">
-                <div>
-                    <fa [name]="'check'"></fa>
-                </div>
-            </div>
-            <div class="delete" (click)="cancel('delete')">
-                <div>
-                    <fa [name]="'ban'"></fa>
-                </div>
-            </div>
+    <div class="control-box">
+        <div class="control-button" (click)="view = !view">
+            <fa [name]="'eye'"></fa>
         </div>
-        <div class="switch" *ngSwitchCase="'rename'">
-            <div class="rename" (click)="renameFile()">
-                <div>
-                    <fa [name]="'check'"></fa>
-                </div>
-            </div>
-            <div class="delete" (click)="cancel('rename')">
-                <div>
-                    <fa [name]="'ban'"></fa>
-                </div>
-            </div>
+        <div class="control-button" (click)="deleteFile()">
+            <fa [name]="'trash'"></fa>
         </div>
-        <div class="switch" *ngSwitchDefault>
-            <div class="rename" (click)="choiceAction('rename')">
-                <div>
-                    Переименовать
-                </div>
-            </div>
-            <div class="delete" (click)="choiceAction('delete')">
-                <div>
-                    Удалить
-                </div>
-            </div>
+        <div class="control-button" (click)="renameFile()">
+            <fa [name]="'pencil'" ></fa>
         </div>
     </div>
 </div>

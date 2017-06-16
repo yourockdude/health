@@ -1,8 +1,33 @@
 <div class="client">
+    <div class="photo-box">
+        <img src="assets/images/profile.jpg" alt="">
+    </div>
+    <div class="info-box">
+        <div class="info">
+            <div>{{client.firstName}}</div>
+            <div>{{client.lastName}}</div>
+            <div>{{client.middleName}}</div>
+        </div>
+    </div>
+    <div class="control-box">
+        <div class="control-button" (click)="showClient()">
+            <fa [name]="'eye'"></fa>
+        </div>
+        <div class="control-button">
+            <fa [name]="'trash'"></fa>
+        </div>
+        <div class="control-button">
+            <fa [name]="'envelope-o'"></fa>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="client">
     <div class="client-name">{{client.name}}</div>
     <div class="client-info">info</div>
     <div class="client-toolbar">
         <button [ngClass]="{'unread-message': haveUnread}" #chatButton (click)="showChat()">chat</button>
         <button>delete</button>
     </div>
-</div>
+</div>-->

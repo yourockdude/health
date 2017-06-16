@@ -16,13 +16,13 @@ import 'rxjs/add/observable/forkJoin';
     selector: 'health-documents',
     templateUrl: 'documents.component.html',
     styleUrls: ['documents.component.css'],
-    providers: [HealthService, DragNDropService]
+    providers: [HealthService, DragNDropService],
 })
 
 export class DocumentsComponent implements OnInit {
     @ViewChild('fileUploader') fileUploader: ElementRef;
 
-    userFiles = ['test'];
+    userFiles = [];
 
     allowedFiles: string[] = [];
     hint: string;
@@ -34,13 +34,14 @@ export class DocumentsComponent implements OnInit {
     ) {
         this.allowedFiles = environment.allowedFiles;
         this.hint = `Поддерживаемые файлы: ${this.allowedFiles.join(', ')}.`;
-        // this.authService.getUser().subscribe(res => {
-        //     if (res.success) {
-        //         this.userFiles = res.data.files;
-        //     } else {
-        //         console.log('error', res.error);
-        //     }
-        // });
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.userFiles = res.data.files;
+                console.log(this.userFiles);
+            } else {
+                console.log('error', res.error);
+            }
+        });
     }
 
     ngOnInit() { }
@@ -57,5 +58,15 @@ export class DocumentsComponent implements OnInit {
                 this.dragNDropService.change(true);
                 console.log('finished');
             });
+    }
+
+    uploadFilesArray(files) {
+        this.healthService.uploadFiles(files).subscribe(res => {
+            if (res.success) {
+                console.log(res);
+            } else {
+                console.log('error', res);
+            }
+        });
     }
 }

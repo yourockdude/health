@@ -120,7 +120,7 @@ textarea::-webkit-scrollbar,
 
 textarea::-webkit-scrollbar-thumb,
 .body::-webkit-scrollbar-thumb,
- .users-list::-webkit-scrollbar-thumb{
+.users-list::-webkit-scrollbar-thumb{
     background-color: #333;
     border-radius: 10px;
 }

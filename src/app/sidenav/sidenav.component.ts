@@ -22,7 +22,7 @@ export class SidenavComponent implements OnInit {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.user = res.data;
-                this.isAdmin = this.user.userGroup === 0 ? true : false;
+                this.isAdmin = this.user.role === 0 ? true : false;
             }
         });
     }

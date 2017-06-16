@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Http, Response, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CalendarEvent } from 'angular-calendar';
 import 'rxjs/add/operator/map';
@@ -30,7 +30,12 @@ export class HealthService {
     }
 
     getClients() {
-        return this.http.get(`${environment.api}/users`)
+        return this.authHttp.get(`${environment.api}/users`)
+            .map(res => res.json());
+    }
+
+    getClientById(id) {
+        return this.authHttp.get(`${environment.api}/users/${id}`)
             .map(res => res.json());
     }
 
@@ -38,6 +43,19 @@ export class HealthService {
         const body = new FormData();
         body.append('hosp_chart', file);
         return this.authHttp.post(`${environment.api}/files`, body)
+            .map(res => res.json());
+    }
+
+    uploadFiles(files) {
+        const body = new FormData();
+        body.append('hosp_chart', JSON.stringify(files));
+        return this.authHttp.post(`${environment.api}/files`, body)
+            .map(res => res.json());
+    }
+
+    deleteFile(id) {
+        const body = { fid: id };
+        return this.authHttp.delete(`${environment.api}/files`, new RequestOptions({ body: body }))
             .map(res => res.json());
     }
 }

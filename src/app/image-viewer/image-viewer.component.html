@@ -2,8 +2,19 @@
     <div class="close-button" (click)="close()">
         <fa [name]="'times'" [size]="2"></fa>
     </div>
-    <div class="image-box" [subject]="subject" healthImageViewer>
+    <div class="image-box" *ngIf="!isPdf()" [subject]="subject" healthImageViewer>
         <img src="https://static.devli.ru/image_proxy?url=http://i.imgur.com/7IQbWD9.png" alt="">
+    </div>
+    <div class="pdf-box" *ngIf="isPdf()" healthPdfViewer>
+        <div *ngIf="!isLoaded" class="loading-pdf">Загрузка pdf</div>
+        <pdf-viewer 
+            [show-all]="true" 
+            [src]="pdfSrc" 
+            [rotation] = "rotation"
+            [zoom] = "zoom"
+            [render-text]="false"
+            (after-load-complete)="pdfLoaded()"
+            [original-size]="originalSize"></pdf-viewer>
     </div>
     <div class="control-box">
         <div class="control-panel">

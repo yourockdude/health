@@ -6,6 +6,11 @@
     top: 0;
     bottom: 0;
     display: flex;
+    user-select: none; 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
 }
 
 .image-box {
@@ -13,6 +18,11 @@
     width: auto;
     position: relative;
     cursor: -webkit-grab;
+    user-select: none; 
+    -webkit-touch-callout: none; 
+    -webkit-user-select: none; 
+    -moz-user-select: none; 
+    -ms-user-select: none;
 }
 
 .image-box img {
@@ -23,6 +33,27 @@
     -webkit-user-select: none; 
     -moz-user-select: none; 
     -ms-user-select: none;
+}
+
+.pdf-box {
+    margin: 0 auto;
+    overflow-y: scroll;
+    overflow-x: hidden
+}
+
+.pdf-box::-webkit-scrollbar {
+    width: 50px;
+}
+
+.pdf-box::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, 0.3);
+    background-clip: padding-box;
+    border: transparent 12px solid;
+    min-height: 70px;
+}
+
+.pdf-box::-webkit-scrollbar-thumb:hover{
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 .close-button {
@@ -62,4 +93,8 @@
 .control-button:hover {
     cursor: pointer;
     color: rgba(0, 0, 0, 0.8)
+}
+
+.loading-pdf {
+    color: white;
 }

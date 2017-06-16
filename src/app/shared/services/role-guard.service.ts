@@ -12,7 +12,7 @@ export class RoleGuard implements CanActivate {
     ) {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
-                this.role = res.data.userGroup === 0 ? 'admin' : 'user';
+                this.role = res.data.role === 0 ? 'admin' : 'user';
             } else {
                 console.log('error');
             }

@@ -19,9 +19,15 @@ export class ImageViewerDirective implements OnInit, AfterViewInit {
     topStart = 0;
     leftStart = 0;
     md: boolean;
-    initial;
+    initialHeight;
+    initialPosition;
+    containerHeight;
+    containerWidth;
 
-    constructor(private element: ElementRef) { }
+    constructor(private element: ElementRef) {
+        document.body.style.userSelect = 'none';
+        document.body.style.overflow = 'hidden';
+    }
 
     ngOnInit() {
         this.subject.asObservable().subscribe(res => {
@@ -43,12 +49,17 @@ export class ImageViewerDirective implements OnInit, AfterViewInit {
                     break;
             }
         });
-        this.height = `${this.element.nativeElement.parentElement.clientHeight * 0.8}px`;
-        this.initial = `${this.element.nativeElement.parentElement.clientHeight * 0.8}px`;
+        this.containerHeight = this.element.nativeElement.parentElement.clientHeight;
+        this.containerWidth = this.element.nativeElement.parentElement.clientWidth;
+        this.height = `${this.containerHeight * 0.8}px`;
+        this.initialHeight = `${this.containerHeight * 0.8}px`;
+        this.initialPosition = {
+            top: this.element.nativeElement.style.top.replace('px', ''),
+            left: this.element.nativeElement.style.left.replace('px', '')
+        };
     }
 
-    ngAfterViewInit(): void {
-    }
+    ngAfterViewInit(): void { }
 
     @HostListener('mousedown', ['$event'])
     onMouseDown(event: MouseEvent) {
@@ -72,6 +83,12 @@ export class ImageViewerDirective implements OnInit, AfterViewInit {
             this.element.nativeElement.style.top = (event.clientY - this.topStart) + 'px';
             this.element.nativeElement.style.left = (event.clientX - this.leftStart) + 'px';
         }
+    }
+
+    @HostListener('mouseleave', ['$event'])
+    onMouseLeave(event) {
+        console.log('leave');
+        this.md = false;
     }
 
     @HostListener('touchstart', ['$event'])
@@ -125,7 +142,9 @@ export class ImageViewerDirective implements OnInit, AfterViewInit {
     }
 
     getInitialSize() {
-        this.height = this.initial;
+        this.height = this.initialHeight;
+        this.element.nativeElement.style.top = this.initialPosition.top;
+        this.element.nativeElement.style.left = this.initialPosition.left;
     }
 
     increaseSize() {
