@@ -18,7 +18,7 @@ export class ClientPageComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
     ) {
         const id = this.activatedRoute.snapshot.url.map(u => u.path).pop();
-        this.healthService.getClientById(id).subscribe(res => {
+        this.healthService.getUsersById(id).subscribe(res => {
             if (res.success) {
                 this.client = res.data;
                 console.log(this.client);

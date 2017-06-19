@@ -4,13 +4,14 @@ import { AuthService } from '../services/auth.service';
 import { JwtHelper } from 'angular2-jwt';
 import { MessagesService } from '../services/messages.service';
 import { ReadMessageService } from '../services/read-message.service';
+import { OpenChatService } from '../services/open-chat.service';
 
 @Component({
     moduleId: module.id,
     selector: 'health-navbar',
     templateUrl: 'navbar.component.html',
     styleUrls: ['navbar.component.css'],
-    providers: [AuthService, ReadMessageService],
+    providers: [AuthService, ReadMessageService, OpenChatService],
 })
 
 export class NavbarComponent implements OnInit {
@@ -24,12 +25,17 @@ export class NavbarComponent implements OnInit {
         private authService: AuthService,
         private messagesService: MessagesService,
         private readMessageService: ReadMessageService,
+        private openChatService: OpenChatService,
     ) {
         readMessageService.chatToNavbarObservable$.subscribe(res => {
             const index = this.unreadMessages.map(u => u.fromId).indexOf(res);
             if (res && index > -1) {
                 this.unreadMessages.splice(index, 1);
             }
+        });
+
+        openChatService.observable$.subscribe(res => {
+            console.log('in navbar');
         });
 
         if (localStorage.getItem('token') !== null && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
@@ -70,9 +76,6 @@ export class NavbarComponent implements OnInit {
     }
 
     passUnreadMessages() {
-        // let unreadMessages = [];
-        // unreadMessages = this.unreadMessages.filter(u => u.toId === this.currentUser.id);
-        // return unreadMessages;
         return this.unreadMessages;
     }
 

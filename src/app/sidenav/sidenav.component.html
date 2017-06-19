@@ -2,7 +2,8 @@
     <div class="sidenav-panel">
         <div *ngIf="user" class="user-info">
             <img class="photo" src="assets/images/profile.jpg" alt="profile">
-            <div class="user-name">{{user.name}}</div>
+            <div class="user-name">{{user.username}}</div>
+            <div class="user-name"><b>{{user.role === 0 ? 'admin' : 'user'}}</b></div>
             <button class="sign-out-btn" (click)="signOut()">sign out</button>
         </div>
         <div class="navigation">
@@ -10,7 +11,7 @@
                 <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
                 <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
                 <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
-                <li *ngIf="isAdmin"><a (click)="onItemClick($event, 'clients')">Клиенты</a></li>
+                <li><a (click)="onItemClick($event, 'clients')">{{isAdmin ? 'Клиенты' : 'Доктора'}}</a></li>
             </ul>
         </div>
     </div>

@@ -23,7 +23,7 @@ import { ReadMessageService } from '../../shared/services/read-message.service';
     providers: [HealthService],
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
-    @Input() currentUser: Client;
+    @Input() currentUser;
     @Input() messages;
     @Input() unreadMessages;
     @Output() closeEvent = new EventEmitter();
@@ -33,7 +33,6 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     chatMessages = [];
 
     isHide = false;
-    // currentUser;
 
     room;
     fromId;
@@ -45,7 +44,6 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     isShowUserBox = false;
     queryUser;
     clientsFound = [];
-    isAdmin: boolean;
 
     constructor(
         private socketService: SocketService,
@@ -55,12 +53,11 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnInit() {
-        this.isAdmin = this.currentUser.userGroup === 0 ? true : false;
-        if (this.isAdmin) {
-            this.healthService.getClients().subscribe(res => {
+        if (this.isAdmin(this.currentUser.role)) {
+            this.healthService.getUsers().subscribe(res => {
                 if (res.success) {
-                    this.clients = res.data;
-                    this.clientsFound = res.data;
+                    this.clients = res.data.filter(f => f.role === 1);
+                    this.clientsFound = res.data.filter(f => f.role === 1);
                     this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
                     if (this.unreadMessages.length > 0) {
                         this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
@@ -68,17 +65,22 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
                     } else {
                         this.interlocutor = this.clients[0];
                     }
-                    this.roll();
                 } else {
                     console.log('error: ', res.error);
                 }
             });
         } else {
-            // TODO create point for get Admin
-            this.healthService.getClients().subscribe(res => {
+            this.healthService.getUsers().subscribe(res => {
                 if (res.success) {
-                    this.interlocutor = res.data.find(c => c.userGroup === 0);
-                    this.roll();
+                    this.clients = res.data.filter(f => f.role === 0);
+                    this.clientsFound = res.data.filter(f => f.role === 0);
+                    this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
+                    if (this.unreadMessages.length > 0) {
+                        this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
+                        this.readMessageService.chatToNavbarChange(this.interlocutor.id);
+                    } else {
+                        this.interlocutor = this.clients[0];
+                    }
                 } else {
                     console.log('error', res.error);
                 }
@@ -106,11 +108,9 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
     }
 
-    // isAdmin() {
-    //     if (this.currentUser) {
-    //         return this.currentUser.userGroup === 0 ? true : false;
-    //     }
-    // }
+    isAdmin(user) {
+        return user.role === 0 ? true : false;
+    }
 
     isIncoming(msg) {
         return msg.fromId === this.currentUser.id ? false : true;
@@ -135,7 +135,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
         if (msg.fromId === this.currentUser.id) {
             return 'Вы';
         } else {
-            if (this.isAdmin) {
+            if (this.isAdmin(this.currentUser)) {
                 return 'Клиент';
             } else {
                 return 'Док';
@@ -144,7 +144,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-        if (this.isAdmin) {
+        if (this.isAdmin(this.currentUser)) {
             this.room = this.interlocutor.id;
         } else {
             this.room = this.currentUser.id;
@@ -176,9 +176,10 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     onSearchKeyUp() {
-        this.clientsFound = this.clients.filter(
-            c => c.name.toLowerCase().includes(this.queryUser.toLowerCase())
-        );
+        this.clientsFound = this.clients.filter(c => {
+            return c.firstName.toLowerCase().includes(this.queryUser.toLowerCase()) ||
+                c.lastName.toLowerCase().includes(this.queryUser.toLowerCase());
+        });
     }
 
     onTextAreaKeyUp(event) {

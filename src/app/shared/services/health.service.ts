@@ -29,13 +29,23 @@ export class HealthService {
             .map(res => res.json());
     }
 
-    getClients() {
+    getUsers() {
         return this.authHttp.get(`${environment.api}/users`)
             .map(res => res.json());
     }
 
-    getClientById(id) {
+    getUsersById(id) {
         return this.authHttp.get(`${environment.api}/users/${id}`)
+            .map(res => res.json());
+    }
+
+    getAdmins() {
+        return this.authHttp.get(`${environment.api}/admins`)
+            .map(res => res.json());
+    }
+
+    deleteUser(id) {
+        return this.authHttp.delete(`${environment.api}/users/${id}`)
             .map(res => res.json());
     }
 

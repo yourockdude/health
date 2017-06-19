@@ -8,6 +8,8 @@
                 *ngFor="let client of clientsFound" 
                 [haveUnread]="isUnread(client.id)" 
                 [client]="client"
+                [role]="role"
+                (deleteClientEvent)="deleteClient($event)"
                 (showChatEvent)="showChat($event)"></health-client>
         </div>
     </div>

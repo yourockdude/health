@@ -5,12 +5,18 @@ import { MessagesService } from './shared/services/messages.service';
 import { User } from './shared/models/user';
 import { environment } from '../environments/environment';
 import { JwtHelper } from 'angular2-jwt';
+import { HealthService } from './shared/services/health.service';
 
 @Component({
     selector: 'health-root',
     templateUrl: './app.component.html',
     styleUrls: ['./app.component.css'],
-    providers: [SocketService, AuthService, MessagesService]
+    providers: [
+        SocketService,
+        AuthService,
+        MessagesService,
+        HealthService
+    ],
 })
 export class AppComponent implements OnInit {
     currentUser;
@@ -19,6 +25,7 @@ export class AppComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
+        private healthService: HealthService,
         private socketService: SocketService,
         private messagesService: MessagesService,
     ) {
@@ -27,18 +34,30 @@ export class AppComponent implements OnInit {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.currentUser = res.data;
-                    if (this.currentUser.userGroup === 0) {
-                        this.authService.getUsers().subscribe(r => {
+                    if (this.currentUser.role === 0) {
+                        this.healthService.getUsers().subscribe(r => {
                             if (r.success) {
                                 for (const u of r.data) {
                                     if (u.id !== this.currentUser.id) {
-                                        this.socketService.enterRoom({ user: this.currentUser.name, room: u.id });
+                                        this.socketService.enterRoom({
+                                            user: this.currentUser.username,
+                                            room: `${u.id}-${this.currentUser.id}`
+                                        });
                                     }
                                 }
                             }
                         });
                     } else {
-                        this.socketService.enterRoom({ user: this.currentUser.name, room: this.currentUser.id });
+                        this.healthService.getAdmins().subscribe(r => {
+                            if (r.success) {
+                                for (const u of r.data) {
+                                    this.socketService.enterRoom({
+                                        user: this.currentUser.username,
+                                        room: `${this.currentUser.id}-${u.id}`
+                                    });
+                                }
+                            }
+                        });
                     }
                 }
             });

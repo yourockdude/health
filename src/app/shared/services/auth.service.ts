@@ -11,7 +11,7 @@ import { AuthHttp } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
-    authorizationPath = '/authorization';
+    authorizationPath = '/auth';
 
     constructor(
         private authHttp: AuthHttp,
@@ -57,18 +57,13 @@ export class AuthService {
 
     signOut() {
         localStorage.removeItem('token');
-        // this.router.navigate([this.authorizationPath]);
+        this.router.navigate([this.authorizationPath]);
     }
 
     getUser() {
         return this.authHttp.get(`${environment.api}/user/me`)
             .map(res => res.json());
         // return localStorage.getItem('token');
-    }
-
-    getUsers() {
-        return this.authHttp.get(`${environment.api}/users`)
-            .map(res => res.json());
     }
 
     checkToken() {

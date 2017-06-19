@@ -9,7 +9,7 @@
           <img src="assets/images/profile.jpg" alt="">
         </div>
         <div class="info-box">
-          <div class="name">{{client.name}}</div>
+          <div class="name">{{client.firstName}} {{client.lastName}}</div>
         </div>
       </div>
     </div>
@@ -20,7 +20,7 @@
         <fa [name]="'users'"></fa>
       </div>
       <div class="title-box" (click)="hide()" [ngClass]="{hide: !isAdmin}">
-        <div class="title">{{interlocutor?.name}}</div>
+        <div class="title">{{interlocutor?.firstName}} {{interlocutor?.lastName}}</div>
       </div>
       <div class="close" (click)="close()">
         <fa [name]="'times'"></fa>

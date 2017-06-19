@@ -5,18 +5,18 @@
     <div class="info-box">
         <div class="info">
             <div>{{client.firstName}}</div>
-            <div>{{client.lastName}}</div>
             <div>{{client.middleName}}</div>
+            <div>{{client.lastName}}</div>
         </div>
     </div>
     <div class="control-box">
         <div class="control-button" (click)="showClient()">
             <fa [name]="'eye'"></fa>
         </div>
-        <div class="control-button">
+        <div *ngIf="role === 0" class="control-button" (click)="deleteClient()">
             <fa [name]="'trash'"></fa>
         </div>
-        <div class="control-button">
+        <div class="control-button" (click)="openChat()">
             <fa [name]="'envelope-o'"></fa>
         </div>
     </div>
