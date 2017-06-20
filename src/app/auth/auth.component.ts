@@ -14,6 +14,7 @@ declare const VK;
     selector: 'health-auth',
     templateUrl: 'auth.component.html',
     styleUrls: ['auth.component.scss'],
+    providers: [ValidationService],
 })
 
 export class AuthComponent implements OnInit {
@@ -29,6 +30,7 @@ export class AuthComponent implements OnInit {
         private router: Router,
         private facebookService: FacebookService,
         private googleService: GoogleService,
+        private validationService: ValidationService,
     ) {
         this.buildSignInForm({});
         this.buildSignUpForm({});
@@ -58,7 +60,11 @@ export class AuthComponent implements OnInit {
 
     buildSignUpForm({ email = '', firstName = '', lastName = '', gId = '', vId = '', fId = '' }) {
         this.signUpForm = this.formBuilder.group({
-            'email': [email, [ValidationService.emailValidator, ValidationService.emptyFieldValidator]],
+            'email': [email, [
+                ValidationService.emailValidator,
+                ValidationService.emptyFieldValidator,
+                this.validationService.existEmail.bind(this.validationService)
+            ]],
             'firstName': [firstName, [ValidationService.firstNameValidator, ValidationService.emptyFieldValidator]],
             'lastName': [lastName, [ValidationService.lastNameValidator, ValidationService.emptyFieldValidator]],
             'password': ['', [ValidationService.passwordValidator, ValidationService.emptyFieldValidator]],

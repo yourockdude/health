@@ -14,8 +14,8 @@ export class AuthService {
     authorizationPath = '/auth';
 
     constructor(
-        private authHttp: AuthHttp,
         private http: Http,
+        private authHttp: AuthHttp,
         private router: Router,
     ) { }
 
@@ -64,6 +64,12 @@ export class AuthService {
         return this.authHttp.get(`${environment.api}/user/me`)
             .map(res => res.json());
         // return localStorage.getItem('token');
+    }
+
+    checkEmail(email) {
+        const body = { username: email };
+        return this.http.post(`${environment.api}/check_username`, body)
+            .map(res => res.json());
     }
 
     checkToken() {
