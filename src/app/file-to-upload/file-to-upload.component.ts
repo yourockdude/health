@@ -19,7 +19,7 @@ export class FileToUploadComponent implements OnInit {
     @Input() allowed: boolean;
     @Output() deleteFileEvent = new EventEmitter();
 
-    icon;
+    icon: string;
 
     constructor() { }
 

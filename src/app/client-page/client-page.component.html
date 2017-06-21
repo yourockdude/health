@@ -35,7 +35,7 @@
             </div>
             <div class="control-box">
                 <div class="control">
-                    <div class="control-button">
+                    <div class="control-button" *ngIf="this.role === 0">
                         <div>Удалить</div>
                     </div>
                     <div class="control-button">
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div class="files-box">
+        <div class="files-box" *ngIf="showFileBox()">
             <div class="title">Файлы пользователя</div>
             <div class="files">
                 <health-user-file *ngFor="let file of client.files" [file]="file"></health-user-file>

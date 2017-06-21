@@ -30,10 +30,6 @@ export class SidenavComponent implements OnInit {
     ngOnInit() { }
 
     onItemClick(e: MouseEvent, part: string) {
-        // if (part === '') {
-        //     this.router.navigateByUrl('');
-        // }
-        // console.log(this.activatedRoute);
         this.router.navigate(
             [{ outlets: { 'sidebar': [part] } }],
             {

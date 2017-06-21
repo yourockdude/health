@@ -91,6 +91,7 @@
     box-shadow: -3px 2px 6px 0px rgba(0, 0, 0, 0.2);
     cursor: pointer;
     height: 30px;
+    margin: auto;
 }
 
 .control-button div {
@@ -103,4 +104,10 @@
 
 .control-button:active {
     box-shadow: -3px 2px 6px 0px rgba(0, 0, 0, 0.2);
+}
+
+.title {
+    font-weight: bold;
+    font-size: 25px;
+    text-align: center;
 }

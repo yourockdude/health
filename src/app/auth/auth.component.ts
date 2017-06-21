@@ -23,6 +23,7 @@ export class AuthComponent implements OnInit {
     signUpForm: FormGroup;
     info = '';
     isSocialSignUp = false;
+    currentSocialId;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -63,8 +64,9 @@ export class AuthComponent implements OnInit {
             'email': [email, [
                 ValidationService.emailValidator,
                 ValidationService.emptyFieldValidator,
+            ],
                 this.validationService.existEmail.bind(this.validationService)
-            ]],
+            ],
             'firstName': [firstName, [ValidationService.firstNameValidator, ValidationService.emptyFieldValidator]],
             'lastName': [lastName, [ValidationService.lastNameValidator, ValidationService.emptyFieldValidator]],
             'password': ['', [ValidationService.passwordValidator, ValidationService.emptyFieldValidator]],
@@ -102,22 +104,27 @@ export class AuthComponent implements OnInit {
     }
 
     signIn() {
-        this.authService.signIn(this.signInForm.value).subscribe(res => {
-            if (res.success) {
-                this.saveTokenAndRedirect(res.data);
-            } else {
-                console.log(res);
-            }
-        });
+        // if (this.currentSocialId) {
+        //     this.signInForm.value.append(this.currentSocialId);
+        // }
+        // console.log(this.signInForm.value);
+        // this.authService.signIn(this.signInForm.value).subscribe(res => {
+        //     if (res.success) {
+        //         this.saveTokenAndRedirect(res.data);
+        //     } else {
+        //         this.info = 'Неверный пароль';
+        //         throw new Error(JSON.stringify(res.error));
+        //     }
+        // });
     }
 
     signUp() {
-        console.log(this.signUpForm.value);
+        this.signUpForm.value.role = 1;
         this.authService.signUp(this.signUpForm.value).subscribe(res => {
             if (res.success) {
-                console.log(res.data);
+                this.saveTokenAndRedirect(res.data);
             } else {
-                console.log(res);
+                throw new Error(JSON.stringify(res.error));
             }
 
         });
@@ -155,7 +162,9 @@ export class AuthComponent implements OnInit {
                         this.signInViaSocial(user);
                     });
             })
-            .catch(err => console.log(err));
+            .catch(err => {
+                throw new Error(JSON.stringify(err));
+            });
     }
 
     signInViaGoogle() {
@@ -171,7 +180,7 @@ export class AuthComponent implements OnInit {
                 this.signInViaSocial(user);
             },
             err => {
-                console.log(err);
+                throw new Error(JSON.stringify(err));
             }
         );
     }
@@ -185,10 +194,21 @@ export class AuthComponent implements OnInit {
                 lastName: res.session.user.last_name,
             };
             this.signInViaSocial(user);
-        });
+        },
+            err => {
+                throw new Error(JSON.stringify(err));
+            }
+        );
     }
 
     signInViaSocial(user: User) {
+        const keys = ['fId', 'gId', 'vId'];
+        keys.forEach(k => {
+            if (user[k]) {
+                this.currentSocialId = { k: user[k] };
+            }
+        });
+        console.log(this.currentSocialId);
         this.authService.signInViaSocial(user).subscribe(response => {
             if (response.success) {
                 switch (response.data.flag) {
@@ -208,7 +228,7 @@ export class AuthComponent implements OnInit {
                         break;
                 }
             } else {
-                console.log('error ', response);
+                throw new Error(JSON.stringify(response.error));
             }
         });
     }
@@ -226,5 +246,9 @@ export class AuthComponent implements OnInit {
             return false;
         }
         return true;
+    }
+
+    showPassword(e) {
+        e.type = e.type === 'password' ? 'text' : 'password';
     }
 }

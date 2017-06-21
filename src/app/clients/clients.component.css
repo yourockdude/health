@@ -9,3 +9,9 @@
     width: 40%;
     min-width: 300px;
 }
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    text-align: center;
+}

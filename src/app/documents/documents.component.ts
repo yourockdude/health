@@ -37,35 +37,20 @@ export class DocumentsComponent implements OnInit {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.userFiles = res.data.files;
-                console.log(this.userFiles);
             } else {
-                console.log('error', res.error);
+                throw new Error(JSON.stringify(res.error));
             }
         });
     }
 
     ngOnInit() { }
 
-    uploadFiles(files) {
-        const observableGroup = [];
-        for (const file of files) {
-            observableGroup.push(this.healthService.uploadFile(file));
-        }
-        Observable.forkJoin(observableGroup).subscribe(
-            res => console.log(res),
-            err => console.log(err),
-            () => {
-                this.dragNDropService.change(true);
-                console.log('finished');
-            });
-    }
-
     uploadFilesArray(files) {
         this.healthService.uploadFiles(files).subscribe(res => {
             if (res.success) {
-                console.log(res);
+                this.dragNDropService.change(true);
             } else {
-                console.log('error', res);
+                throw new Error(JSON.stringify(res.error));
             }
         });
     }

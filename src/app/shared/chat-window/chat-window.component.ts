@@ -8,7 +8,7 @@ import {
     ElementRef,
     OnDestroy
 } from '@angular/core';
-import { Client } from '../../shared/models/client';
+import { User } from '../../shared/models/user';
 import { environment } from '../../../environments/environment';
 
 import { SocketService } from '../../shared/services/socket.service';
@@ -23,7 +23,7 @@ import { ReadMessageService } from '../../shared/services/read-message.service';
     providers: [HealthService],
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
-    @Input() currentUser;
+    @Input() currentUser: User;
     @Input() messages;
     @Input() unreadMessages;
     @Output() closeEvent = new EventEmitter();

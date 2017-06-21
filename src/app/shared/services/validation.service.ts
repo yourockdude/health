@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AbstractControl } from '@angular/forms/forms';
 import { AuthService } from './auth.service';
-import { Http } from '@angular/http';
 import { environment } from '../../../environments/environment';
-import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class ValidationService {
@@ -11,8 +9,9 @@ export class ValidationService {
     static getValidatorErrorMessage(validatorName: string): string {
         const config = {
             'invalidEmailAddress': 'Неправильный формат почты',
-            // tslint:disable-next-line:max-line-length
-            'invalidPassword': 'Пароль должен содержать как минимум одну цифру, одну маленькую букву, одну большую букву и быть длиной не менее 8 символов',
+            'invalidPassword': `Пароль должен содержать как минимум одну цифру, 
+                                одну маленькую букву, одну большую букву и быть 
+                                длиной не менее 8 символов`,
             'invalidFirstName': 'Фамилия должна содержать только буквы',
             'invalidLastName': 'Имя должно содержать только буквы',
             'emptyField': '*Обязательное поле',
@@ -116,37 +115,18 @@ export class ValidationService {
         }
     }
 
-    // static existUserValidator(authService: AuthService) {
-    //     return (control) => {
-    //         return console.log(control);
-    //         // authService.checkEmail(control).subscribe(res => console.log(res));
-    //     };
-    //     // TODO сделать на сервере отдельный endpoint
-    // }
-    // static existEmail2(control) {
-    //     let http: Http;
-    //     http.post(`${environment.api}/check_username`, { username: control.value })
-    //         .map(res => res.json())
-    //         .subscribe(r => console.log(r));
-    // }
-
-    constructor(private authService: AuthService, private http: Http) { };
+    constructor(private authService: AuthService) { };
 
     existEmail(control) {
-        const obs = this.http.post(`${environment.api}/check_username`, { username: control.value })
-            .map(res => res.json());
         return new Promise(resolve => {
-            obs.subscribe(r => {
+            this.authService.checkEmail(control.value).subscribe(r => {
                 if (r.success) {
-                    console.log('invalid')
                     resolve({ userExist: true });
                 } else {
-                    console.log('valid')
                     resolve(null);
                 }
             });
         });
-
     }
 
 }

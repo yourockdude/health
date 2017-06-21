@@ -1,9 +1,20 @@
 <div class="clients-page">
     <div class="clients-container">
         <div class="search-box">
-            <health-search [allItems]="clients" (itemsFoundEvent)="onItemsFound($event)"></health-search>
+            <health-search [allItems]="allUsers" (itemsFoundEvent)="onItemsFound($event)"></health-search>
         </div>
-        <div class="clients-box" *ngIf="clients">
+        <div class="clients-box" *ngIf="adminsFound.length > 0">
+            <div class="title">Доктора</div>
+            <health-client 
+                *ngFor="let admin of adminsFound" 
+                [haveUnread]="isUnread(admin.id)" 
+                [client]="admin"
+                [role]="role"
+                (deleteClientEvent)="deleteClient($event)"
+                (showChatEvent)="showChat($event)"></health-client>
+        </div>
+        <div class="clients-box" *ngIf="clientsFound.length > 0">
+            <div class="title">Клиенты</div>
             <health-client 
                 *ngFor="let client of clientsFound" 
                 [haveUnread]="isUnread(client.id)" 

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { toggleLoader } from '../shared/utils/toggle-loader';
+import { User } from "app/shared/models/user";
 
 const colors: any = {
     red: {
@@ -53,7 +54,7 @@ export class ScheduleComponent implements OnInit {
         end: '18:00'
     };
     validTime = false;
-    username: string;
+    user: User;
 
     selectedDay: CalendarMonthViewDay;
     selectDay: (day: CalendarMonthViewDay) => void;
@@ -65,10 +66,9 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
-        // toggleLoader(true, 'main-router', 'loader');
         this.authService.getUser().subscribe(res => {
             if (res.success) {
-                this.username = res.data.name;
+                this.user = res.data;
             }
         });
         this.selectDay = (day: CalendarMonthViewDay): void => {
@@ -108,7 +108,6 @@ export class ScheduleComponent implements OnInit {
                 this.events.sort((a, b) => {
                     return a.start.getTime() - b.start.getTime();
                 });
-                // toggleLoader(false, 'main-router', 'loader');
             } else {
                 console.log(res);
             }
@@ -125,7 +124,7 @@ export class ScheduleComponent implements OnInit {
     addEvent() {
         this.payed = false;
         const event = {
-            title: this.username,
+            title: `${this.user.firstName} ${this.user.lastName}`,
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
             color: colors.red,

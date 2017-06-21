@@ -1,22 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { Client } from '../models/client';
 import { AuthService } from '../services/auth.service';
 import { JwtHelper } from 'angular2-jwt';
 import { MessagesService } from '../services/messages.service';
 import { ReadMessageService } from '../services/read-message.service';
 import { OpenChatService } from '../services/open-chat.service';
+import { User } from '../models/user';
 
 @Component({
     moduleId: module.id,
     selector: 'health-navbar',
     templateUrl: 'navbar.component.html',
     styleUrls: ['navbar.component.css'],
-    providers: [AuthService, ReadMessageService, OpenChatService],
+    providers: [
+        AuthService,
+        ReadMessageService,
+        OpenChatService
+    ],
 })
 
 export class NavbarComponent implements OnInit {
     isOpen = false;
-    currentUser: Client;
+    currentUser: User;
     jwtHelper = new JwtHelper();
     messages = [];
     unreadMessages = [];
@@ -43,7 +47,7 @@ export class NavbarComponent implements OnInit {
                 if (res.success) {
                     this.currentUser = res.data;
                 } else {
-                    console.log('error');
+                    throw new Error(JSON.stringify(res.error));
                 }
             });
         }

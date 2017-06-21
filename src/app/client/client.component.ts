@@ -8,8 +8,8 @@ import {
     ViewChild
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Client } from '../shared/models/client';
 import { OpenChatService } from '../shared/services/open-chat.service';
+import { User } from '../shared/models/user';
 
 @Component({
     moduleId: module.id,
@@ -23,9 +23,9 @@ export class ClientComponent implements OnInit {
     @ViewChild('chatButton') chatButton: ElementRef;
     @Output() showChatEvent = new EventEmitter();
     @Output() deleteClientEvent = new EventEmitter();
-    @Input() client: Client;
+    @Input() client: User;
     @Input() haveUnread: boolean;
-    @Input() role;
+    @Input() role: number;
 
     constructor(
         private activatedRoute: ActivatedRoute,

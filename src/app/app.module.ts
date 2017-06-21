@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule, Http, RequestOptions } from '@angular/http';
 import { ActivatedRouteSnapshot } from '@angular/router';
@@ -18,6 +18,7 @@ import { ClientsModule } from './clients/clients.module';
 import { ClientPageModule } from './client-page/client-page.module';
 import { AuthService } from './shared/services/auth.service';
 import { RoleGuard } from './shared/services/role-guard.service';
+import { GlobalErrorHandlerService } from './shared/services/global-error-handler.servie';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
@@ -59,6 +60,10 @@ export function authHttpServiceFactory(
       provide: AuthHttp,
       useFactory: authHttpServiceFactory,
       deps: [Http, RequestOptions]
+    },
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandlerService
     }
   ],
   bootstrap: [AppComponent]

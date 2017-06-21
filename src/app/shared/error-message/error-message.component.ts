@@ -14,7 +14,6 @@ export class ErrorMessagesComponent {
     constructor() { }
 
     get errorMessage() {
-        console.log(this.control)
         // tslint:disable-next-line:forin
         for (const propertyName in this.control.errors) {
             // && this.control.touched

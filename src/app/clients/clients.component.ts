@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Client } from '../shared/models/client';
 import { HealthService } from '../shared/services/health.service';
 import { SocketService } from '../shared/services/socket.service';
 import { MessagesService } from '../shared/services/messages.service';
 import { AuthService } from '../shared/services/auth.service';
+import { User } from '../shared/models/user';
 
 @Component({
     moduleId: module.id,
@@ -14,13 +14,14 @@ import { AuthService } from '../shared/services/auth.service';
 })
 
 export class ClientsComponent implements OnInit {
-    clients: any[];
-    clientsFound: any[];
+    allUsers: User[] = [];
+    clientsFound: User[] = [];
+    adminsFound: User[] = [];
     chatIsShow = false;
-    client: any;
+    client: User;
     messages = [];
     unreadId;
-    role;
+    role: number;
 
     constructor(
         private healthService: HealthService,
@@ -34,15 +35,20 @@ export class ClientsComponent implements OnInit {
                 if (this.role === 0) {
                     this.healthService.getUsers().subscribe(r => {
                         if (r.success) {
-                            this.clients = r.data;
-                            this.clientsFound = r.data;
+                            this.allUsers = r.data;
+                            this.clientsFound = r.data.filter(f => f.role === 1);
+                            this.adminsFound = r.data.filter(f => f.role === 0);
+                        } else {
+                            throw new Error(JSON.stringify(res.error));
                         }
                     });
                 } else {
                     this.healthService.getAdmins().subscribe(r => {
                         if (r.success) {
-                            this.clients = r.data;
-                            this.clientsFound = r.data;
+                            this.allUsers = r.data;
+                            this.adminsFound = r.data;
+                        } else {
+                            throw new Error(JSON.stringify(res.error));
                         }
                     });
                 }
@@ -52,14 +58,15 @@ export class ClientsComponent implements OnInit {
 
     ngOnInit() { }
 
-    showChat(client: Client) {
+    showChat(client) {
         this.client = client;
         console.log(this.messages);
         this.chatIsShow = !this.chatIsShow;
     }
 
-    onItemsFound(clients) {
-        this.clientsFound = clients;
+    onItemsFound(users) {
+        this.clientsFound = users.filter(f => f.role === 1);
+        this.adminsFound = users.filter(f => f.role === 0);
     }
 
     isUnread(id) {
@@ -75,7 +82,7 @@ export class ClientsComponent implements OnInit {
             if (res.success) {
                 this.clientsFound.splice(this.clientsFound.map(c => c.id).indexOf(id), 1);
             } else {
-                console.log('error', res);
+                throw new Error(JSON.stringify(res.error));
             }
         });
     }

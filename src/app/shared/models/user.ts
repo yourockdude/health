@@ -1,3 +1,5 @@
+import { File } from './file';
+
 export class User {
     id?: string;
     email?: string;
@@ -7,7 +9,7 @@ export class User {
     middleName?: string;
     photo?: string;
     gender?: string;
-    birth?: Date;
+    birth?: string;
     phone?: string;
     location?: string;
     role?: number;
