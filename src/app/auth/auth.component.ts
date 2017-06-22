@@ -51,7 +51,11 @@ export class AuthComponent implements OnInit {
 
     buildSignInForm({ email = '', gId = '', vId = '', fId = '' }) {
         this.signInForm = this.formBuilder.group({
-            'email': [email, [ValidationService.emailValidator, ValidationService.emptyFieldValidator]],
+            'email': [
+                email,
+                [ValidationService.emailValidator, ValidationService.emptyFieldValidator],
+                this.validationService.notExistEmail.bind(this.validationService)
+            ],
             'password': ['', [ValidationService.passwordValidator, ValidationService.emptyFieldValidator]],
             'gId': [gId],
             'fId': [fId],
@@ -61,10 +65,9 @@ export class AuthComponent implements OnInit {
 
     buildSignUpForm({ email = '', firstName = '', lastName = '', gId = '', vId = '', fId = '' }) {
         this.signUpForm = this.formBuilder.group({
-            'email': [email, [
-                ValidationService.emailValidator,
-                ValidationService.emptyFieldValidator,
-            ],
+            'email': [
+                email,
+                [ValidationService.emailValidator, ValidationService.emptyFieldValidator],
                 this.validationService.existEmail.bind(this.validationService)
             ],
             'firstName': [firstName, [ValidationService.firstNameValidator, ValidationService.emptyFieldValidator]],
@@ -104,18 +107,17 @@ export class AuthComponent implements OnInit {
     }
 
     signIn() {
-        // if (this.currentSocialId) {
-        //     this.signInForm.value.append(this.currentSocialId);
-        // }
-        // console.log(this.signInForm.value);
-        // this.authService.signIn(this.signInForm.value).subscribe(res => {
-        //     if (res.success) {
-        //         this.saveTokenAndRedirect(res.data);
-        //     } else {
-        //         this.info = 'Неверный пароль';
-        //         throw new Error(JSON.stringify(res.error));
-        //     }
-        // });
+        if (this.currentSocialId) {
+            Object.assign(this.signInForm.value, this.currentSocialId)
+        }
+        this.authService.signIn(this.signInForm.value).subscribe(res => {
+            if (res.success) {
+                this.saveTokenAndRedirect(res.data);
+            } else {
+                this.info = 'Неверный пароль';
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
     }
 
     signUp() {
@@ -170,7 +172,6 @@ export class AuthComponent implements OnInit {
     signInViaGoogle() {
         this.googleService.login('google').subscribe(
             (res: any) => {
-                console.log(res);
                 const user: User = {
                     gId: res.uid,
                     email: res.email,
@@ -187,7 +188,6 @@ export class AuthComponent implements OnInit {
 
     signInViaVkontakte() {
         VK.Auth.login((res) => {
-            console.log(res);
             const user: User = {
                 vId: res.session.user.id,
                 firstName: res.session.user.first_name,
@@ -202,13 +202,11 @@ export class AuthComponent implements OnInit {
     }
 
     signInViaSocial(user: User) {
-        const keys = ['fId', 'gId', 'vId'];
-        keys.forEach(k => {
+        ['fId', 'gId', 'vId'].forEach(k => {
             if (user[k]) {
-                this.currentSocialId = { k: user[k] };
+                this.currentSocialId = { [k]: user[k] };
             }
         });
-        console.log(this.currentSocialId);
         this.authService.signInViaSocial(user).subscribe(response => {
             if (response.success) {
                 switch (response.data.flag) {

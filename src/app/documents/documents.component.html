@@ -1,11 +1,11 @@
 <div class="documents-page">
     <div class="documents-container">
         <div class="upload-box">
-            <health-drag-n-drop (uploadEvent)=uploadFilesArray($event) [hint]="hint" [allowedFiles]="allowedFiles"></health-drag-n-drop>
+            <health-drag-n-drop (uploadEvent)=uploadFiles($event) [hint]="hint" [allowedFiles]="allowedFilesExtension"></health-drag-n-drop>
         </div>
         <div class="documents-box">
             <div class="documents-list">
-                <health-user-file *ngFor="let file of userFiles" [file]="file"></health-user-file>
+                <health-user-file *ngFor="let file of userFiles" (deleteFileEvent)="deleteFile($event)" [file]="file"></health-user-file>
             </div>
         </div>
     </div>

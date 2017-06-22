@@ -5,23 +5,23 @@
     </div>
     <div class="file-name">
         <div *ngIf="!renaming;else renameInput">
-            {{file.name}}
+            {{file.originalName}}
         </div>
         <ng-template #renameInput>
             <div>
-                <input class="input-name" type="text" [(ngModel)]="file.name" autofocus>
+                <input class="input-name" type="text" [(ngModel)]="file.originalName" autofocus>
             </div>
         </ng-template>
     </div>
     <div class="control-box">
-        <div class="control-button" (click)="view = !view">
-            <fa [name]="'eye'"></fa>
-        </div>
         <div class="control-button" (click)="deleteFile()">
             <fa [name]="'trash'"></fa>
         </div>
+        <div class="control-button" (click)="view = !view" *ngIf="viewAllowed()">
+            <fa [name]="'eye'"></fa>
+        </div>
         <div class="control-button" (click)="renameFile()">
-            <fa [name]="'pencil'" ></fa>
+            <fa [name]="'pencil'"></fa>
         </div>
     </div>
 </div>

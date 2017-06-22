@@ -17,6 +17,7 @@ export class ValidationService {
             'emptyField': '*Обязательное поле',
             'invalidConfirmPassword': 'Пароли должны совпадать',
             'userExist': 'Пользователь с такой почтой уже зарегистрирован',
+            'userNotExist': 'Пользователя с такой почтой не зарегистрирован'
         };
         return config[validatorName];
     }
@@ -124,6 +125,18 @@ export class ValidationService {
                     resolve({ userExist: true });
                 } else {
                     resolve(null);
+                }
+            });
+        });
+    }
+
+    notExistEmail(control) {
+        return new Promise(resolve => {
+            this.authService.checkEmail(control.value).subscribe(r => {
+                if (r.success) {
+                    resolve(null);
+                } else {
+                    resolve({ userNotExist: true });
                 }
             });
         });

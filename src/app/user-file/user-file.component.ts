@@ -1,6 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Input,
+    Output,
+    EventEmitter
+} from '@angular/core';
 import { setIcon } from '../shared/utils/set-icon';
-import { HealthService } from 'app/shared/services/health.service';
+import { HealthService } from '../shared/services/health.service';
+import { UserFile } from '../shared/models/user-file';
 
 @Component({
     moduleId: module.id,
@@ -11,41 +18,45 @@ import { HealthService } from 'app/shared/services/health.service';
 })
 
 export class UserFileComponent implements OnInit {
-    @Input() file: any;
+    @Input() file: UserFile;
+    @Output() deleteFileEvent = new EventEmitter();
 
-    icon;
-
+    icon: string;
     view = false;
     pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf';
-    extension;
+    extension: string;
+    allowExtensionForView = ['png', 'pdf'];
 
     constructor(
         private healthService: HealthService,
     ) { }
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.extension = this.file.name.split('.').pop();
         this.icon = setIcon(this.extension);
     }
 
-    deleteFile() {
+    deleteFile(): void {
         this.healthService.deleteFile(this.file.id).subscribe(res => {
             if (res.success) {
-                console.log(res);
+                this.deleteFileEvent.emit(this.file);
             } else {
-                console.log('error', res);
+                throw new Error(JSON.stringify(res.error));
             }
         });
-        console.log('delete', this.file);
     }
 
-    renameFile() {
+    renameFile(): void {
         console.log('rename', this.file);
     }
 
-    close(event) {
+    close(event): void {
         if (event) {
             this.view = false;
         }
+    }
+
+    viewAllowed(): boolean {
+        return this.allowExtensionForView.includes(this.extension);
     }
 }

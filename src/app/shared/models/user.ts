@@ -1,4 +1,4 @@
-import { File } from './file';
+import { UserFile } from './user-file';
 
 export class User {
     id?: string;
@@ -13,7 +13,7 @@ export class User {
     phone?: string;
     location?: string;
     role?: number;
-    files?: File[];
+    files?: UserFile[];
     fId?: string;
     vId?: string;
     gId?: string;

@@ -2,14 +2,12 @@ import { Injectable } from '@angular/core';
 import { Http, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { CalendarEvent } from 'angular-calendar';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/catch';
+import 'rxjs/Rx';
 import { environment } from '../../../environments/environment';
 import { AuthHttp } from 'angular2-jwt';
 
 import { User } from '../models/user';
-import { Error } from '../models/error';
-import { Response } from '../models/response';
+import { CustomResponse } from '../models/custom-response';
 import { Event } from '../models/event';
 
 @Injectable()
@@ -19,49 +17,49 @@ export class HealthService {
         private authHttp: AuthHttp,
     ) { }
 
-    getEvents(): Observable<Response> {
+    getEvents(): Observable<CustomResponse> {
         return this.authHttp.get(`${environment.api}/events`)
             .map(res => res.json());
     }
 
-    addEvent(event: Event): Observable<Response> {
+    addEvent(event: Event): Observable<CustomResponse> {
         return this.authHttp.post(`${environment.api}/events`, event)
             .map(res => res.json());
     }
 
-    deleteEvent(id: string): Observable<Response> {
+    deleteEvent(id: string): Observable<CustomResponse> {
         return this.http.delete(`${environment.api}/events/${id}`)
             .map(res => res.json());
     }
 
-    getUsers(): Observable<Response> {
+    getUsers(): Observable<CustomResponse> {
         return this.authHttp.get(`${environment.api}/users`)
             .map(res => res.json());
     }
 
-    getUsersById(id: string): Observable<Response> {
+    getUsersById(id: string): Observable<CustomResponse> {
         return this.authHttp.get(`${environment.api}/users/${id}`)
             .map(res => res.json());
     }
 
-    getAdmins(): Observable<Response> {
+    getAdmins(): Observable<CustomResponse> {
         return this.authHttp.get(`${environment.api}/users/admins`)
             .map(res => res.json());
     }
 
-    deleteUser(id: string): Observable<Response> {
+    deleteUser(id: string): Observable<CustomResponse> {
         return this.authHttp.delete(`${environment.api}/users/${id}`)
             .map(res => res.json());
     }
 
-    uploadFile(file: File): Observable<Response> {
+    uploadFile(file: File) {
         const body = new FormData();
         body.append('hosp_chart', file);
-        return this.authHttp.post(`${environment.api}/files`, body)
+        return this.authHttp.post(`${environment.api}/files`, body).debounceTime(3000)
             .map(res => res.json());
     }
 
-    uploadFiles(files: File[]): Observable<Response> {
+    uploadFiles(files: File[]): Observable<CustomResponse> {
         const body = new FormData();
         for (const file of files) {
             body.append('hosp_chart', file);
@@ -70,7 +68,7 @@ export class HealthService {
             .map(res => res.json());
     }
 
-    deleteFile(id: string): Observable<Response> {
+    deleteFile(id: number): Observable<CustomResponse> {
         const body = { fid: id };
         return this.authHttp.delete(`${environment.api}/files`, new RequestOptions({ body: body }))
             .map(res => res.json());

@@ -1,4 +1,4 @@
-<div class="profile">
+<!--<div class="profile">
     <div class="profile-wrapper">
         <div class="photo-wrapper">
             <img class="photo" src="assets/images/profile.jpg" alt="profile">
@@ -81,4 +81,100 @@
         <button (click)="save()">save</button>
         <button (click)="cancel()">cancel</button>
     </div>
-</ng-template>
+</ng-template>-->
+
+<div class="profile-page" *ngIf="user">
+    <div class="profile-container">
+        <div class="top">
+            <div class="image-box">
+                <div class="image">
+                    <img src="assets/images/profile.jpg" alt="">
+                </div>
+                <div class="upload-image">
+                    <div class="control-button">
+                        <div>Загрузить</div>
+                    </div>
+                </div>
+            </div>
+            <div class="info-box">
+                <div class="info" *ngIf="!editing;else editProfile">
+                    <div class="row">
+                        <div class="key">Фамилия</div>
+                        <div class="value">{{user.lastName}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">Имя</div>
+                        <div class="value">{{user.firstName}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">Отчество</div>
+                        <div class="value">{{user.middleName ? user.middleName : 'Не указано'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">Пол</div>
+                        <div class="value">{{user.gender ? user.gender : 'Не указан'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">День Рождения</div>
+                        <div class="value">{{user.birth ? user.birth : 'Не указан'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">Телефон</div>
+                        <div class="value">{{user.number ? user.number : 'Не указан'}}</div>
+                    </div>
+                    <div class="row">
+                        <div class="key">Адрес</div>
+                        <div class="value">{{user.location ? user.location : 'Не указан'}}</div>
+                    </div>
+                </div>
+
+                <ng-template #editProfile>
+                    <div class="info" [formGroup]="profileForm">
+                        <div class="row">
+                            <div class="key">Фамилия</div>
+                            <input type="text" formControlName="lastName" class="value">
+                        </div>
+                        <div class="row">
+                            <div class="key">Имя</div>
+                            <input type="text" formControlName="firstName" class="value">
+                        </div>
+                        <div class="row">
+                            <div class="key">Отчество</div>
+                            <input type="text" formControlName="middleName" class="value">
+                        </div>
+                        <div class="row">
+                            <div class="key">Пол</div>
+                            <div class="gender">
+                                <label><input type="radio" formControlName="gender" value="male">Ура, я мужчина</label>
+                                <label><input type="radio" formControlName="gender" value="female">Женщина</label>
+                                <label><input type="radio" formControlName="gender" value="null">Не указан</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key">День рождения</div>
+                            <div class="value">
+                                <fa [name]="'calendar'" (click)="dp.toggleCalendar()"></fa>
+                                <input type="text" formControlName="birth" ngx-mydatepicker #dp="ngx-mydatepicker" readonly (click)="dp.toggleCalendar()">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="key">Телефон</div>
+                            <input type="text" formControlName="phone" class="value">
+                        </div>
+                        <div class="row">
+                            <div class="key">Адрес</div>
+                            <input type="text" formControlName="location" class="value">
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+        <div class="bottom">
+            <div class="control-box">
+                <div class="control-button" (click)="edit()">
+                    <div>Редактировать</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
