@@ -16,7 +16,6 @@ import { User } from '../shared/models/user';
     selector: 'health-client',
     templateUrl: 'client.component.html',
     styleUrls: ['client.component.css'],
-    providers: [OpenChatService]
 })
 
 export class ClientComponent implements OnInit {
@@ -53,7 +52,7 @@ export class ClientComponent implements OnInit {
     }
 
     openChat() {
-        this.openChatService.change('test');
+        this.openChatService.change(this.client);
         console.log('open chat for ', this.client.id);
     }
 }

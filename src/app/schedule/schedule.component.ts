@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
 import { toggleLoader } from '../shared/utils/toggle-loader';
-import { User } from "app/shared/models/user";
+import { User } from '../shared/models/user';
 
 const colors: any = {
     red: {

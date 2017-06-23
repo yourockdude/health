@@ -23,7 +23,8 @@
         <health-chat-window 
             [messages]="messages"
             [unreadMessages]="passUnreadMessages()" 
-            [currentUser]="currentUser" 
+            [currentUser]="currentUser"
+            [interlocutor]="interlocutor" 
             (closeEvent)="close($event)">
         </health-chat-window>
     </div>

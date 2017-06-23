@@ -18,11 +18,11 @@ import { Subject } from 'rxjs/Subject';
 export class ImageViewerComponent implements OnInit {
     @Input() show: boolean;
     @Input() extension: string;
+    @Input() src: string;
     @Output() onCloseEvent = new EventEmitter();
     subject = new Subject<string>();
 
     // PDF config-----------
-    pdfSrc = '/assets/content/pdf.pdf';
     rotation = 0;
     zoom = 1;
     originalSize = true;

@@ -6,6 +6,7 @@
 export const environment = {
   production: false,
   api: 'http://localhost:3000/yourockhosp_api',
+  server: 'http://localhost:3000/',
   allowedFiles: [
     'pdf',
     'doc',
@@ -25,5 +26,4 @@ export const environment = {
     'last_name'
   ],
   vkontakteClientId: '6052961',
-  adminId: 5
 };

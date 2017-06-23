@@ -47,15 +47,20 @@ export class HealthService {
             .map(res => res.json());
     }
 
+    getClients(): Observable<CustomResponse> {
+        return this.authHttp.get(`${environment.api}/users/only_users`)
+            .map(res => res.json());
+    }
+
     deleteUser(id: string): Observable<CustomResponse> {
         return this.authHttp.delete(`${environment.api}/users/${id}`)
             .map(res => res.json());
     }
 
-    uploadFile(file: File) {
+    uploadFile(file: File): Observable<CustomResponse> {
         const body = new FormData();
         body.append('hosp_chart', file);
-        return this.authHttp.post(`${environment.api}/files`, body).debounceTime(3000)
+        return this.authHttp.post(`${environment.api}/files`, body)
             .map(res => res.json());
     }
 
@@ -68,9 +73,21 @@ export class HealthService {
             .map(res => res.json());
     }
 
+    renameFile(id: number, name: string): Observable<CustomResponse> {
+        return this.authHttp.put(`${environment.api}/files`, { fid: id, newName: name })
+            .map(res => res.json());
+    }
+
     deleteFile(id: number): Observable<CustomResponse> {
         const body = { fid: id };
         return this.authHttp.delete(`${environment.api}/files`, new RequestOptions({ body: body }))
+            .map(res => res.json());
+    }
+
+    uploadProfilePhoto(file: File) {
+        const body = new FormData();
+        body.append('user_photo', file);
+        return this.authHttp.post(`${environment.api}/user_photo`, body)
             .map(res => res.json());
     }
 }

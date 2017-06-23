@@ -40,6 +40,10 @@
     display: flex;
 }
 
+.upload-image input {
+    display: none;
+}
+
 .control-button {
     width: 50%;
     height: 100%;
@@ -108,10 +112,13 @@ input.value, .value input {
 
 .bottom {
     height: 50px;
+    width: 50%;
+    margin: auto;
 }
 
 .control-box {
     height: inherit;
+    display: flex;
 }
 
 .gender {

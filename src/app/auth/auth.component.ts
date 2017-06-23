@@ -108,7 +108,7 @@ export class AuthComponent implements OnInit {
 
     signIn() {
         if (this.currentSocialId) {
-            Object.assign(this.signInForm.value, this.currentSocialId)
+            Object.assign(this.signInForm.value, this.currentSocialId);
         }
         this.authService.signIn(this.signInForm.value).subscribe(res => {
             if (res.success) {

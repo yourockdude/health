@@ -88,10 +88,11 @@
         <div class="top">
             <div class="image-box">
                 <div class="image">
-                    <img src="assets/images/profile.jpg" alt="">
+                    <img src="{{src}}" alt="">
                 </div>
                 <div class="upload-image">
-                    <div class="control-button">
+                    <input #profileImage type="file" (change)="onFileChange($event.target.files[0])">
+                    <div class="control-button" (click)=choosePhoto()>
                         <div>Загрузить</div>
                     </div>
                 </div>
@@ -147,14 +148,15 @@
                             <div class="gender">
                                 <label><input type="radio" formControlName="gender" value="male">Ура, я мужчина</label>
                                 <label><input type="radio" formControlName="gender" value="female">Женщина</label>
-                                <label><input type="radio" formControlName="gender" value="null">Не указан</label>
+                                <label><input type="radio" formControlName="gender" value="">Не указан</label>
                             </div>
                         </div>
                         <div class="row">
                             <div class="key">День рождения</div>
                             <div class="value">
                                 <fa [name]="'calendar'" (click)="dp.toggleCalendar()"></fa>
-                                <input type="text" formControlName="birth" ngx-mydatepicker #dp="ngx-mydatepicker" readonly (click)="dp.toggleCalendar()">
+                                <input type="text" formControlName="birth" [options]="myDatePickerOptions" ngx-mydatepicker #dp="ngx-mydatepicker" readonly
+                                    (click)="dp.toggleCalendar()">
                             </div>
                         </div>
                         <div class="row">
@@ -170,11 +172,21 @@
             </div>
         </div>
         <div class="bottom">
-            <div class="control-box">
+            <div class="control-box" *ngIf="!editing;else editProfileControlBox">
                 <div class="control-button" (click)="edit()">
                     <div>Редактировать</div>
                 </div>
             </div>
+            <ng-template #editProfileControlBox>
+                <div class="control-box">
+                    <div class="control-button" (click)="cancel()">
+                        <div>Отмена</div>
+                    </div>
+                    <div class="control-button" (click)="save()">
+                        <div>Сохранить</div>
+                    </div>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>

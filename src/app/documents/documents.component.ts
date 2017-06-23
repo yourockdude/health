@@ -46,18 +46,20 @@ export class DocumentsComponent implements OnInit {
     ngOnInit() { }
 
     uploadFiles(files) {
-        console.log('test')
-        const observableGroup = [];
-        for (const file of files) {
-            observableGroup.push(this.healthService.uploadFile(file));
-        }
-        Observable.forkJoin(observableGroup).subscribe(
-            res => console.log(res),
-            err => console.log(err),
-            () => {
-                this.dragNDropService.change(true);
-                console.log('finished');
+        const observables = files
+            .map(f => this.healthService.uploadFile(f))
+            .map((request, i) => Observable
+                .concat(Observable.of(i).delay(i * 1000), request));
+        Observable.forkJoin(observables).subscribe(res => {
+            res.map((r: any) => {
+                if (r.success) {
+                    this.userFiles.push(r.data);
+                } else {
+                    throw new Error(JSON.stringify(r.error));
+                }
             });
+            this.dragNDropService.change(true);
+        });
     }
 
     uploadFilesArray(files: File[]): void {

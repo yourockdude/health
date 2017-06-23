@@ -8,6 +8,7 @@ import {
 import { setIcon } from '../shared/utils/set-icon';
 import { HealthService } from '../shared/services/health.service';
 import { UserFile } from '../shared/models/user-file';
+import { environment } from '../../environments/environment';
 
 @Component({
     moduleId: module.id,
@@ -23,31 +24,76 @@ export class UserFileComponent implements OnInit {
 
     icon: string;
     view = false;
-    pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf';
+    src: string;
     extension: string;
     allowExtensionForView = ['png', 'pdf'];
+    rename = false;
+    delete = false;
+    value: string;
+    originalName: string;
 
     constructor(
         private healthService: HealthService,
     ) { }
 
     ngOnInit(): void {
+        this.src = `${environment.server}${this.file.path}`;
         this.extension = this.file.name.split('.').pop();
         this.icon = setIcon(this.extension);
+        this.originalName = this.getNameWithoutExtension(this.file.originalName);
     }
 
     deleteFile(): void {
-        this.healthService.deleteFile(this.file.id).subscribe(res => {
-            if (res.success) {
-                this.deleteFileEvent.emit(this.file);
-            } else {
-                throw new Error(JSON.stringify(res.error));
-            }
-        });
+        this.healthService.deleteFile(this.file.id).subscribe(
+            res => {
+                if (res.success) {
+                    this.deleteFileEvent.emit(this.file);
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            },
+            (err) => { },
+            () => { this.delete = false; });
     }
 
     renameFile(): void {
-        console.log('rename', this.file);
+        this.healthService.renameFile(this.file.id, `${this.originalName}.${this.extension}`).subscribe(
+            res => {
+                if (res.success) {
+                    this.file.originalName = `${this.originalName}.${this.extension}`;
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            },
+            (err) => { },
+            () => { this.rename = false; }
+        );
+    }
+
+    openDialog(value: string): void {
+        if (value === 'rename') {
+            this.rename = true;
+        } else {
+            this.delete = true;
+        }
+        this.value = value;
+    }
+
+    apply(): void {
+        if (this.value === 'rename') {
+            this.renameFile();
+        } else {
+            this.deleteFile();
+        }
+    }
+
+    cancel(): void {
+        if (this.value === 'rename') {
+            this.rename = false;
+            this.originalName = this.getNameWithoutExtension(this.file.originalName);
+        } else {
+            this.delete = false;
+        }
     }
 
     close(event): void {
@@ -58,5 +104,9 @@ export class UserFileComponent implements OnInit {
 
     viewAllowed(): boolean {
         return this.allowExtensionForView.includes(this.extension);
+    }
+
+    getNameWithoutExtension(name: string): string {
+        return name.substr(0, name.lastIndexOf('.')) || name;
     }
 }

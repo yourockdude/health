@@ -6,6 +6,7 @@ import { User } from './shared/models/user';
 import { environment } from '../environments/environment';
 import { JwtHelper } from 'angular2-jwt';
 import { HealthService } from './shared/services/health.service';
+import { OpenChatService } from './shared/services/open-chat.service';
 
 @Component({
     selector: 'health-root',
@@ -15,7 +16,8 @@ import { HealthService } from './shared/services/health.service';
         SocketService,
         AuthService,
         MessagesService,
-        HealthService
+        HealthService,
+        OpenChatService
     ],
 })
 export class AppComponent implements OnInit {

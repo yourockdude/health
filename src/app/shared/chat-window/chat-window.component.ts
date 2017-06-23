@@ -26,6 +26,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     @Input() currentUser: User;
     @Input() messages;
     @Input() unreadMessages;
+    @Input() interlocutor;
     @Output() closeEvent = new EventEmitter();
     @ViewChild('scrollBody') scrollBody: ElementRef;
 
@@ -37,7 +38,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     room;
     fromId;
 
-    interlocutor;
+    // interlocutor;
     clients = [];
     currentChatMessages;
 
@@ -54,35 +55,35 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         if (this.isAdmin(this.currentUser.role)) {
-            this.healthService.getUsers().subscribe(res => {
+            this.healthService.getClients().subscribe(res => {
                 if (res.success) {
-                    this.clients = res.data.filter(f => f.role === 1);
-                    this.clientsFound = res.data.filter(f => f.role === 1);
-                    this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
-                    if (this.unreadMessages.length > 0) {
+                    this.clients = res.data;
+                    this.clientsFound = res.data;
+                    if (this.interlocutor) {
+                        return;
+                    } else if (this.unreadMessages.length > 0) {
                         this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
                         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
                     } else {
                         this.interlocutor = this.clients[0];
                     }
                 } else {
-                    console.log('error: ', res.error);
+                    throw new Error(JSON.stringify(res.error));
                 }
             });
         } else {
-            this.healthService.getUsers().subscribe(res => {
+            this.healthService.getAdmins().subscribe(res => {
                 if (res.success) {
-                    this.clients = res.data.filter(f => f.role === 0);
-                    this.clientsFound = res.data.filter(f => f.role === 0);
-                    this.clients.splice(this.clients.map(c => JSON.stringify(c)).indexOf(JSON.stringify(this.currentUser)), 1);
-                    if (this.unreadMessages.length > 0) {
+                    this.clients = res.data;
+                    this.clientsFound = res.data;
+                    if (this.interlocutor) {
+                        return;
+                    } else if (this.unreadMessages.length > 0) {
                         this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
                         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
                     } else {
                         this.interlocutor = this.clients[0];
                     }
-                } else {
-                    console.log('error', res.error);
                 }
             });
         };
@@ -108,8 +109,8 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
         this.readMessageService.chatToNavbarChange(this.interlocutor.id);
     }
 
-    isAdmin(user) {
-        return user.role === 0 ? true : false;
+    isAdmin(role) {
+        return role === 0 ? true : false;
     }
 
     isIncoming(msg) {

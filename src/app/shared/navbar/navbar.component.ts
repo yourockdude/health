@@ -14,7 +14,6 @@ import { User } from '../models/user';
     providers: [
         AuthService,
         ReadMessageService,
-        OpenChatService
     ],
 })
 
@@ -24,6 +23,7 @@ export class NavbarComponent implements OnInit {
     jwtHelper = new JwtHelper();
     messages = [];
     unreadMessages = [];
+    interlocutor;
 
     constructor(
         private authService: AuthService,
@@ -39,7 +39,8 @@ export class NavbarComponent implements OnInit {
         });
 
         openChatService.observable$.subscribe(res => {
-            console.log('in navbar');
+            this.interlocutor = res;
+            this.openChat();
         });
 
         if (localStorage.getItem('token') !== null && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
