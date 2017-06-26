@@ -70,7 +70,7 @@
                 {{event.start | timeFormat}} - {{event.end | timeFormat}} : {{event.title}}
             </div>
         </div>
-        <div class="appointment-form">
+        <div class="appointment-form" *ngIf="isAuth">
             <button *ngIf="!showAppointmentForm" (click)="showAppointmentForm = !showAppointmentForm">Записаться</button>
             <div *ngIf="showAppointmentForm">
                 Укажите время:

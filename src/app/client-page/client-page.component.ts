@@ -3,23 +3,30 @@ import { HealthService } from '../shared/services/health.service';
 import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { User } from '../shared/models/user';
+import { OpenChatService } from '../shared/services/open-chat.service';
+import { environment } from "environments/environment";
 
 @Component({
     moduleId: module.id,
     selector: 'health-client-page',
     templateUrl: 'client-page.component.html',
     styleUrls: ['client-page.component.css'],
-    providers: [HealthService, AuthService],
+    providers: [
+        HealthService,
+        AuthService,
+    ],
 })
 
 export class ClientPageComponent implements OnInit {
     client: User;
     role: number;
+    src = 'assets/images/profile.jpg';
 
     constructor(
         private healthService: HealthService,
         private activatedRoute: ActivatedRoute,
         private authService: AuthService,
+        private openChatService: OpenChatService,
     ) {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
@@ -32,7 +39,7 @@ export class ClientPageComponent implements OnInit {
         this.healthService.getUsersById(id).subscribe(res => {
             if (res.success) {
                 this.client = res.data;
-                console.log(this.client);
+                this.src = `${environment.server}${this.client.photo}`;
             } else {
                 throw new Error(JSON.stringify(res.error));
             }
@@ -51,5 +58,9 @@ export class ClientPageComponent implements OnInit {
         } else {
             return false;
         }
+    }
+
+    openChat() {
+        this.openChatService.change(this.client);
     }
 }

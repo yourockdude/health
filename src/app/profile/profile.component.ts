@@ -9,6 +9,7 @@ import { HealthService } from '../shared/services/health.service';
 import { AuthService } from '../shared/services/auth.service';
 import { User } from '../shared/models/user';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
+import { environment } from 'environments/environment';
 
 
 @Component({
@@ -63,7 +64,7 @@ export class ProfileComponent implements OnInit {
             if (res.success) {
                 this.user = res.data;
                 if (this.user.photo.length > 0) {
-                    this.src = this.user.photo;
+                    this.src = `${environment.server}${this.user.photo}`;
                 }
                 this.buildProfileForm(this.user);
             } else {

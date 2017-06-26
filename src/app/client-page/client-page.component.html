@@ -9,7 +9,7 @@
             <div class="photo-info-box">
                 <div class="photo-box">
                     <div class="photo">
-                        <img src="assets/images/profile.jpg" alt="">
+                        <img src="{{src}}" alt="">
                     </div>
                 </div>
                 <div class="info-box">
@@ -19,8 +19,8 @@
                             <div class="value">{{client.phone}}</div>
                         </div>
                         <div class="row">
-                            <div class="key">Возраст</div>
-                            <div class="value">{{client.age}}</div>
+                            <div class="key">День рождения</div>
+                            <div class="value">{{client.birth}}</div>
                         </div>
                         <div class="row">
                             <div class="key">Пол</div>
@@ -38,7 +38,7 @@
                     <div class="control-button" *ngIf="this.role === 0">
                         <div>Удалить</div>
                     </div>
-                    <div class="control-button">
+                    <div class="control-button" (click)="openChat()">
                         <div>Связаться</div>
                     </div>
                 </div>

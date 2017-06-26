@@ -15,7 +15,6 @@ const routes: Routes = [
     {
         path: 'sidenav',
         component: SidenavComponent,
-        canActivate: [AuthGuard],
         children: [
             {
                 path: '',
@@ -31,23 +30,27 @@ const routes: Routes = [
             {
                 path: 'documents',
                 component: DocumentsComponent,
+                canActivate: [AuthGuard],
                 outlet: 'sidebar',
             },
             {
                 path: 'profile',
                 component: ProfileComponent,
+                canActivate: [AuthGuard],
                 outlet: 'sidebar',
             },
             {
                 path: 'clients',
                 component: ClientsComponent,
                 outlet: 'sidebar',
+                canActivate: [AuthGuard],
                 // canActivate: [RoleGuard],
                 data: { roles: ['admin'] },
             },
             {
                 path: 'clients/:id',
                 component: ClientPageComponent,
+                canActivate: [AuthGuard],
                 outlet: 'sidebar',
             }
         ]

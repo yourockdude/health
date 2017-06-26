@@ -27,7 +27,7 @@ export function authHttpServiceFactory(
   options: RequestOptions
 ) {
   return new AuthHttp(
-    new AuthConfig({ noTokenScheme: true }),
+    new AuthConfig({ noTokenScheme: true, noJwtError: true}),
     http,
     options
   );

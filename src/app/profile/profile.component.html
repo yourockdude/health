@@ -1,88 +1,3 @@
-<!--<div class="profile">
-    <div class="profile-wrapper">
-        <div class="photo-wrapper">
-            <img class="photo" src="assets/images/profile.jpg" alt="profile">
-        </div>
-        <div class="info-wrapper">
-            <div class="items" *ngIf="!editing;else editingProfile">
-                <div class="info-item">
-                    <div class="info-item-name">Фамилия:</div>
-                    <div class="info-item-value">Ололоев</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-item-name">Имя:</div>
-                    <div class="info-item-value">Ололош</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-item-name">Отчетво:</div>
-                    <div class="info-item-value">Ололошевич</div>
-                </div>
-                <hr>
-                <div class="info-item">
-                    <div class="info-item-name">Пол:</div>
-                    <div class="info-item-value">Мужской</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-item-name">Возраст:</div>
-                    <div class="info-item-value">32</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-item-name">Телефон:</div>
-                    <div class="info-item-value">+79289282828</div>
-                </div>
-                <div class="info-item">
-                    <div class="info-item-name">Откуда:</div>
-                    <div class="info-item-value">Оттуда</div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="profile-btn" *ngIf="!editing;else editingProfileButtons">
-        <button (click)="edit()">edit</button>
-    </div>
-</div>
-
-<ng-template #editingProfile>
-    <div class="items">
-        <div class="info-item">
-            <div class="info-item-name">Фамилия:</div>
-            <input class="info-item-value">
-        </div>
-        <div class="info-item">
-            <div class="info-item-name">Имя:</div>
-            <input class="info-item-value">
-        </div>
-        <div class="info-item">
-            <div class="info-item-name">Отчетво:</div>
-            <input class="info-item-value">
-        </div>
-        <hr>
-        <div class="info-item">
-            <div class="info-item-name">Пол:</div>
-            <input class="info-item-value">
-        </div>
-        <div class="info-item">
-            <div class="info-item-name">Возраст:</div>
-            <input class="info-item-value">
-        </div>
-        <div class="info-item">
-            <div class="info-item-name">Телефон:</div>
-            <input class="info-item-value">
-        </div>
-        <div class="info-item">
-            <div class="info-item-name">Откуда:</div>
-            <input class="info-item-value">
-        </div>
-    </div>
-</ng-template>
-
-<ng-template #editingProfileButtons>
-    <div class="profile-btn">
-        <button (click)="save()">save</button>
-        <button (click)="cancel()">cancel</button>
-    </div>
-</ng-template>-->
-
 <div class="profile-page" *ngIf="user">
     <div class="profile-container">
         <div class="top">
@@ -91,7 +6,7 @@
                     <img src="{{src}}" alt="">
                 </div>
                 <div class="upload-image">
-                    <input #profileImage type="file" (change)="onFileChange($event.target.files[0])">
+                    <input #profileImage accept="image/jpeg, image/png" type="file" (change)="onFileChange($event.target.files[0])">
                     <div class="control-button" (click)=choosePhoto()>
                         <div>Загрузить</div>
                     </div>

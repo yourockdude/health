@@ -5,6 +5,8 @@ import { MessagesService } from '../services/messages.service';
 import { ReadMessageService } from '../services/read-message.service';
 import { OpenChatService } from '../services/open-chat.service';
 import { User } from '../models/user';
+import { PassUserService } from '../services/pass-user.service';
+import { OpenSidenavService } from '../services/open-sidenav.service';
 
 @Component({
     moduleId: module.id,
@@ -18,6 +20,7 @@ import { User } from '../models/user';
 })
 
 export class NavbarComponent implements OnInit {
+    isOpenSidenav = true;
     isOpen = false;
     currentUser: User;
     jwtHelper = new JwtHelper();
@@ -30,6 +33,8 @@ export class NavbarComponent implements OnInit {
         private messagesService: MessagesService,
         private readMessageService: ReadMessageService,
         private openChatService: OpenChatService,
+        private openSidenavService: OpenSidenavService,
+        private passUserService: PassUserService,
     ) {
         readMessageService.chatToNavbarObservable$.subscribe(res => {
             const index = this.unreadMessages.map(u => u.fromId).indexOf(res);
@@ -43,24 +48,33 @@ export class NavbarComponent implements OnInit {
             this.openChat();
         });
 
-        if (localStorage.getItem('token') !== null && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
-            this.authService.getUser().subscribe(res => {
-                if (res.success) {
-                    this.currentUser = res.data;
-                } else {
-                    throw new Error(JSON.stringify(res.error));
-                }
-            });
+        passUserService.observable$.subscribe(res => {
+            this.getUser();
+        });
+
+        if (this.isAuth) {
+            this.getUser();
         }
     }
 
-    ngOnInit() {
+    ngOnInit(): void {
+        this.openSidenavService.change(this.isOpenSidenav);
         this.messagesService.receive$.subscribe(res => {
             if (this.currentUser.id === res.messages.toId) {
                 this.unreadMessages.push(res.messages);
             };
             this.messages.push(res.messages);
             this.readMessageService.navbarToChatChange(res.messages);
+        });
+    }
+
+    getUser(): void {
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.currentUser = res.data;
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
         });
     }
 
@@ -76,8 +90,13 @@ export class NavbarComponent implements OnInit {
         }
     }
 
-    openChat() {
+    openChat(): void {
         this.isOpen = !this.isOpen;
+    }
+
+    openSidenav(): void {
+        this.isOpenSidenav = !this.isOpenSidenav;
+        this.openSidenavService.change(this.isOpenSidenav);
     }
 
     passUnreadMessages() {
@@ -88,5 +107,12 @@ export class NavbarComponent implements OnInit {
         if (c) {
             this.isOpen = false;
         }
+    }
+
+    get isAuth() {
+        if (!this.authService.isAuth()) {
+            this.isOpen = false;
+        }
+        return this.authService.isAuth();
     }
 }

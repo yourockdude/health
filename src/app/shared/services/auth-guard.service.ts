@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    authPath = 'auth';
+    authPath = '';
 
     constructor(
         private authService: AuthService,
@@ -17,7 +17,7 @@ export class AuthGuard implements CanActivate {
 
     canActivate() {
         return Observable.create((observer: any) => {
-            const user = this.authService.checkToken();
+            const user = this.authService.isAuth();
             if (!user) {
                 observer.next(false);
                 this.router.navigate([this.authPath]);

@@ -55,6 +55,7 @@ export class ScheduleComponent implements OnInit {
     };
     validTime = false;
     user: User;
+    isAuth: boolean;
 
     selectedDay: CalendarMonthViewDay;
     selectDay: (day: CalendarMonthViewDay) => void;
@@ -66,11 +67,16 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
-        this.authService.getUser().subscribe(res => {
-            if (res.success) {
-                this.user = res.data;
-            }
-        });
+        this.isAuth = this.authService.isAuth();
+        if (this.isAuth) {
+            this.authService.getUser().subscribe(res => {
+                if (res.success) {
+                    this.user = res.data;
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            });
+        }
         this.selectDay = (day: CalendarMonthViewDay): void => {
             if (this.selectedDay && day.date.getTime() === this.selectedDay.date.getTime()) {
                 day.cssClass = 'cal-day-selected';

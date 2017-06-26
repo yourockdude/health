@@ -7,6 +7,7 @@ import { environment } from '../../environments/environment';
 import { AuthService as GoogleService } from 'angular2-social-login';
 import { User } from '../shared/models/user';
 import { ValidationService } from '../shared/services/validation.service';
+import { PassUserService } from '../shared/services/pass-user.service';
 declare const VK;
 
 @Component({
@@ -32,6 +33,7 @@ export class AuthComponent implements OnInit {
         private facebookService: FacebookService,
         private googleService: GoogleService,
         private validationService: ValidationService,
+        private passUserService: PassUserService,
     ) {
         this.buildSignInForm({});
         this.buildSignUpForm({});
@@ -233,6 +235,7 @@ export class AuthComponent implements OnInit {
 
     saveTokenAndRedirect(token: string) {
         localStorage.setItem('token', token);
+        this.passUserService.change(true);
         this.router.navigate(['/sidenav']);
     }
 

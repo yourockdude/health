@@ -7,6 +7,8 @@ import { environment } from '../environments/environment';
 import { JwtHelper } from 'angular2-jwt';
 import { HealthService } from './shared/services/health.service';
 import { OpenChatService } from './shared/services/open-chat.service';
+import { PassUserService } from './shared/services/pass-user.service';
+import { OpenSidenavService } from './shared/services/open-sidenav.service';
 
 @Component({
     selector: 'health-root',
@@ -17,7 +19,9 @@ import { OpenChatService } from './shared/services/open-chat.service';
         AuthService,
         MessagesService,
         HealthService,
-        OpenChatService
+        OpenChatService,
+        PassUserService,
+        OpenSidenavService,
     ],
 })
 export class AppComponent implements OnInit {
@@ -31,7 +35,7 @@ export class AppComponent implements OnInit {
         private socketService: SocketService,
         private messagesService: MessagesService,
     ) {
-        if (localStorage.getItem('token') !== null && !this.jwtHelper.isTokenExpired(localStorage.getItem('token'))) {
+        if (this.authService.isAuth) {
             this.socketService.connection().subscribe();
             this.authService.getUser().subscribe(res => {
                 if (res.success) {

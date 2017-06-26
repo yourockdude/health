@@ -53,6 +53,5 @@ export class ClientComponent implements OnInit {
 
     openChat() {
         this.openChatService.change(this.client);
-        console.log('open chat for ', this.client.id);
     }
 }

@@ -1,7 +1,12 @@
 <div class="header-page">
     <div class="header-container">
+        <div class="menu-box" (click)="openSidenav()" *ngIf="isAuth">
+            <div class="line1" [ngClass]="{change: isOpenSidenav}"></div>
+            <div class="line2" [ngClass]="{change: isOpenSidenav}"></div>
+            <div class="line3" [ngClass]="{change: isOpenSidenav}"></div>
+        </div>
         <div class="logo-box">
-            <div class="title">HEALTH</div>
+            <div class="title" [routerLink]="['/sidenav']">HEALTH</div>
         </div>
         <div class="link-box">
             <div class="link" [routerLink]="['/sidenav']">
@@ -10,10 +15,10 @@
             <div class="link" [routerLink]="['/prices']">
                 <div>Цены</div>
             </div>
-            <div class="link" (click)="openChat()">
+            <div class="link" (click)="openChat()" *ngIf="isAuth">
                 <div>Чат</div>
             </div>
-            <div class="link" [routerLink]="['/auth']">
+            <div class="link" [routerLink]="['/auth']" *ngIf="!isAuth">
                 <div>Войти</div>
             </div>
         </div>

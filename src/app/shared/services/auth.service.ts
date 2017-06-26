@@ -8,11 +8,12 @@ import 'rxjs/add/operator/catch';
 import { User } from '../models/user';
 import { CustomResponse } from '../models/custom-response';
 import { environment } from '../../../environments/environment';
-import { AuthHttp } from 'angular2-jwt';
+import { AuthHttp, JwtHelper, tokenNotExpired } from 'angular2-jwt';
 
 @Injectable()
 export class AuthService {
     authorizationPath = '/auth';
+    jwtHelper = new JwtHelper();
 
     constructor(
         private http: Http,
@@ -37,7 +38,7 @@ export class AuthService {
 
     signOut(): void {
         localStorage.removeItem('token');
-        this.router.navigate([this.authorizationPath]);
+        // this.router.navigate([this.authorizationPath]);
     }
 
     getUser(): Observable<CustomResponse> {
@@ -51,13 +52,13 @@ export class AuthService {
             .map(res => res.json());
     }
 
-    checkToken(): string {
-        return localStorage.getItem('token');
-    }
-
     getFbProfile(token: string, id: string): Observable<any> {
         const fields = environment.facebookFields.join(',');
         return this.http.get(`${environment.facebookApi}/me?fields=${fields}&access_token=${token}`)
             .map(res => res.json());
+    }
+
+    isAuth() {
+        return tokenNotExpired();
     }
 }

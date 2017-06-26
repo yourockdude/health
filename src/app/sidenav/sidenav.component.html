@@ -1,7 +1,7 @@
-<div class="sidenav">
-    <div class="sidenav-panel">
-        <div *ngIf="user" class="user-info">
-            <img class="photo" src="assets/images/profile.jpg" alt="profile">
+<div class="sidenav-page">
+    <div class="sidenav-panel" *ngIf="user && isOpen">
+        <div class="user-info">
+            <img class="photo" src="{{src}}" alt="profile">
             <div class="user-name">{{user.email}}</div>
             <div class="user-name">{{user.firstName}} {{user.lastName}}</div>
             <div class="user-name"><b>{{user.role === 0 ? 'admin' : 'user'}}</b></div>
@@ -9,7 +9,7 @@
         </div>
         <div class="navigation">
             <ul>
-                <li><a (click)="onItemClick($event, 'schedule')">Запись</a></li>
+                <li><a (click)="onItemClick($event, 'schedule')">Календарь</a></li>
                 <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
                 <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
                 <li><a (click)="onItemClick($event, 'clients')">{{isAdmin ? 'Пользователи' : 'Доктора'}}</a></li>
