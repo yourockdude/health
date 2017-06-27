@@ -1,0 +1,14 @@
+.event {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px auto;
+}
+
+.control {
+    display: flex;
+}
+
+.control fa {
+    margin: auto 10px;
+    cursor: pointer;
+}

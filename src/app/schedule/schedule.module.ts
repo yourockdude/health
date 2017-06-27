@@ -7,9 +7,9 @@ import { ScheduleRoutingModule } from './schedule-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { AuthGuard } from '../shared/services/auth-guard.service';
 import { CalendarHeaderComponent } from './calendar-header/calendar-header.component';
-import { TimeFormatPipe } from '../shared/pipes/time-format.pipe';
-import { DateTimeFormatPipe } from '../shared/pipes/date-time-format.pipe';
 import { TextMaskModule } from 'angular2-text-mask';
+import { EventModule } from '../event/event.module';
+import { NguiAutoCompleteModule } from '@ngui/auto-complete';
 
 @NgModule({
     imports: [
@@ -17,13 +17,13 @@ import { TextMaskModule } from 'angular2-text-mask';
         SharedModule.forRoot(),
         CalendarModule.forRoot(),
         TextMaskModule,
+        EventModule,
+        NguiAutoCompleteModule,
     ],
     exports: [],
     declarations: [
         ScheduleComponent,
         CalendarHeaderComponent,
-        TimeFormatPipe,
-        DateTimeFormatPipe,
     ],
     providers: [AuthGuard],
 })

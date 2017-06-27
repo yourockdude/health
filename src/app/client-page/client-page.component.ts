@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../shared/services/auth.service';
 import { User } from '../shared/models/user';
 import { OpenChatService } from '../shared/services/open-chat.service';
-import { environment } from "environments/environment";
+import { environment } from 'environments/environment';
 
 @Component({
     moduleId: module.id,

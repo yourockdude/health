@@ -34,15 +34,15 @@ const colors: any = {
 
 export class ScheduleComponent implements OnInit {
 
-    // --------------------------begin calendar option ------------------------
+    // --------------------------begin calendar options ------------------------
     view = 'month';
     viewDate: Date = new Date();
-    events: CalendarEvent[] = [];
+    events: any[] = [];
     clickedDate: Date;
     locale = 'ru';
     weekStartsOn = 1;
     activeDayIsOpen = false;
-    // --------------------------end calendar option --------------------------
+    // --------------------------end calendar options --------------------------
 
     showAppointmentForm = false;
     oneDayEvents: any[] = [];
@@ -55,10 +55,17 @@ export class ScheduleComponent implements OnInit {
     };
     validTime = false;
     user: User;
-    isAuth: boolean;
-
+    isAdmin: boolean;
     selectedDay: CalendarMonthViewDay;
     selectDay: (day: CalendarMonthViewDay) => void;
+
+    // --------------------------begin autocomplite options ------------------------
+    allClients: User[];
+    clientName = '';
+    listFormatter = (data) => {
+        return `test`;
+    }
+    // --------------------------end autocomplite options --------------------------
 
     constructor(
         private activatedRoute: ActivatedRoute,
@@ -67,11 +74,20 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
-        this.isAuth = this.authService.isAuth();
         if (this.isAuth) {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.user = res.data;
+                    this.isAdmin = res.data.role === 0 ? true : false;
+                    if (this.isAdmin) {
+                        this.healthService.getClients().subscribe(r => {
+                            if (r.success) {
+                                this.allClients = r.data;
+                            } else {
+                                throw new Error(JSON.stringify(r.error));
+                            }
+                        });
+                    }
                 } else {
                     throw new Error(JSON.stringify(res.error));
                 }
@@ -92,6 +108,10 @@ export class ScheduleComponent implements OnInit {
 
     ngOnInit() { }
 
+    get isAuth() {
+        return this.authService.isAuth();
+    }
+
     mask(time) {
         if (time.charAt(0) === '2') {
             return [/[0-2]/, /[0-3]/, ':', /[0-5]/, /[0-9]/];
@@ -105,6 +125,7 @@ export class ScheduleComponent implements OnInit {
             if (res.success) {
                 this.events = res.data.map(result => {
                     return {
+                        id: result.id,
                         start: new Date(result.start),
                         title: result.title,
                         end: new Date(result.end),
@@ -115,7 +136,7 @@ export class ScheduleComponent implements OnInit {
                     return a.start.getTime() - b.start.getTime();
                 });
             } else {
-                console.log(res);
+                throw new Error(JSON.stringify(res.error));
             }
         });
     }
@@ -123,34 +144,66 @@ export class ScheduleComponent implements OnInit {
     buildForm(start = '', end = '') {
         this.newAppointmentForm = this.formBuilder.group({
             'start': [start],
-            'end': [end]
+            'end': [end],
         });
     }
 
     addEvent() {
-        this.payed = false;
         const event = {
             title: `${this.user.firstName} ${this.user.lastName}`,
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
             color: colors.red,
         };
-        this.healthService.addEvent(event).subscribe(res => {
-            if (res.success) {
-                this.fetchEvents();
-                this.oneDayEvents.push({
-                    title: event.title,
-                    start: event.start,
-                    end: event.end
-                });
-                this.oneDayEvents.sort((a, b) => {
-                    return a.start.getTime() - b.start.getTime();
-                });
+        this.healthService.addEvent(event).subscribe(
+            res => {
+                if (res.success) {
+                    this.showAppointmentForm = false;
+                    // this.fetchEvents();
+                    this.events.push(res.data);
+                    this.oneDayEvents.push({
+                        id: res.data.id,
+                        title: event.title,
+                        start: event.start,
+                        end: event.end
+                    });
+                    this.oneDayEvents.sort((a, b) => {
+                        return a.start.getTime() - b.start.getTime();
+                    });
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            },
+            err => {
+                throw new Error(JSON.stringify(err));
+            },
+            () => {
                 this.buildForm();
+                this.payed = false;
+            }
+        );
+    }
+
+    delete(e) {
+        this.healthService.deleteEvent(e.id).subscribe(res => {
+            if (res.success) {
+                this.oneDayEvents.splice(this.oneDayEvents.indexOf(e), 1);
+                this.events.splice(this.events.indexOf(this.events.find(f => f.id === e.id)), 1);
             } else {
-                console.log(res);
+                throw new Error(JSON.stringify(res.error));
             }
         });
+        console.log('delete', e);
+    }
+
+    edit(e) {
+        console.log('edit', e);
+    }
+
+    cancel() {
+        this.showAppointmentForm = false;
+        this.buildForm();
+        this.payed = false;
     }
 
     combineDate(time: string, date: Date): Date {
@@ -160,10 +213,11 @@ export class ScheduleComponent implements OnInit {
         return newDate;
     }
 
-    fetchOneDayEvents(events: CalendarEvent[]) {
+    fetchOneDayEvents(events) {
         const oneDayEvents = [];
         for (const event of events) {
             oneDayEvents.push({
+                id: event.id,
                 title: event.title,
                 start: event.start,
                 end: event.end

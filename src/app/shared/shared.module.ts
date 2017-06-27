@@ -10,6 +10,8 @@ import { SearchComponent } from './search/search.component';
 import { NavbarModule } from './navbar/navbar.module';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { ErrorMessagesComponent } from './error-message/error-message.component';
+import { TimeFormatPipe } from './pipes/time-format.pipe';
+import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
 
 @NgModule({
     imports: [
@@ -25,6 +27,8 @@ import { ErrorMessagesComponent } from './error-message/error-message.component'
         FooterComponent,
         SearchComponent,
         ErrorMessagesComponent,
+        TimeFormatPipe,
+        DateTimeFormatPipe,
     ],
     exports: [
         CommonModule,
@@ -37,6 +41,8 @@ import { ErrorMessagesComponent } from './error-message/error-message.component'
         SearchComponent,
         Angular2FontawesomeModule,
         ErrorMessagesComponent,
+        TimeFormatPipe,
+        DateTimeFormatPipe,
     ]
 })
 export class SharedModule {

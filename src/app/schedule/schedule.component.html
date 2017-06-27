@@ -1,51 +1,21 @@
-<!--TODO temporary-->
-<!--<ng-template #loading>
-<div class="text-center">
-    <i class="fa fa-spin fa-spinner fa-5x"></i>
-    <br>
-    Loading events...
-</div>
-</ng-template>-->
-
 <div class="schedule">
 
-    <mwl-calendar-header 
-        [(view)]="view"
-        (viewDateChange)="selectToday($event)"
-        [(viewDate)]="viewDate">
+    <mwl-calendar-header [(view)]="view" (viewDateChange)="selectToday($event)" [(viewDate)]="viewDate">
     </mwl-calendar-header>
 
     <div [ngSwitch]="view">
         <div *ngSwitchCase="'month'">
-            <mwl-calendar-month-view 
-                [weekStartsOn]="weekStartsOn" 
-                [locale]="locale" 
-                [viewDate]="viewDate" 
-                [events]="events"
-                [activeDayIsOpen]="activeDayIsOpen"
-                [openDayEventsTemplate]="customOneDayViewTemplate"
-                [dayModifier]="selectDay"
-                (dayClicked)="dayClicked($event.day)">
+            <mwl-calendar-month-view [weekStartsOn]="weekStartsOn" [locale]="locale" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"
+                [openDayEventsTemplate]="customOneDayViewTemplate" [dayModifier]="selectDay" (dayClicked)="dayClicked($event.day)">
             </mwl-calendar-month-view>
         </div>
         <div *ngSwitchCase="'week'">
-            <mwl-calendar-week-view 
-                [weekStartsOn]="weekStartsOn" 
-                [locale]="locale" 
-                [viewDate]="viewDate" 
-                [events]="events"
-                [eventTemplate]="customWeekEventTemplate"
+            <mwl-calendar-week-view [weekStartsOn]="weekStartsOn" [locale]="locale" [viewDate]="viewDate" [events]="events" [eventTemplate]="customWeekEventTemplate"
                 (dayClicked)="clickedDate = $event.date">
             </mwl-calendar-week-view>
         </div>
         <div *ngSwitchCase="'day'">
-            <mwl-calendar-day-view 
-                [locale]="locale" 
-                [viewDate]="viewDate" 
-                [events]="events"
-                [dayStartHour]="9"
-                [dayEndHour]="18"
-                [hourSegments]="6"    
+            <mwl-calendar-day-view [locale]="locale" [viewDate]="viewDate" [events]="events" [dayStartHour]="9" [dayEndHour]="18" [hourSegments]="6"
                 (hourSegmentClicked)="onHourClick($event)">
             </mwl-calendar-day-view>
             <div>
@@ -61,43 +31,62 @@
 </ng-template>
 <!---->
 
-<!--template for One Day View-->
 <ng-template #customOneDayViewTemplate>
-    <div class="appointment">
-        <div class="events">
-            {{viewDate | dateTimeFormat}}
-            <div *ngFor="let event of oneDayEvents">
-                {{event.start | timeFormat}} - {{event.end | timeFormat}} : {{event.title}}
+    <div class="one-day-box">
+        <div class="event-box">
+            <div class="date-box">
+                <div class="date">{{viewDate | dateTimeFormat}}</div>
+            </div>
+            <div class="events-list">
+                <health-event [role]="user?.role" [event]="event" (onEditEvent)="edit($event)" (onDeleteEvent)="delete($event)" *ngFor="let event of oneDayEvents"></health-event>
             </div>
         </div>
-        <div class="appointment-form" *ngIf="isAuth">
-            <button *ngIf="!showAppointmentForm" (click)="showAppointmentForm = !showAppointmentForm">Записаться</button>
-            <div *ngIf="showAppointmentForm">
-                Укажите время:
-                <div [formGroup]="newAppointmentForm">
-                    <input 
-                        formControlName="start" 
-                        [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}" 
-                        type="text" 
-                        (focusout)="onFocusOut(true)"
-                        placeholder="00:00">
-                    <input 
-                        formControlName="end" 
-                        [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
-                        type="text"
-                        (focusout)="onFocusOut(false)"
-                        placeholder="00:00">
+        <div class="appointment-box" *ngIf="isAuth">
+            <div class="appointment" *ngIf="!showAppointmentForm;else appointment">
+                <div class="control-button" (click)="showAppointmentForm = true">
+                    <div>Запись</div>
                 </div>
-                <div>
-                    <label for="pay">Оплатить</label>
-                    <input id="pay" type="checkbox" [checked]="payed" (change)="payed = !payed">
+            </div>
+        </div>
+        <ng-template #appointment>
+            <div class="appointment">
+                <div class="clients-box" *ngIf="isAdmin">
                     <div>
-                        {{timeValidation}}
+                        Выберите клиента
+                    </div>
+                    <input 
+                        auto-complete 
+                        [list-formatter]="listFormatter"
+                        [(ngModel)]="clientName" 
+                        [source]="allClients" />
+                </div>
+                <div class="info-box" *ngIf="!isAdmin">Введите удобное для Вас время приёма</div>
+                <div class="time-box" [formGroup]="newAppointmentForm">
+                    <div class="start-time">
+                        <input type="text" formControlName="start" [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}"
+                            (focusout)="onFocusOut(true)" placeholder="00:00">
+                    </div>
+                    <div class="end-time">
+                        <input type="text" formControlName="end" [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
+                            (focusout)="onFocusOut(false)" placeholder="00:00">
                     </div>
                 </div>
-                <button (click)="addEvent();showAppointmentForm = false" [disabled]="!allowToSaveEvent">Сохранить</button>
-                <button (click)="showAppointmentForm = false">Отмена</button>
+                <div class="error-box">
+                    <div class="error">{{timeValidation}}</div>
+                </div>
+                <div class="pay-box" *ngIf="!isAdmin">
+                    <label><input type="checkbox" id="pay" [checked]="payed" (change)="payed = !payed">Оплатить</label>
+                </div>
+                <div class="info-box" *ngIf="!payed && !isAdmin">Чтобы продолжить Вам необхдимо оплатить приём</div>
+                <div class="control-box">
+                    <div class="control-button" (click)="addEvent()" [ngClass]="{disabled: !allowToSaveEvent}">
+                        <div>Записаться</div>
+                    </div>
+                    <div class="control-button" (click)="cancel()">
+                        <div>Отмена</div>
+                    </div>
+                </div>
             </div>
-        </div>
+        </ng-template>
     </div>
 </ng-template>
