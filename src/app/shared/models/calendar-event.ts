@@ -21,4 +21,5 @@ export class CalendarEvent {
         afterEnd?: boolean;
     };
     draggable?: boolean;
+    ownerId?: string;
 };

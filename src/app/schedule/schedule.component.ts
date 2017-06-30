@@ -33,6 +33,7 @@ const colors: any = {
 })
 
 export class ScheduleComponent implements OnInit {
+    clientId: string;
 
     // --------------------------begin calendar options ------------------------
     view = 'month';
@@ -58,13 +59,22 @@ export class ScheduleComponent implements OnInit {
     isAdmin: boolean;
     selectedDay: CalendarMonthViewDay;
     selectDay: (day: CalendarMonthViewDay) => void;
+    editAppointment = false;
+    editEvent;
+    reservedTime = [];
 
     // --------------------------begin autocomplite options ------------------------
     allClients: User[];
     clientName = '';
+    noMatchFoundText = 'Нет результатов';
+    matchFormatted = true;
     listFormatter = (data) => {
-        return `test`;
+        return `${data.firstName} ${data.lastName}`;
     }
+    valueFormatter = (data) => {
+        return `${data.firstName} ${data.lastName}`;
+    }
+
     // --------------------------end autocomplite options --------------------------
 
     constructor(
@@ -108,11 +118,11 @@ export class ScheduleComponent implements OnInit {
 
     ngOnInit() { }
 
-    get isAuth() {
+    get isAuth(): boolean {
         return this.authService.isAuth();
     }
 
-    mask(time) {
+    mask(time): (string | RegExp)[] {
         if (time.charAt(0) === '2') {
             return [/[0-2]/, /[0-3]/, ':', /[0-5]/, /[0-9]/];
         } else {
@@ -120,17 +130,13 @@ export class ScheduleComponent implements OnInit {
         }
     }
 
-    fetchEvents() {
+    fetchEvents(): void {
         this.healthService.getEvents().subscribe(res => {
             if (res.success) {
                 this.events = res.data.map(result => {
-                    return {
-                        id: result.id,
-                        start: new Date(result.start),
-                        title: result.title,
-                        end: new Date(result.end),
-                        color: result.color,
-                    };
+                    result.start = new Date(result.start);
+                    result.end = new Date(result.end);
+                    return result;
                 });
                 this.events.sort((a, b) => {
                     return a.start.getTime() - b.start.getTime();
@@ -141,50 +147,65 @@ export class ScheduleComponent implements OnInit {
         });
     }
 
-    buildForm(start = '', end = '') {
+    buildForm(start = '', end = ''): void {
         this.newAppointmentForm = this.formBuilder.group({
             'start': [start],
             'end': [end],
         });
     }
 
-    addEvent() {
-        const event = {
-            title: `${this.user.firstName} ${this.user.lastName}`,
-            start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
-            end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
-            color: colors.red,
-        };
-        this.healthService.addEvent(event).subscribe(
-            res => {
+    addEvent(): void {
+        if (this.isAdmin && this.editAppointment) {
+            this.editEvent.start = this.combineDate(this.newAppointmentForm.value.start, this.viewDate);
+            this.editEvent.end = this.combineDate(this.newAppointmentForm.value.end, this.viewDate);
+            this.healthService.editEvent(this.editEvent).subscribe(res => {
                 if (res.success) {
                     this.showAppointmentForm = false;
-                    // this.fetchEvents();
-                    this.events.push(res.data);
-                    this.oneDayEvents.push({
-                        id: res.data.id,
-                        title: event.title,
-                        start: event.start,
-                        end: event.end
-                    });
-                    this.oneDayEvents.sort((a, b) => {
-                        return a.start.getTime() - b.start.getTime();
-                    });
+                    console.log(res.data);
                 } else {
                     throw new Error(JSON.stringify(res.error));
                 }
-            },
-            err => {
-                throw new Error(JSON.stringify(err));
-            },
-            () => {
-                this.buildForm();
-                this.payed = false;
-            }
-        );
+            });
+        } else if (this.isAdmin) {
+            console.log('добавление админом нового события');
+        } else {
+            const event = {
+                title: `${this.user.firstName} ${this.user.lastName}`,
+                start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
+                end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
+                color: colors.red,
+            };
+            this.healthService.addEvent(event).subscribe(
+                res => {
+                    if (res.success) {
+                        this.showAppointmentForm = false;
+                        // this.fetchEvents();
+                        this.events.push(res.data);
+                        this.oneDayEvents.push({
+                            id: res.data.id,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end
+                        });
+                        this.oneDayEvents.sort((a, b) => {
+                            return a.start.getTime() - b.start.getTime();
+                        });
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                err => {
+                    throw new Error(JSON.stringify(err));
+                },
+                () => {
+                    this.buildForm();
+                    this.payed = false;
+                }
+            );
+        }
     }
 
-    delete(e) {
+    delete(e): void {
         this.healthService.deleteEvent(e.id).subscribe(res => {
             if (res.success) {
                 this.oneDayEvents.splice(this.oneDayEvents.indexOf(e), 1);
@@ -193,17 +214,35 @@ export class ScheduleComponent implements OnInit {
                 throw new Error(JSON.stringify(res.error));
             }
         });
-        console.log('delete', e);
     }
 
-    edit(e) {
-        console.log('edit', e);
+    edit(e): void {
+        this.editEvent = e;
+        this.editAppointment = true;
+        this.showAppointmentForm = true;
+        let start = new Intl.DateTimeFormat('ru', { hour: '2-digit', minute: '2-digit' }).format(e.start);
+        if (start.length === 4) {
+            start = 0 + start;
+        }
+        let end = new Intl.DateTimeFormat('ru', { hour: '2-digit', minute: '2-digit' }).format(e.end);
+        if (end.length === 4) {
+            end = 0 + end;
+        }
+        this.reservedTime.splice(this.reservedTime
+            .map(r => JSON.stringify(r)).indexOf(JSON.stringify({
+                'start': e.start.getTime(),
+                'end': e.end.getTime()
+            })), 1);
+        this.buildForm(start, end);
     }
 
-    cancel() {
+    cancel(): void {
         this.showAppointmentForm = false;
+        this.editAppointment = false;
         this.buildForm();
         this.payed = false;
+        this.clientName = '';
+        delete this.editEvent;
     }
 
     combineDate(time: string, date: Date): Date {
@@ -216,12 +255,7 @@ export class ScheduleComponent implements OnInit {
     fetchOneDayEvents(events) {
         const oneDayEvents = [];
         for (const event of events) {
-            oneDayEvents.push({
-                id: event.id,
-                title: event.title,
-                start: event.start,
-                end: event.end
-            });
+            oneDayEvents.push(event);
         }
         return oneDayEvents;
     }
@@ -251,7 +285,11 @@ export class ScheduleComponent implements OnInit {
             this.selectedDay = day;
             day.cssClass = 'cal-day-selected';
         }
-        this.oneDayEvents = this.fetchOneDayEvents(day.events);
+        this.oneDayEvents = day.events;
+        this.reservedTime = this.oneDayEvents.map(res => ({
+            'start': res.start.getTime(),
+            'end': res.end.getTime()
+        }));
         if (isSameDay(this.viewDate, day.date)) {
             this.activeDayIsOpen = !this.activeDayIsOpen;
         } else {
@@ -283,10 +321,6 @@ export class ScheduleComponent implements OnInit {
             start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate).getTime(),
             end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate).getTime()
         };
-        const reservedTime = this.oneDayEvents.map(res => ({
-            'start': res.start.getTime(),
-            'end': res.end.getTime()
-        }));
         if (isNaN(userTime.start) || isNaN(userTime.end)) {
             return 'Время не введено';
         } else {
@@ -301,7 +335,7 @@ export class ScheduleComponent implements OnInit {
                 ) {
                     return 'Выбрано нерабочее время';
                 } else {
-                    for (const item of reservedTime) {
+                    for (const item of this.reservedTime) {
                         if (
                             item.start <= userTime.start && item.end > userTime.start ||
                             item.start < userTime.end && item.end >= userTime.end ||
@@ -322,5 +356,10 @@ export class ScheduleComponent implements OnInit {
             return true;
         }
         return false;
+    }
+
+    onValueChanged(user: User): void {
+        this.clientId = user.id;
+        console.log(user);
     }
 }

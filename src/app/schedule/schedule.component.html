@@ -38,7 +38,12 @@
                 <div class="date">{{viewDate | dateTimeFormat}}</div>
             </div>
             <div class="events-list">
-                <health-event [role]="user?.role" [event]="event" (onEditEvent)="edit($event)" (onDeleteEvent)="delete($event)" *ngFor="let event of oneDayEvents"></health-event>
+                <health-event 
+                    [role]="user?.role" 
+                    [event]="event" 
+                    (onEditEvent)="edit($event)" 
+                    (onDeleteEvent)="delete($event)" 
+                    *ngFor="let event of oneDayEvents"></health-event>
             </div>
         </div>
         <div class="appointment-box" *ngIf="isAuth">
@@ -50,25 +55,40 @@
         </div>
         <ng-template #appointment>
             <div class="appointment">
-                <div class="clients-box" *ngIf="isAdmin">
+                <div class="clients-box" *ngIf="isAdmin && !editAppointment">
                     <div>
                         Выберите клиента
                     </div>
                     <input 
                         auto-complete 
                         [list-formatter]="listFormatter"
-                        [(ngModel)]="clientName" 
+                        [value-formatter]="valueFormatter"
+                        [match-formatted]="matchFormatted"
+                        [(ngModel)]="clientName"
+                        [no-match-found-text]="noMatchFoundText"
+                        (valueChanged)="onValueChanged($event)" 
                         [source]="allClients" />
+                </div>
+                <div class="clients-box" *ngIf="isAdmin && editAppointment">
+                    <div>Вы редактируете {{editEvent?.start | timeFormat}} - {{editEvent?.end | timeFormat}} {{editEvent?.title}}</div>
                 </div>
                 <div class="info-box" *ngIf="!isAdmin">Введите удобное для Вас время приёма</div>
                 <div class="time-box" [formGroup]="newAppointmentForm">
                     <div class="start-time">
-                        <input type="text" formControlName="start" [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}"
-                            (focusout)="onFocusOut(true)" placeholder="00:00">
+                        <input 
+                            type="text" 
+                            formControlName="start" 
+                            [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}"
+                            (focusout)="onFocusOut(true)" 
+                            placeholder="00:00">
                     </div>
                     <div class="end-time">
-                        <input type="text" formControlName="end" [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
-                            (focusout)="onFocusOut(false)" placeholder="00:00">
+                        <input 
+                            type="text" 
+                            formControlName="end" 
+                            [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
+                            (focusout)="onFocusOut(false)" 
+                            placeholder="00:00">
                     </div>
                 </div>
                 <div class="error-box">

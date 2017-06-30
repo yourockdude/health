@@ -26,6 +26,11 @@ export class HealthService {
             .map(res => res.json());
     }
 
+    editEvent(event): Observable<CustomResponse> {
+        return this.authHttp.put(`${environment.api}/events/${event.ownerId}`, event)
+            .map(res => res.json());
+    }
+
     deleteEvent(id: string): Observable<CustomResponse> {
         return this.authHttp.delete(`${environment.api}/events/${id}`)
             .map(res => res.json());
@@ -53,6 +58,11 @@ export class HealthService {
 
     deleteUser(id: string): Observable<CustomResponse> {
         return this.authHttp.delete(`${environment.api}/users/${id}`)
+            .map(res => res.json());
+    }
+
+    editProfile(user: User): Observable<CustomResponse> {
+        return this.authHttp.put(`${environment.api}/user/me`, user)
             .map(res => res.json());
     }
 

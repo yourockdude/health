@@ -1,5 +1,5 @@
 <div class="event">
-    <div class="event-time"> {{event.start | timeFormat}} - {{event.end | timeFormat}}</div>
+    <div class="event-time">{{event.start | timeFormat}} - {{event.end | timeFormat}}</div>
     <div class="event-title">{{event.title ? event.title : 'Занято'}}</div>
     <div class="control" *ngIf="role === 0">
         <fa [name]="'pencil'" (click)="edit()"></fa>

@@ -26,6 +26,7 @@ export class ProfileComponent implements OnInit {
     profileForm: FormGroup;
     user: User;
     src = 'assets/images/profile.jpg';
+    passwordInputShow = false;
 
     myDatePickerOptions: INgxMyDpOptions = {
         dateFormat: 'dd.mm.yyyy',
@@ -80,8 +81,15 @@ export class ProfileComponent implements OnInit {
     }
 
     save(): void {
-        this.editing = false;
-        console.log(this.profileForm);
+        this.healthService.editProfile(this.profileForm.value).subscribe(res => {
+            if (res.success) {
+                this.user = this.profileForm.value;
+                this.editing = false;
+                // this.buildProfileForm(this.profileForm.value);
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
     }
 
     cancel(): void {
@@ -96,11 +104,20 @@ export class ProfileComponent implements OnInit {
     onFileChange(file: File) {
         this.healthService.uploadProfilePhoto(file).subscribe(res => {
             if (res.success) {
-                console.log(res);
+                this.src = `${environment.server}${res.data}`;
             } else {
                 throw new Error(JSON.stringify(res.error));
             }
         });
+    }
+
+    get setGender() {
+        switch (this.profileForm.value.gender) {
+            case 'male':
+                return 'Мужчина';
+            case 'female':
+                return 'Женщина';
+        }
     }
 
     buildProfileForm({ firstName = '', lastName = '', middleName = '', gender = '', birth = '', phone = '', location = '' }): void {

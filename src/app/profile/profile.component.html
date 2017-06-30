@@ -28,19 +28,25 @@
                     </div>
                     <div class="row">
                         <div class="key">Пол</div>
-                        <div class="value">{{user.gender ? user.gender : 'Не указан'}}</div>
+                        <div class="value">{{setGender ? setGender : 'Не указан'}}</div>
                     </div>
                     <div class="row">
                         <div class="key">День Рождения</div>
-                        <div class="value">{{user.birth ? user.birth : 'Не указан'}}</div>
+                        <div class="value">{{user.birth ? user.birth.formatted : 'Не указан'}}</div>
                     </div>
                     <div class="row">
                         <div class="key">Телефон</div>
-                        <div class="value">{{user.number ? user.number : 'Не указан'}}</div>
+                        <div class="value">{{user.phone ? user.phone : 'Не указан'}}</div>
                     </div>
                     <div class="row">
                         <div class="key">Адрес</div>
                         <div class="value">{{user.location ? user.location : 'Не указан'}}</div>
+                    </div>
+                    <div class="change-password" (click)="password.hide()">
+                        Изменить пароль
+                    </div>
+                    <div #password class="">
+                        <input type="text">
                     </div>
                 </div>
 

@@ -127,6 +127,15 @@ input.value, .value input {
     justify-content: space-between;
 }
 
+.change-password {
+    display: flex;
+    cursor: pointer;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+}
+
 
 
 

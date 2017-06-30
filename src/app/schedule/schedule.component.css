@@ -93,27 +93,11 @@
     margin: auto;
 }
 
-
-
-/*.appointment {
-    height: 100%;
-    width: 100%;
-    display: flex;
+.clients-box {
+    margin: 10px auto;
 }
 
-.events, .appointment-form {
-    width: 50%;
-    display: inline-block
+.clients-box div {
+    margin: 10px auto;
+    text-align: center;
 }
-
-.events {
-    background-color: lightgreen
-}
-
-.appointment-form {
-    background-color: lightblue;
-}
-
-.client-name {
-    width: 100%;
-}*/
