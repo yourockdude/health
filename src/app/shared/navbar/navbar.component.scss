@@ -1,0 +1,180 @@
+@import '../../../assets/styles/variables.scss';
+@import '../../../assets/styles/fonts';
+:host {
+    height: 70px;
+    display: flex;
+    background: $primary-color;
+    color: $white;
+    @media #{$phone} {
+        flex-direction: column;
+        height: auto;
+    }
+    font-family: Comfortaa;
+    font-size: 13px;
+}
+
+.center {
+    width: 100%;
+    display: flex;
+    @include centered();
+    @media #{$phone} {
+        height: auto;
+        flex-direction: column;
+    }
+}
+
+.button {
+    display: flex;
+    @include centered();
+    width: 120px;
+    height: 40px;
+    @include centered;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    outline: initial;
+    box-sizing: border-box;
+    &:hover {
+        background: $button-color;
+    }
+}
+
+.hide {
+    @media #{$phone} {
+        display: none !important;
+    }
+    @media #{$desctop} {
+        & div {
+            display: none !important;
+        }
+    }
+}
+
+.left,
+.right {
+    display: flex;
+    @include centered();
+    @media #{$desctop} {
+        @include width(170px);
+    }
+    @media #{$phone} {
+        height: 50px;
+    }
+}
+
+.menu {
+    @include width(50px);
+    @include centered();
+    transition: 0.2s all ease;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    & div {
+        transition: 0.2s all ease;
+        background: $white;
+        height: 3px;
+        width: 25px;
+        margin: 3px;
+    }
+    @media #{$desctop} {
+        display: none;
+    }
+}
+
+.opened {
+    transform: rotate(90deg);
+    transition: 0.2s all ease;
+    & div:nth-child(1) {
+        transition: 0.2s all ease;
+        transform: rotate(-45deg) translate(-8px, -2px);
+        width: 15px;
+    }
+    & div:nth-child(3) {
+        transition: 0.2s all ease;
+        transform: rotate(45deg) translate(-8px, 2px);
+        width: 15px;
+    }
+}
+
+.logo {
+    display: flex;
+    @include centered();
+    width: 100%;
+    text-transform: uppercase;
+    font-size: 20px;
+    cursor: pointer;
+    outline: initial;
+    & span {
+        color: $second-color;
+    }
+    @media #{$phone} {
+        margin-right: 50px;
+    }
+}
+
+.active {
+    border-bottom: 1px solid $second-color;
+}
+
+// .header-page {
+//     height: 100%;
+//     width: 100%;
+//     background-color: #333;
+// }
+// .header-container {
+//     height: 100%;
+//     width: 80%;
+//     margin: auto;
+//     display: flex;
+// }
+// .menu-box {
+//     position: absolute;
+//     left: 10px;
+//     top: 6px;
+//     cursor: pointer;
+// }
+// .line1,
+// .line2,
+// .line3 {
+//     background: white;
+//     height: 4px;
+//     width: 25px;
+//     margin: 4px 0;
+//     transition: 0.4s;
+// }
+// .line1.change {
+//     transform: rotate(-45deg) translate(-5px, 0px) ;
+//     width: 15px;
+// }
+// .line3.change {
+//     transform: rotate(45deg) translate(-5px, 0px) ;
+//     width: 15px;
+// }
+// .logo-box, .link-box {
+//     width: 50%;
+//     display: flex;
+// }
+// .logo-box {
+//     margin: auto;
+// }
+// .title {
+//     font-size: 1.5em;
+//     font-weight: bold;
+//     color: white;
+//     cursor: pointer;
+//     outline: initial;
+// }
+// .link {
+//     width: 100%;
+//     cursor: pointer;
+//     display: flex;
+//     height: 100%;
+//     outline: initial;
+// }
+// .link:hover {
+//     background-color: black;
+// }
+// .link div {
+//     margin: auto;
+//     color: white;
+//     text-decoration: initial;
+// }

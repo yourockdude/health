@@ -179,8 +179,8 @@ export class ScheduleComponent implements OnInit {
                 res => {
                     if (res.success) {
                         this.showAppointmentForm = false;
-                        // this.fetchEvents();
-                        this.events.push(res.data);
+                        this.fetchEvents();
+                        // this.events.push(res.data);
                         this.oneDayEvents.push({
                             id: res.data.id,
                             title: event.title,
@@ -209,7 +209,7 @@ export class ScheduleComponent implements OnInit {
         this.healthService.deleteEvent(e.id).subscribe(res => {
             if (res.success) {
                 this.oneDayEvents.splice(this.oneDayEvents.indexOf(e), 1);
-                this.events.splice(this.events.indexOf(this.events.find(f => f.id === e.id)), 1);
+                this.fetchEvents();
             } else {
                 throw new Error(JSON.stringify(res.error));
             }
@@ -352,10 +352,11 @@ export class ScheduleComponent implements OnInit {
     }
 
     get allowToSaveEvent() {
-        if (this.validTime && this.payed) {
+        if (this.validTime && this.payed || this.validTime && this.isAdmin) {
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     onValueChanged(user: User): void {

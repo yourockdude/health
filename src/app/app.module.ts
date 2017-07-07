@@ -18,7 +18,9 @@ import { ClientsModule } from './clients/clients.module';
 import { ClientPageModule } from './client-page/client-page.module';
 import { AuthService } from './shared/services/auth.service';
 import { RoleGuard } from './shared/services/role-guard.service';
+import { NavbarModule } from './shared/navbar/navbar.module';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.servie';
+import { FooterModule } from './shared/footer/footer.module';
 
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 
@@ -27,7 +29,7 @@ export function authHttpServiceFactory(
   options: RequestOptions
 ) {
   return new AuthHttp(
-    new AuthConfig({ noTokenScheme: true, noJwtError: true}),
+    new AuthConfig({ noTokenScheme: true, noJwtError: true }),
     http,
     options
   );
@@ -51,6 +53,10 @@ export function authHttpServiceFactory(
     ClientsModule,
     ClientPageModule,
     AuthModule,
+    NavbarModule,
+    FooterModule,
+  ],
+  exports: [
   ],
   providers: [
     AuthService,

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { JwtHelper } from 'angular2-jwt';
 import { MessagesService } from '../services/messages.service';
@@ -12,7 +13,7 @@ import { OpenSidenavService } from '../services/open-sidenav.service';
     moduleId: module.id,
     selector: 'health-navbar',
     templateUrl: 'navbar.component.html',
-    styleUrls: ['navbar.component.css'],
+    styleUrls: ['navbar.component.scss'],
     providers: [
         AuthService,
         ReadMessageService,
@@ -28,6 +29,9 @@ export class NavbarComponent implements OnInit {
     unreadMessages = [];
     interlocutor;
 
+    hide = true;
+    path: string;
+
     constructor(
         private authService: AuthService,
         private messagesService: MessagesService,
@@ -35,7 +39,13 @@ export class NavbarComponent implements OnInit {
         private openChatService: OpenChatService,
         private openSidenavService: OpenSidenavService,
         private passUserService: PassUserService,
+        private router: Router,
     ) {
+        this.router.events.subscribe((val) => {
+            if (val instanceof NavigationEnd) {
+                this.path = val.url;
+            }
+        });
         readMessageService.chatToNavbarObservable$.subscribe(res => {
             const index = this.unreadMessages.map(u => u.fromId).indexOf(res);
             if (res && index > -1) {
@@ -66,6 +76,20 @@ export class NavbarComponent implements OnInit {
             this.messages.push(res.messages);
             this.readMessageService.navbarToChatChange(res.messages);
         });
+    }
+
+    openHeaderNav() {
+        this.hide = this.hide ? false : true;
+    }
+
+    onAuthClick() {
+        if (this.isAuth) {
+            this.authService.signOut();
+            // TODO temporary
+            window.location.reload();
+        } else {
+            this.router.navigate(['auth']);
+        }
     }
 
     getUser(): void {

@@ -1,23 +1,19 @@
-<div class="sidenav-page">
-    <div class="sidenav-panel" *ngIf="user && isOpen">
-        <div class="user-info">
-            <img class="photo" src="{{src}}" alt="profile">
-            <div class="user-name">{{user.email}}</div>
-            <div class="user-name">{{user.firstName}} {{user.lastName}}</div>
-            <div class="user-name"><b>{{user.role === 0 ? 'admin' : 'user'}}</b></div>
-            <button class="sign-out-btn" (click)="signOut()">sign out</button>
+<div class="sidenav" *ngIf="user">
+    <div class="profile">
+        <div class="profile-image">
+            <img src="/assets/images/profile.png" alt="">
         </div>
-        <div class="navigation">
-            <ul>
-                <li><a (click)="onItemClick($event, 'schedule')">Календарь</a></li>
-                <li><a (click)="onItemClick($event, 'documents')">Документы</a></li>
-                <li><a (click)="onItemClick($event, 'profile')">Профиль</a></li>
-                <li><a (click)="onItemClick($event, 'clients')">{{isAdmin ? 'Пользователи' : 'Доктора'}}</a></li>
-            </ul>
-        </div>
+        <div class="profile-name">Куприянов Николай</div>
     </div>
 
-    <div class="routing">
-        <router-outlet name="sidebar"></router-outlet>
+    <div class="navigation">
+        <div [routerLink]="['/sidenav']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Календарь</div>
+        <div [routerLink]="[{outlets: {sidebar: ['profile']}}]" routerLinkActive="active">Профиль</div>
+        <div [routerLink]="[{outlets: {sidebar: ['documents']}}]" routerLinkActive="active">Файлы</div>
+        <div [routerLink]="[{outlets: {sidebar: ['clients']}}]" routerLinkActive="active">{{isAdmin ? 'Пользователи' : 'Доктора'}}</div>
     </div>
+</div>
+
+<div class="content">
+    <router-outlet name="sidebar"></router-outlet>
 </div>

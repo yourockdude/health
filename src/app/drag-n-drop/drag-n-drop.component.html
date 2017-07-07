@@ -1,4 +1,17 @@
-<div class="dropzone-page">
+<div class="dropzone">
+    <input #uploadFileInput multiple type="file" (change)="filesDropped($event.target.files)">
+    <div (click)="onUploadFileInputClick()" (filesDropped)="filesDropped($event)" healthDragNDrop>
+        Выберите файлы <br> {{hint}}
+    </div>
+</div>
+<div class="files">
+    <div class="list" (scroll)="onScroll($event)">
+        <health-file-to-upload *ngFor="let file of allowFilesToUpload" [file]="file" [allowed]="true" (deleteFileEvent)="deleteFileToUpload($event)"></health-file-to-upload>
+    </div>
+    <div class="button" (click)="upload()" [ngClass]="{disabled: disabledUploadButton()}">Загрузить</div>
+</div>
+
+<!--<div class="dropzone-page">
     <div class="dropzone-continer">
         <div class="wrapper">
             <div class="dropzone-box">
@@ -34,4 +47,4 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->

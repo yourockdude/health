@@ -16,7 +16,7 @@ import 'rxjs/Rx';
     moduleId: module.id,
     selector: 'health-documents',
     templateUrl: 'documents.component.html',
-    styleUrls: ['documents.component.css'],
+    styleUrls: ['documents.component.scss'],
     providers: [HealthService, DragNDropService],
 })
 
@@ -51,13 +51,15 @@ export class DocumentsComponent implements OnInit {
             .map((request, i) => Observable
                 .concat(Observable.of(i).delay(i * 1000), request));
         Observable.forkJoin(observables).subscribe(res => {
-            res.map((r: any) => {
-                if (r.success) {
-                    this.userFiles.push(r.data);
-                } else {
-                    throw new Error(JSON.stringify(r.error));
-                }
-            });
+            res.map(
+                (r: any) => {
+                    if (r.success) {
+                        this.userFiles.push(r.data);
+                    } else {
+                        throw new Error(JSON.stringify(r.error));
+                    }
+                },
+            );
             this.dragNDropService.change(true);
         });
     }

@@ -14,7 +14,7 @@ import { environment } from '../../environments/environment';
     moduleId: module.id,
     selector: 'health-user-file',
     templateUrl: 'user-file.component.html',
-    styleUrls: ['user-file.component.css'],
+    styleUrls: ['user-file.component.scss'],
     providers: [HealthService],
 })
 
@@ -31,6 +31,7 @@ export class UserFileComponent implements OnInit {
     delete = false;
     value: string;
     originalName: string;
+    flip = false;
 
     constructor(
         private healthService: HealthService,
@@ -53,7 +54,10 @@ export class UserFileComponent implements OnInit {
                 }
             },
             (err) => { },
-            () => { this.delete = false; });
+            () => {
+                this.delete = false;
+                this.flip = !this.flip;
+            });
     }
 
     renameFile(): void {
@@ -66,7 +70,10 @@ export class UserFileComponent implements OnInit {
                 }
             },
             (err) => { },
-            () => { this.rename = false; }
+            () => {
+                this.rename = false;
+                this.flip = !this.flip;
+            }
         );
     }
 
@@ -76,6 +83,7 @@ export class UserFileComponent implements OnInit {
         } else {
             this.delete = true;
         }
+        this.flip = !this.flip;
         this.value = value;
     }
 
@@ -94,6 +102,7 @@ export class UserFileComponent implements OnInit {
         } else {
             this.delete = false;
         }
+        this.flip = !this.flip;
     }
 
     close(event): void {

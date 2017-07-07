@@ -1,0 +1,97 @@
+@import '../../../assets/styles/fonts.scss';
+@import '../../../assets/styles/variables.scss';
+:host {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    background: $primary-color;
+    color: $white;
+    font-family: Comfortaa;
+    @media #{$phone} {
+        height: auto;
+    }
+}
+
+.content {
+    flex: 80%;
+    display: flex;
+    @media #{$phone} {
+        flex-direction: column;
+    }
+}
+
+.content {
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer-block {
+    max-width: 190px;
+    min-height: 130px;
+    display: flex;
+    @media #{$phone} {
+        max-width: initial;
+        min-height: initial;
+        width: 180px;
+        height: auto;
+        margin: 10px;
+    }
+}
+
+.block-info {
+    font-size: 12px;
+}
+
+.title {
+    font-size: 14px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.block-image {
+    margin: 5px;
+    color: $second-color;
+}
+
+.social {
+    display: flex;
+    justify-content: space-between;
+    & div {
+        border-radius: 5px;
+        height: 30px;
+        width: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+}
+
+.fb {
+    background: $fb-color
+}
+
+.vk {
+    background: $vk-color;
+}
+
+.google {
+    background: $google-color;
+}
+
+.skype {
+    background: $skype-color;
+}
+
+.copyright {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    & div {
+        margin: 5px;
+    }
+    @media #{$phone} {
+        flex-direction: column;
+        text-align: center;
+    }
+}

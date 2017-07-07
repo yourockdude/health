@@ -1,0 +1,100 @@
+@import '../../assets/styles/fonts.scss';
+@import '../../assets/styles/variables.scss';
+:host {
+    display: flex;
+    flex: 1;
+    @media #{$phone} {
+        flex-direction: column;
+    }
+    font-family: Comfortaa;
+    font-size: 13px;
+}
+
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    background: lighten($primary-color, 70%);
+    @media #{$desctop} {
+        @include width(200px);
+        padding: 0px 5px;
+        box-sizing: border-box;
+    }
+    @media #{$phone} {
+        padding: initial;
+    }
+}
+
+.profile,
+.navigation {
+    margin: 5px;
+}
+
+.profile {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid lighten($primary-color, 65%);
+    box-sizing: border-box;
+    border-radius: 5px;
+    @media #{$phone} {
+        height: 50px;
+        flex-direction: row;
+    }
+}
+
+.profile-image,
+.profile-name {
+    @media #{$phone} {
+        height: 100%;
+        margin: 0px 5px;
+    }
+}
+
+.profile-image {
+    @media #{$desctop} {
+        height: 90%;
+    }
+    display: flex;
+    @include centered();
+    & img {
+        height: 80%;
+        border-radius: 5px;
+    }
+}
+
+.profile-name {
+    @media #{$desctop} {
+        height: 20%;
+    }
+    display: flex;
+    @include centered();
+    font-weight: bold;
+}
+
+.navigation {
+    @media #{$phone} {
+        margin: initial;
+    }
+    & div {
+        height: 35px;
+        cursor: pointer;
+        @include centered();
+        display: flex;
+        outline: initial;
+        box-sizing: border-box;
+        &:hover {
+            background: lighten($primary-color, 65%);
+            color: $second-color;
+        }
+        &.active {
+            color: $second-color;
+        }
+    }
+}
+
+.content {
+    display: flex;
+    @media #{$desctop} {
+        width: 100%;
+    }
+}

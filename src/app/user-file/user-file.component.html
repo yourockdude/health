@@ -1,5 +1,42 @@
+<div class="file" [ngClass]="{flip: flip}">
+    <div class="icon">
+        <fa [name]="icon" [size]="3"></fa>
+    </div>
+    <div class="name">{{file.originalName}}</div>
+    <div class="buttons">
+        <div (click)="openDialog('delete')">
+            <fa [name]="'trash'"></fa>
+        </div>
+        <div (click)="view = !view" *ngIf="viewAllowed()">
+            <fa [name]="'eye'"></fa>
+        </div>
+        <div (click)="openDialog('rename')">
+            <fa [name]="'pencil'"></fa>
+        </div>
+    </div>
+</div>
+<div class="dialog" [ngClass]="{flip: flip}">
+    <div class="info">
+        <div *ngIf="delete">
+            Удалить файл {{file.originalName}}?
+        </div>
+        <div *ngIf="rename">
+            Введите новое имя файла:
+            <textarea rows="5" type="text" autofocus [(ngModel)]="originalName"></textarea>
+        </div>
+    </div>
+    <div class="buttons">
+        <div (click)="cancel()">
+            <fa [name]="'arrow-left'"></fa>
+        </div>
+        <div (click)="apply()">
+            <fa [name]="'check'"></fa>
+        </div>
+    </div>
+</div>
+
 <health-image-viewer [show]="view" [extension]="extension" [src]="src" (onCloseEvent)="close($event)"></health-image-viewer>
-<div class="file">
+<!--<div class="file">
     <div class="file-icon">
         <fa [name]="icon" [size]="3"></fa>
     </div>
@@ -35,4 +72,4 @@
         </div>
     </ng-template>
 
-</div>
+</div>-->

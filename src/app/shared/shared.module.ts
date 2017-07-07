@@ -3,11 +3,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-
-import { FooterComponent } from './footer/footer.component';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import { SearchComponent } from './search/search.component';
-
-import { NavbarModule } from './navbar/navbar.module';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome/angular2-fontawesome';
 import { ErrorMessagesComponent } from './error-message/error-message.component';
 import { TimeFormatPipe } from './pipes/time-format.pipe';
@@ -20,11 +17,10 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
         ReactiveFormsModule,
         RouterModule,
         BrowserAnimationsModule,
-        NavbarModule,
         Angular2FontawesomeModule,
+        FlexLayoutModule,
     ],
     declarations: [
-        FooterComponent,
         SearchComponent,
         ErrorMessagesComponent,
         TimeFormatPipe,
@@ -36,13 +32,12 @@ import { DateTimeFormatPipe } from './pipes/date-time-format.pipe';
         ReactiveFormsModule,
         RouterModule,
         BrowserAnimationsModule,
-        NavbarModule,
-        FooterComponent,
         SearchComponent,
         Angular2FontawesomeModule,
         ErrorMessagesComponent,
         TimeFormatPipe,
         DateTimeFormatPipe,
+        FlexLayoutModule,
     ]
 })
 export class SharedModule {

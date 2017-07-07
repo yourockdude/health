@@ -77,10 +77,14 @@ export class ClientsComponent implements OnInit {
         }
     }
 
-    deleteClient(id) {
-        this.healthService.deleteUser(id).subscribe(res => {
+    deleteClient(client) {
+        this.healthService.deleteUser(client.id).subscribe(res => {
             if (res.success) {
-                this.clientsFound.splice(this.clientsFound.map(c => c.id).indexOf(id), 1);
+                if (client.role === 0) {
+                    this.adminsFound.splice(this.adminsFound.map(c => c.id).indexOf(client.id), 1);
+                } else {
+                    this.clientsFound.splice(this.clientsFound.map(c => c.id).indexOf(client.id), 1);
+                }
             } else {
                 throw new Error(JSON.stringify(res.error));
             }

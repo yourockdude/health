@@ -1,6 +1,90 @@
-<div class="auth-page">
-    <div class="auth-container">
+<div class="auth-form">
+    <div class="switch">
+        <div class="button" (click)="switch('signIn')" [ngClass]="{active: isSignIn}">Войти</div>
+        <div class="button" (click)="switch('signUp')" [ngClass]="{active: !isSignIn}">Регистрация</div>
+    </div>
+    <div class="social">
+        <div class="button fb" (click)="choiceSocial('facebook')">
+            <fa [name]="'facebook'"></fa>
+        </div>
+        <div class="button vk" (click)="choiceSocial('vk')">
+            <fa [name]="'vk'"></fa>
+        </div>
+        <div class="button g" (click)="choiceSocial('google')">
+            <fa [name]="'google'"></fa>
+        </div>
+    </div>
+    <div class="title">{{isSignIn ? 'Войти' : 'Регистрация'}}</div>
+    <div class="info">
+        {{info}}
+        <div *ngIf="isSocialSignUp" (click)="switch('signIn', true)">
+            Связать с существующим аккаунтом?
+        </div>
+    </div>
+    <form [formGroup]="signInForm" *ngIf="isSignIn;else signUpTemplate">
+        <div class="row">
+            <div class="input">
+                <input formControlName="email" type="text" placeholder="Почта">
+            </div>
+            <health-error-message [control]="signInForm.controls.email"></health-error-message>
+        </div>
+        <div class="row">
+            <div class="input">
+                <input formControlName="password" #password type="password" placeholder="Пароль">
+                <div class="password" (click)="showPassword(password)">
+                    <fa [name]="'eye'"></fa>
+                </div>
+            </div>
+            <health-error-message [control]="signInForm.controls.password"></health-error-message>
+        </div>
+    </form>
+    <ng-template #signUpTemplate>
+        <form [formGroup]="signUpForm">
+            <div class="row">
+                <div class="input">
+                    <input formControlName="email" type="text" placeholder="Почта">
+                </div>
+                <health-error-message [control]="signUpForm.controls.email"></health-error-message>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <input formControlName="firstName" type="text" placeholder="Фамилия">
+                </div>
+                <health-error-message [control]="signUpForm.controls.firstName"></health-error-message>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <input formControlName="lastName" type="text" placeholder="Имя">
+                </div>
+                <health-error-message [control]="signUpForm.controls.lastName"></health-error-message>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <input formControlName="password" #password type="password" placeholder="Пароль">
+                    <div class="password" (click)="showPassword(password)">
+                        <fa [name]="'eye'"></fa>
+                    </div>
+                </div>
+                <health-error-message [control]="signUpForm.controls.password"></health-error-message>
+            </div>
+            <div class="row">
+                <div class="input">
+                    <input formControlName="passwordRepeat" #passwordRepeat type="password" placeholder="Пароль еще раз">
+                    <div class="password" (click)="showPassword(passwordRepeat)">
+                        <fa [name]="'eye'"></fa>
+                    </div>
+                </div>
+                <health-error-message [control]="signUpForm.controls.passwordRepeat"></health-error-message>
+            </div>
+        </form>
+    </ng-template>
+    <div class="submit">
+        <div class="button" (click)="sending()" [ngClass]="{disabled: disabledSendingButton()}">Отправить</div>
+    </div>
+</div>
 
+<!--<div class="auth-page">
+    <div class="auth-container">
         <div class="switch-box">
             <div class="switch-button" (click)="switch('signIn')" [ngClass]="{active: isSignIn}">
                 <div>Войти</div>
@@ -9,7 +93,6 @@
                 <div>Регистрация</div>
             </div>
         </div>
-
         <div class="social-box">
             <div class="social-button" (click)="choiceSocial('facebook')">
                 <div>
@@ -27,86 +110,82 @@
                 </div>
             </div>
         </div>
-
-        <div class="form container">
-            <div class="title-box">
-                <div>{{isSignIn ? 'Войти' : 'Регистрация'}}</div>
+        <div class="title-box">
+            <div>{{isSignIn ? 'Войти' : 'Регистрация'}}</div>
+        </div>
+        <div class="info-box" *ngIf="info.length>0">
+            <div class="info">
+                {{info}}
             </div>
-            <div class="info-box" *ngIf="info.length>0">
-                <div class="info">
-                    {{info}}
+            <div class="addition-info" *ngIf="isSocialSignUp" (click)="switch('signIn', true)">Связать с существующим аккаунтом?</div>
+        </div>
+        <div class="form-box">
+            <form [formGroup]="signInForm" *ngIf="isSignIn;else signUpTemplate">
+                <div class="row">
+                    <input formControlName="email" type="text" placeholder="Почта">
+                    <div class="error-box">
+                        <health-error-message [control]="signInForm.controls.email"></health-error-message>
+                    </div>
                 </div>
-                <div class="addition-info" *ngIf="isSocialSignUp" (click)="switch('signIn', true)">Связать с существующим аккаунтом?</div>
-            </div>
+                <div class="row">
+                    <input formControlName="password" #password type="password" placeholder="Пароль">
+                    <div class="show-password">
+                        <fa [name]="'eye'" (click)="showPassword(password)"></fa>
+                    </div>
+                    <div class="error-box">
+                        <health-error-message [control]="signInForm.controls.password"></health-error-message>
+                    </div>
+                </div>
+            </form>
 
-            <div class="form-box">
-                <form [formGroup]="signInForm" *ngIf="isSignIn;else signUpTemplate">
-                    <div class="form-row">
+            <ng-template #signUpTemplate>
+                <form [formGroup]="signUpForm">
+                    <div class="row">
                         <input formControlName="email" type="text" placeholder="Почта">
                         <div class="error-box">
-                            <health-error-message [control]="signInForm.controls.email"></health-error-message>
+                            <health-error-message [control]="signUpForm.controls.email"></health-error-message>
                         </div>
                     </div>
-                    <div class="form-row">
+                    <div class="row">
+                        <div>
+                            <input formControlName="firstName" type="text" placeholder="Фамилия">
+                            <div class="error-box">
+                                <health-error-message [control]="signUpForm.controls.firstName"></health-error-message>
+                            </div>
+                        </div>
+                        <div>
+                            <input formControlName="lastName" type="text" placeholder="Имя">
+                            <div class="error-box">
+                                <health-error-message [control]="signUpForm.controls.lastName"></health-error-message>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
                         <input formControlName="password" #password type="password" placeholder="Пароль">
                         <div class="show-password">
                             <fa [name]="'eye'" (click)="showPassword(password)"></fa>
                         </div>
                         <div class="error-box">
-                            <health-error-message [control]="signInForm.controls.password"></health-error-message>
+                            <health-error-message [control]="signUpForm.controls.password"></health-error-message>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <input formControlName="passwordRepeat" #passwordRepeat type="password" placeholder="Пароль еще раз">
+                        <div class="show-password">
+                            <fa [name]="'eye'" (click)="showPassword(passwordRepeat)"></fa>
+                        </div>
+                        <div class="error-box">
+                            <health-error-message [control]="signUpForm.controls.passwordRepeat"></health-error-message>
                         </div>
                     </div>
                 </form>
+            </ng-template>
+        </div>
 
-                <ng-template #signUpTemplate>
-                    <form [formGroup]="signUpForm">
-                        <div class="form-row">
-                            <input formControlName="email" type="text" placeholder="Почта">
-                            <div class="error-box">
-                                <health-error-message [control]="signUpForm.controls.email"></health-error-message>
-                            </div>
-                        </div>
-                        <div class="form-row two-in-row">
-                            <div>
-                                <input formControlName="firstName" type="text" placeholder="Фамилия">
-                                <div class="error-box">
-                                    <health-error-message [control]="signUpForm.controls.firstName"></health-error-message>
-                                </div>
-                            </div>
-                            <div>
-                                <input formControlName="lastName" type="text" placeholder="Имя">
-                                <div class="error-box">
-                                    <health-error-message [control]="signUpForm.controls.lastName"></health-error-message>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <input formControlName="password" #password type="password" placeholder="Пароль">
-                            <div class="show-password">
-                                <fa [name]="'eye'" (click)="showPassword(password)"></fa>
-                            </div>
-                            <div class="error-box">
-                                <health-error-message [control]="signUpForm.controls.password"></health-error-message>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <input formControlName="passwordRepeat" #passwordRepeat type="password" placeholder="Пароль еще раз">
-                            <div class="show-password">
-                                <fa [name]="'eye'" (click)="showPassword(passwordRepeat)"></fa>
-                            </div>
-                            <div class="error-box">
-                                <health-error-message [control]="signUpForm.controls.passwordRepeat"></health-error-message>
-                            </div>
-                        </div>
-                    </form>
-                </ng-template>
-            </div>
-
-            <div class="sending-box">
-                <div class="sending-button" (click)="sending()" [ngClass]="{disabled: disabledSendingButton()}">
-                    <div>{{isSignIn ? 'Войти' : 'Зарегистрироваться'}}</div>
-                </div>
+        <div class="sending-box">
+            <div class="sending-button" (click)="sending()" [ngClass]="{disabled: disabledSendingButton()}">
+                <div>{{isSignIn ? 'Войти' : 'Зарегистрироваться'}}</div>
             </div>
         </div>
     </div>
-</div>
+</div>-->

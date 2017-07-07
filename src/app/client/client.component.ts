@@ -48,7 +48,7 @@ export class ClientComponent implements OnInit {
     }
 
     deleteClient() {
-        this.deleteClientEvent.emit(this.client.id);
+        this.deleteClientEvent.emit(this.client);
     }
 
     openChat() {

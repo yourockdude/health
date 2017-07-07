@@ -1,30 +1,24 @@
-<div class="header-page">
-    <div class="header-container">
-        <div class="menu-box" (click)="openSidenav()" *ngIf="isAuth">
-            <div class="line1" [ngClass]="{change: isOpenSidenav}"></div>
-            <div class="line2" [ngClass]="{change: isOpenSidenav}"></div>
-            <div class="line3" [ngClass]="{change: isOpenSidenav}"></div>
-        </div>
-        <div class="logo-box">
-            <div class="title" [routerLink]="['/sidenav']">HEALTH</div>
-        </div>
-        <div class="link-box">
-            <div class="link" [routerLink]="['/sidenav']">
-                <div>Расписание</div>
-            </div>
-            <div class="link" [routerLink]="['/prices']">
-                <div>Цены</div>
-            </div>
-            <div class="link" (click)="openChat()" *ngIf="isAuth">
-                <div>Чат</div>
-            </div>
-            <div class="link" [routerLink]="['/auth']" *ngIf="!isAuth">
-                <div>Войти</div>
-            </div>
-        </div>
+<div class="left">
+    <div class="menu" (click)="openHeaderNav()" [ngClass.xs]="{opened: !hide}">
+        <div></div>
+        <div></div>
+        <div></div>
     </div>
+    <div class="logo" [routerLink]="['/sidenav']">
+        company<span>logo</span>
+    </div>
+</div>
+<div class="center" [ngClass.xs]="{hide: hide}">
+    <div class="button" [routerLink]="['/sidenav']" routerLinkActive="active">Расписание</div>
+    <div class="button" [routerLink]="['/prices']" routerLinkActive="active">Цены</div>
+</div>
+<div class="right" [ngClass.xs]="{hide: hide || path === '/auth'}" [ngClass]="{'hide': path === '/auth'}">
+    <div class="button" (click)="onAuthClick()">
+        {{isAuth ? 'Выйти' : 'Войти'}}
+    </div>
+</div>
 
-    <div *ngIf="isOpen">
+<!--<div *ngIf="isOpen">
         <health-chat-window 
             [messages]="messages"
             [unreadMessages]="passUnreadMessages()" 
@@ -32,5 +26,4 @@
             [interlocutor]="interlocutor" 
             (closeEvent)="close($event)">
         </health-chat-window>
-    </div>
-</div>
+    </div>-->

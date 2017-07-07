@@ -1,0 +1,21 @@
+$primary-color: #292c2f;
+$second-color: #20b2aa;
+$button-color: darken($primary-color, 5%);
+$border-color: lighten($primary-color, 65%);
+$white: #ffffff;
+$fb-color:#3b5998;
+$vk-color:#45668e;
+$google-color:#dd4b39;
+$skype-color:#12a5f4;
+$phone: 'screen and (max-width: 599px)';
+$tablet: 'screen and (max-width: 959px)';
+$desctop: 'screen and (min-width : 600px) and (max-width : 5000px)';
+@mixin centered() {
+    justify-content: center;
+    align-items: center;
+}
+
+@mixin width($w) {
+    min-width: $w;
+    max-width: $w;
+}

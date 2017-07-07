@@ -13,7 +13,7 @@ import { OpenSidenavService } from './shared/services/open-sidenav.service';
 @Component({
     selector: 'health-root',
     templateUrl: './app.component.html',
-    styleUrls: ['./app.component.css'],
+    styleUrls: ['./app.component.scss'],
     providers: [
         SocketService,
         AuthService,
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
         private socketService: SocketService,
         private messagesService: MessagesService,
     ) {
-        if (this.authService.isAuth) {
+        if (this.authService.isAuth()) {
             this.socketService.connection().subscribe();
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
@@ -76,6 +76,7 @@ export class AppComponent implements OnInit {
 
     getMessages() {
         this.socketService.getMessages().subscribe(message => {
+            console.log(message);
             this.messages.push(message);
             this.messagesService.sendMessages({ isNew: true, messages: message });
         });

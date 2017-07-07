@@ -15,7 +15,7 @@ import { DragNDropService } from '../shared/services/drag-n-drop.service';
     moduleId: module.id,
     selector: 'health-drag-n-drop',
     templateUrl: 'drag-n-drop.component.html',
-    styleUrls: ['drag-n-drop.component.css'],
+    styleUrls: ['drag-n-drop.component.scss'],
 })
 
 export class DragNDropComponent implements OnInit, OnDestroy {
@@ -71,6 +71,12 @@ export class DragNDropComponent implements OnInit, OnDestroy {
 
     disabledUploadButton() {
         return this.allowFilesToUpload.length > 0 ? false : true;
+    }
+
+    onScroll(e: Event) {
+        e.stopPropagation();
+        console.log(e);
+
     }
 
 }

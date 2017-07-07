@@ -9,7 +9,7 @@ import { environment } from 'environments/environment';
     moduleId: module.id,
     selector: 'health-sidenav',
     templateUrl: 'sidenav.component.html',
-    styleUrls: ['sidenav.component.css'],
+    styleUrls: ['sidenav.component.scss'],
 })
 
 export class SidenavComponent implements OnInit {
@@ -39,15 +39,6 @@ export class SidenavComponent implements OnInit {
     }
 
     ngOnInit() { }
-
-    onItemClick(e: MouseEvent, part: string) {
-        this.router.navigate(
-            [{ outlets: { 'sidebar': [part] } }],
-            {
-                relativeTo: this.activatedRoute,
-            }
-        );
-    }
 
     signOut() {
         this.authService.signOut();

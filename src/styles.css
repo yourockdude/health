@@ -1,6 +1,6 @@
 @import "../node_modules/angular-calendar/dist/css/angular-calendar.css";
-
-body, html { 
+body,
+html {
     width: 100%;
     height: 100%;
 }
@@ -9,7 +9,9 @@ body {
     margin: initial;
 }
 
-/*-----rewrite calendar styles-----*/
+
+/*-----override calendar styles-----*/
+
 .cal-day-cell {
     cursor: pointer !important;
 }
@@ -17,6 +19,7 @@ body {
 .cal-day-selected {
     background-color: rgba(18, 43, 64, 0.18) !important;
 }
+
 .cal-day-selected:hover {
     background-color: #ededed !important;
 }
@@ -32,4 +35,16 @@ body {
 .cal-open-day-events {
     padding: initial !important;
 }
+
+
 /*----------------------------------*/
+
+
+/*-----override datepicker styles-----*/
+
+.selectorarrow {
+    margin-top: 32px !important;
+}
+
+
+/*------------------------------------*/

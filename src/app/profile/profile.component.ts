@@ -16,7 +16,7 @@ import { environment } from 'environments/environment';
     moduleId: module.id,
     selector: 'health-profile',
     templateUrl: 'profile.component.html',
-    styleUrls: ['profile.component.css'],
+    styleUrls: ['profile.component.scss'],
     providers: [HealthService, AuthService],
 })
 
@@ -53,7 +53,8 @@ export class ProfileComponent implements OnInit {
             11: 'Ноя',
             12: 'Дек'
         },
-        todayBtnTxt: 'Сегодня'
+        todayBtnTxt: 'Сегодня',
+        alignSelectorRight: true
     };
 
     constructor(

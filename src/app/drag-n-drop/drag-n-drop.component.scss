@@ -1,0 +1,82 @@
+@import '../../assets/styles/fonts.scss';
+@import '../../assets/styles/variables.scss';
+:host {
+    display: flex;
+    @media #{$tablet} {
+        flex-direction: column;
+    }
+}
+
+.dropzone,
+.files {
+    display: flex;
+    border: 1px solid $border-color;
+    box-sizing: border-box;
+    margin: 5px;
+    height: 200px;
+    width: 100%;
+    @media #{$tablet} {
+        width: initial;
+    }
+}
+
+.dropzone {
+    & input {
+        display: none;
+    }
+    & div {
+        border: 2px dashed $primary-color;
+        margin: 10px;
+        box-sizing: border-box;
+        display: flex;
+        @include centered();
+        padding: 10px;
+        cursor: pointer;
+        text-align: center;
+        flex: 1;
+        &:hover {
+            border-color: $second-color;
+        }
+    }
+}
+
+.files {
+    flex-direction: column
+}
+
+.list {
+    height: 100%;
+    overflow: auto;
+    &::-webkit-scrollbar {
+        width: 5px;
+    }
+    &::-webkit-scrollbar-thumb {
+        background-color: $primary-color;
+        border-radius: 10px;
+    }
+}
+
+.button {
+    height: 40px;
+    display: flex;
+    @include centered();
+    font-size: 15px;
+    background: lighten($primary-color, 5%);
+    color: lighten($primary-color, 50%);
+    cursor: pointer;
+    &:hover {
+        background: darken($second-color, 5%);
+        color: $white;
+    }
+}
+
+.disabled {
+    cursor: context-menu;
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

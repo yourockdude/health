@@ -1,0 +1,19 @@
+@import '../../assets/styles/fonts.scss';
+@import '../../assets/styles/variables.scss';
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.dropzone,
+.files {
+    background: lighten($primary-color, 70%);
+    margin: 10px 5px;
+}
+
+.files {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+}

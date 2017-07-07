@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 export class SocketService {
     socket;
     constructor() {
-        this.socket = io.connect(environment.socketUrl);
+        this.socket = io.connect(environment.server);
     }
 
     getMessages() {

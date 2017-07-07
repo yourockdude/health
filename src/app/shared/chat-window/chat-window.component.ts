@@ -38,7 +38,6 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     room;
     fromId;
 
-    // interlocutor;
     clients = [];
     currentChatMessages;
 
@@ -145,10 +144,10 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-        if (this.isAdmin(this.currentUser)) {
-            this.room = this.interlocutor.id;
+        if (this.isAdmin(this.currentUser.role)) {
+            this.room = `${this.interlocutor.id}-${this.currentUser.id}`;
         } else {
-            this.room = this.currentUser.id;
+            this.room = `${this.currentUser.id}-${this.interlocutor.id}`;
         }
         const data = {
             date: new Date(),
