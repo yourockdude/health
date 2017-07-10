@@ -12,6 +12,10 @@
         <div [routerLink]="[{outlets: {sidebar: ['documents']}}]" routerLinkActive="active">Файлы</div>
         <div [routerLink]="[{outlets: {sidebar: ['clients']}}]" routerLinkActive="active">{{isAdmin ? 'Пользователи' : 'Доктора'}}</div>
     </div>
+
+    <div class="chat" (click)="openChat()">
+        chat
+    </div>
 </div>
 
 <div class="content">

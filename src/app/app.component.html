@@ -1,9 +1,18 @@
 <div class="main">
 
-  <health-navbar></health-navbar>
+    <health-navbar></health-navbar>
 
-  <router-outlet></router-outlet>
+    <health-chat-window 
+        *ngIf="isOpen" 
+        [messages]="messages" 
+        [unreadMessages]="passUnreadMessages()" 
+        [currentUser]="currentUser"
+        [interlocutor]="interlocutor" 
+        (closeEvent)="close($event)">
+    </health-chat-window>
 
-  <health-footer></health-footer>
+    <router-outlet></router-outlet>
+
+    <health-footer></health-footer>
 
 </div>

@@ -9,6 +9,7 @@ import { HealthService } from './shared/services/health.service';
 import { OpenChatService } from './shared/services/open-chat.service';
 import { PassUserService } from './shared/services/pass-user.service';
 import { OpenSidenavService } from './shared/services/open-sidenav.service';
+import { NotificationService } from './shared/services/notification.service';
 
 @Component({
     selector: 'health-root',
@@ -22,9 +23,14 @@ import { OpenSidenavService } from './shared/services/open-sidenav.service';
         OpenChatService,
         PassUserService,
         OpenSidenavService,
+        NotificationService,
     ],
 })
 export class AppComponent implements OnInit {
+    // chat
+    isOpen = false;
+    interlocutor;
+    // --------
     currentUser;
     jwtHelper = new JwtHelper();
     messages = [];
@@ -34,36 +40,21 @@ export class AppComponent implements OnInit {
         private healthService: HealthService,
         private socketService: SocketService,
         private messagesService: MessagesService,
+        private openChatService: OpenChatService,
     ) {
+        openChatService.observable$.subscribe(res => {
+            this.interlocutor = res;
+            this.openChat();
+        });
         if (this.authService.isAuth()) {
             this.socketService.connection().subscribe();
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.currentUser = res.data;
                     if (this.currentUser.role === 0) {
-                        this.healthService.getUsers().subscribe(r => {
-                            if (r.success) {
-                                for (const u of r.data) {
-                                    if (u.id !== this.currentUser.id) {
-                                        this.socketService.enterRoom({
-                                            user: this.currentUser.username,
-                                            room: `${u.id}-${this.currentUser.id}`
-                                        });
-                                    }
-                                }
-                            }
-                        });
+                        this.enterAdminToRoom();
                     } else {
-                        this.healthService.getAdmins().subscribe(r => {
-                            if (r.success) {
-                                for (const u of r.data) {
-                                    this.socketService.enterRoom({
-                                        user: this.currentUser.username,
-                                        room: `${this.currentUser.id}-${u.id}`
-                                    });
-                                }
-                            }
-                        });
+                        this.enterUserToRoom();
                     }
                 }
             });
@@ -72,6 +63,38 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
         this.getMessages();
+    }
+
+    openChat(): void {
+        this.isOpen = !this.isOpen;
+    }
+
+    enterAdminToRoom() {
+        this.healthService.getUsers().subscribe(r => {
+            if (r.success) {
+                for (const u of r.data) {
+                    if (u.id !== this.currentUser.id) {
+                        this.socketService.enterRoom({
+                            user: this.currentUser.username,
+                            room: `${u.id}-${this.currentUser.id}`
+                        });
+                    }
+                }
+            }
+        });
+    }
+
+    enterUserToRoom() {
+        this.healthService.getAdmins().subscribe(r => {
+            if (r.success) {
+                for (const u of r.data) {
+                    this.socketService.enterRoom({
+                        user: this.currentUser.username,
+                        room: `${this.currentUser.id}-${u.id}`
+                    });
+                }
+            }
+        });
     }
 
     getMessages() {

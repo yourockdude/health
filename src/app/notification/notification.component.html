@@ -1,0 +1,9 @@
+<div class="notification" *ngIf="show" healthNotificationDirective [timer]="timer">
+    <div class="type">
+        <fa [name]="type" [size]="3"></fa>
+    </div>
+    <div class="message">{{message}}</div>
+    <div class="close" (click)="close()">
+        <fa [name]="'times'"></fa>
+    </div>
+</div>

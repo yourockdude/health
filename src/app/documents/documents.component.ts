@@ -8,6 +8,7 @@ import { environment } from '../../environments/environment';
 import { AuthService } from '../shared/services/auth.service';
 import { HealthService } from '../shared/services/health.service';
 import { DragNDropService } from '../shared/services/drag-n-drop.service';
+import { NotificationService } from '../shared/services/notification.service';
 import { UserFile } from '../shared/models/user-file';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/Rx';
@@ -31,6 +32,7 @@ export class DocumentsComponent implements OnInit {
         private authService: AuthService,
         private healthService: HealthService,
         private dragNDropService: DragNDropService,
+        private notificationService: NotificationService,
     ) {
         this.allowedFilesExtension = environment.allowedFiles;
         this.hint = `Поддерживаемые файлы: ${this.allowedFilesExtension.join(', ')}.`;
@@ -56,6 +58,7 @@ export class DocumentsComponent implements OnInit {
                     if (r.success) {
                         this.userFiles.push(r.data);
                     } else {
+                        this.notificationService.next('error', JSON.stringify(r.error));
                         throw new Error(JSON.stringify(r.error));
                     }
                 },

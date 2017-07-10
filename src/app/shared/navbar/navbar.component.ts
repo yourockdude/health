@@ -27,7 +27,6 @@ export class NavbarComponent implements OnInit {
     jwtHelper = new JwtHelper();
     messages = [];
     unreadMessages = [];
-    interlocutor;
 
     hide = true;
     path: string;
@@ -53,10 +52,7 @@ export class NavbarComponent implements OnInit {
             }
         });
 
-        openChatService.observable$.subscribe(res => {
-            this.interlocutor = res;
-            this.openChat();
-        });
+        
 
         passUserService.observable$.subscribe(res => {
             this.getUser();
@@ -112,10 +108,6 @@ export class NavbarComponent implements OnInit {
         } else {
             return '';
         }
-    }
-
-    openChat(): void {
-        this.isOpen = !this.isOpen;
     }
 
     openSidenav(): void {

@@ -1,0 +1,46 @@
+@import '../../assets/styles/fonts.scss';
+@import '../../assets/styles/variables.scss';
+:host {
+    position: fixed;
+    bottom: 0;
+    z-index: 9999;
+}
+
+.notification {
+    min-height: 70px;
+    height: auto;
+    width: 400px;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    padding: 5px 10px;
+    box-sizing: border-box;
+    justify-content: space-between;
+    @media #{$phone} {
+        max-height: 100vh;
+    }
+}
+
+.close {
+    height: 15px;
+    width: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.type {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+}
+
+.message {
+    width: 300px;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

@@ -21,57 +21,58 @@ import { RoleGuard } from './shared/services/role-guard.service';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { GlobalErrorHandlerService } from './shared/services/global-error-handler.servie';
 import { FooterModule } from './shared/footer/footer.module';
-
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
+import { ChatWindowModule } from './shared/chat-window/chat-window.module';
 
 export function authHttpServiceFactory(
-  http: Http,
-  options: RequestOptions
+    http: Http,
+    options: RequestOptions
 ) {
-  return new AuthHttp(
-    new AuthConfig({ noTokenScheme: true, noJwtError: true }),
-    http,
-    options
-  );
+    return new AuthHttp(
+        new AuthConfig({ noTokenScheme: true, noJwtError: true }),
+        http,
+        options
+    );
 }
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
-  imports: [
-    BrowserModule,
-    FormsModule,
-    HttpModule,
-    SharedModule,
-    AppRoutingModule,
-    PricesModule,
-    SidenavModule,
-    DocumentsModule,
-    ScheduleModule,
-    ProfileModule,
-    ClientsModule,
-    ClientPageModule,
-    AuthModule,
-    NavbarModule,
-    FooterModule,
-  ],
-  exports: [
-  ],
-  providers: [
-    AuthService,
-    RoleGuard,
-    AuthHttp,
-    {
-      provide: AuthHttp,
-      useFactory: authHttpServiceFactory,
-      deps: [Http, RequestOptions]
-    },
-    {
-      provide: ErrorHandler,
-      useClass: GlobalErrorHandlerService
-    }
-  ],
-  bootstrap: [AppComponent]
+    declarations: [
+        AppComponent,
+    ],
+    imports: [
+        BrowserModule,
+        FormsModule,
+        HttpModule,
+        SharedModule,
+        AppRoutingModule,
+        PricesModule,
+        SidenavModule,
+        DocumentsModule,
+        ScheduleModule,
+        ProfileModule,
+        ClientsModule,
+        ClientPageModule,
+        AuthModule,
+        NavbarModule,
+        FooterModule,
+        ChatWindowModule,
+    ],
+    exports: [
+    ],
+    providers: [
+        AuthService,
+        RoleGuard,
+        AuthHttp,
+        {
+            provide: AuthHttp,
+            useFactory: authHttpServiceFactory,
+            deps: [Http, RequestOptions]
+        },
+        {
+            provide: ErrorHandler,
+            useClass: GlobalErrorHandlerService
+        }
+    ],
+    bootstrap: [AppComponent]
 })
 export class AppModule { }

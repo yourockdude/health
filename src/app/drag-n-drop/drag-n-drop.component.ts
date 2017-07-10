@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { DragNDropService } from '../shared/services/drag-n-drop.service';
+import { NotificationService } from '../shared/services/notification.service';
 
 @Component({
     moduleId: module.id,
@@ -30,6 +31,7 @@ export class DragNDropComponent implements OnInit, OnDestroy {
 
     constructor(
         private dragNDropService: DragNDropService,
+        private notificationService: NotificationService,
     ) {
         this.subscription = this.dragNDropService.observable$.subscribe(res => {
             if (res) {
@@ -54,10 +56,17 @@ export class DragNDropComponent implements OnInit, OnDestroy {
         for (const file of fileList) {
             const fileExtension = file.name.split('.').pop();
             if (this.allowedFiles.indexOf(fileExtension) === -1) {
-                this.forbiddenFiles.push(file);
+                this.forbiddenFiles.push(file.name);
             } else {
                 this.allowFilesToUpload.push(file);
             }
+        }
+        if (this.forbiddenFiles.length > 0) {
+            const error = [
+                `Следующие файлы не могут быть загружениы:`,
+                this.forbiddenFiles.join(', ')
+            ].join(' ');
+            this.notificationService.next('error', error, 3000);
         }
     }
 

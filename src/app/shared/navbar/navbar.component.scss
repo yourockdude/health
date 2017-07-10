@@ -3,11 +3,13 @@
 :host {
     height: 70px;
     display: flex;
+    justify-content: center;
     background: $primary-color;
     color: $white;
     @media #{$phone} {
         flex-direction: column;
         height: auto;
+        align-items: center;
     }
     font-family: Comfortaa;
     font-size: 13px;

@@ -8,7 +8,7 @@ export class OpenChatService {
 
     observable$ = this.source.asObservable();
 
-    change(state: any) {
+    change(state?: any) {
         this.source.next(state);
     }
 }

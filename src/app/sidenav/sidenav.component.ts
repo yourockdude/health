@@ -4,6 +4,7 @@ import { AuthService } from '../shared/services/auth.service';
 import { User } from '../shared/models/user';
 import { OpenSidenavService } from '../shared/services/open-sidenav.service';
 import { environment } from 'environments/environment';
+import { OpenChatService } from '../shared/services/open-chat.service';
 
 @Component({
     moduleId: module.id,
@@ -23,11 +24,12 @@ export class SidenavComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private router: Router,
         private authService: AuthService,
-        private openSidenavService: OpenSidenavService,
+        // private openSidenavService: OpenSidenavService,
+        private openChatService: OpenChatService,
     ) {
-        this.openSidenavService.observable$.subscribe(res => {
-            this.isOpen = res;
-        });
+        // this.openSidenavService.observable$.subscribe(res => {
+        //     this.isOpen = res;
+        // });
 
         this.authService.getUser().subscribe(res => {
             if (res.success) {
@@ -43,6 +45,10 @@ export class SidenavComponent implements OnInit {
     signOut() {
         this.authService.signOut();
         this.user = null;
+    }
+
+    openChat() {
+        this.openChatService.change();
     }
 
 }
