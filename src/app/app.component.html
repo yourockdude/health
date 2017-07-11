@@ -5,10 +5,9 @@
     <health-chat-window 
         *ngIf="isOpen" 
         [messages]="messages" 
-        [unreadMessages]="passUnreadMessages()" 
-        [currentUser]="currentUser"
+        [unreadMessages]="unreadMessages" 
         [interlocutor]="interlocutor" 
-        (closeEvent)="close($event)">
+        (closeEvent)="close()">
     </health-chat-window>
 
     <router-outlet></router-outlet>

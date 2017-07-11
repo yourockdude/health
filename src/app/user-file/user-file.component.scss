@@ -1,7 +1,7 @@
 @import '../../assets/styles/fonts.scss';
 @import '../../assets/styles/variables.scss';
 :host {
-    border: 1px solid lighten($primary-color, 65%);
+    border: 1px solid $border-color;
     box-sizing: border-box;
     height: 200px;
     width: 130px;
@@ -42,7 +42,7 @@
     & textarea {
         background: initial;
         outline: initial;
-        border: 1px solid lighten($primary-color, 65%);
+        border: 1px solid $border-color;
         font-family: Comfortaa;
         resize: none;
         width: 100%;
@@ -57,7 +57,7 @@
 .icon,
 .name {
     height: 100%;
-    border-bottom: 1px solid lighten($primary-color, 65%);
+    border-bottom: 1px solid $border-color;
     box-sizing: border-box;
 }
 

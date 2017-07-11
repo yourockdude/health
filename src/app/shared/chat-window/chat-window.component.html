@@ -1,4 +1,46 @@
-<div class="chat-window" [style.display]="isHide ? 'none' : 'flex'">
+<div class="users" *ngIf="isShowUserBox">
+    <div class="search">
+        <input type="text" [(ngModel)]="queryUser" (keyup)="onSearchKeyUp()" placeholder="Поиск...">
+        <div class="button" *ngIf="queryUser.length > 0" (click)="queryUser='';onSearchKeyUp()">
+            <fa [name]="'times'"></fa>
+        </div>
+    </div>
+    <div class="list">
+        <div *ngFor="let client of clientsFound" (click)="onClientClick(client)">{{client.firstName}} {{client.lastName}}</div>
+    </div>
+</div>
+<div class="chat">
+    <div class="header">
+        <div class="icon" (click)="showUserBox()">
+            <fa [name]="'users'"></fa>
+        </div>
+        <div class="name">
+            {{interlocutor?.firstName}} {{interlocutor?.lastName}}
+        </div>
+        <div class="icon" (click)="close()">
+            <fa [name]="'times'"></fa>
+        </div>
+    </div>
+    <div class="messages">
+        <div class="message" *ngFor="let message of getCurrentChatMessages" [ngClass]="{'incoming': isIncoming(message)}">
+            <div class="image">{{image(message)}}</div>
+            <div class="content">
+                <div class="time">{{message.date | chatDateTime}}</div>
+                <div class="text">{{message.message}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="input">
+        <textarea name="" id="" rows="2" placeholder="Ваше сообщение..." (keypress)="preventEnter($event)" (keyup)="onTextAreaKeyUp($event)"
+            [(ngModel)]="message"></textarea>
+        <div class="button" (click)="sendMessage()">
+            <fa [name]="'arrow-right'"></fa>
+        </div>
+    </div>
+</div>
+
+
+<!--<div class="chat-window" [style.display]="isHide ? 'none' : 'flex'">
   <div class="users-box" *ngIf="isShowUserBox">
     <div class="search-box">
       <input class="search-input" type="text" placeholder="Поиск..." [(ngModel)]="queryUser" (keyup)="onSearchKeyUp()">
@@ -6,7 +48,7 @@
     <div class="users-list">
       <div class="user" *ngFor="let client of clientsFound" (click)="onClientClick(client)">
         <div class="photo-box">
-          <img src="assets/images/profile.jpg" alt="">
+          <img src="assets/images/profile.png" alt="">
         </div>
         <div class="info-box">
           <div class="name">{{client.firstName}} {{client.lastName}}</div>
@@ -30,7 +72,6 @@
       <div class="message" *ngFor="let message of getCurrentChatMessages" [ngClass]="{'incoming': isIncoming(message)}">
         <div class="time">{{message.date | chatDateTime}}</div>
         <div class="text">
-          <!--{{member(message)}}:-->
           {{message.message}}
         </div>
       </div>
@@ -53,4 +94,4 @@
       </div>
     </div>
   </div>
-</div>
+</div>-->

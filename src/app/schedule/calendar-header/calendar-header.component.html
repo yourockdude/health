@@ -1,4 +1,17 @@
-<div class="container">
+<div class="navigation">
+    <div (click)="decrement()">
+        <fa [name]="'arrow-left'"></fa>
+    </div>
+    <div (click)="today()">
+        Сегодня
+    </div>
+    <div (click)="increment()">
+        <fa [name]="'arrow-right'"></fa>
+    </div>
+</div>
+<div class="date">{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</div>
+
+<!--<div class="container">
     <div class="box">
         <div class="left-part">
             <div class="btn-group">
@@ -17,17 +30,6 @@
             <div>{{ viewDate | calendarDate:(view + 'ViewTitle'):locale }}</div>
         </div>
         <div class="right-part">
-            <!--<div class="btn-group">
-                <button (click)="viewChange.emit('month')" [class.active]="view === 'month'">
-                    Месяц
-                </button>
-                <button (click)="viewChange.emit('week')" [class.active]="view === 'week'">
-                    Неделя
-                </button>
-                <button (click)="viewChange.emit('day')" [class.active]="view === 'day'">
-                    День
-                </button>
-            </div>-->
         </div>
     </div>
-</div>
+</div>-->

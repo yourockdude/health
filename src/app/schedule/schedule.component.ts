@@ -28,7 +28,7 @@ const colors: any = {
     moduleId: module.id,
     selector: 'health-schedule',
     templateUrl: 'schedule.component.html',
-    styleUrls: ['schedule.component.css'],
+    styleUrls: ['schedule.component.scss'],
     providers: [HealthService, AuthService],
 })
 

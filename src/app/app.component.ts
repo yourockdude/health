@@ -27,6 +27,7 @@ import { NotificationService } from './shared/services/notification.service';
     ],
 })
 export class AppComponent implements OnInit {
+    unreadMessages: any;
     // chat
     isOpen = false;
     interlocutor;
@@ -51,6 +52,7 @@ export class AppComponent implements OnInit {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.currentUser = res.data;
+                    console.log(res.data)
                     if (this.currentUser.role === 0) {
                         this.enterAdminToRoom();
                     } else {
@@ -97,11 +99,19 @@ export class AppComponent implements OnInit {
         });
     }
 
+    close() {
+        console.log('adad')
+        this.isOpen = false;
+    }
+
     getMessages() {
-        this.socketService.getMessages().subscribe(message => {
+        this.socketService.getMessages().subscribe((message: any) => {
             console.log(message);
             this.messages.push(message);
-            this.messagesService.sendMessages({ isNew: true, messages: message });
+            // if (this.currentUser.id === message.toId) {
+            //     this.unreadMessages.push(message);
+            // }
+            // this.messagesService.sendMessages({ isNew: true, messages: message });
         });
     }
 

@@ -1,4 +1,6 @@
 @import "../node_modules/angular-calendar/dist/css/angular-calendar.css";
+@import './assets/styles/fonts.scss';
+@import './assets/styles/variables.scss';
 body,
 html {
     width: 100%;
@@ -34,6 +36,11 @@ body {
 
 .cal-open-day-events {
     padding: initial !important;
+    background: initial !important;
+    box-shadow: initial !important;
+    border-bottom: 1px solid #e1e1e1 !important;
+    color: black !important;
+    box-sizing: border-box !important;
 }
 
 

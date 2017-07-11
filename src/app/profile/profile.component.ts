@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit {
     editing = false;
     profileForm: FormGroup;
     user: User;
-    src = 'assets/images/profile.jpg';
+    src = 'assets/images/profile.png';
     passwordInputShow = false;
 
     myDatePickerOptions: INgxMyDpOptions = {

@@ -56,6 +56,15 @@ export class HealthService {
             .map(res => res.json());
     }
 
+    getUsersByRole(role: number): Observable<CustomResponse> {
+        switch (role) {
+            case 0:
+                return this.getClients();
+            case 1:
+                return this.getAdmins();
+        }
+    }
+
     deleteUser(id: string): Observable<CustomResponse> {
         return this.authHttp.delete(`${environment.api}/users/${id}`)
             .map(res => res.json());

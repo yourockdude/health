@@ -1,0 +1,343 @@
+@import '../../../assets/styles/fonts.scss';
+@import '../../../assets/styles/variables.scss';
+:host {
+    font-family: Comfortaa;
+    display: flex;
+    position: fixed;
+    z-index: 1;
+    bottom: 10px;
+    right: 10px;
+    @media #{$phone} {
+        flex-direction: column;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.users,
+.chat {
+    height: 400px;
+    box-sizing: border-box;
+    width: 300px;
+    border: 1px solid $border-color;
+    @media #{$phone} {
+        width: 100%;
+        min-height: 50%;
+        height: 100%;
+    }
+}
+
+.search {
+    min-height: 15%;
+    border-bottom: 1px solid $border-color;
+    box-sizing: border-box;
+    display: flex;
+    background: $primary-color;
+    @include centered();
+    padding: 0 20px;
+    & input {
+        padding-left: 5px;
+        width: 100%;
+        height: 40px;
+        box-sizing: border-box;
+        background: initial;
+        outline: initial;
+        font-family: Comfortaa;
+        color: white;
+        border: 1px solid $white;
+        &:focus {
+            border-color: $second-color;
+        }
+    }
+}
+
+.chat,
+.users {
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
+    min-height: 15%;
+    border-bottom: 1px solid $border-color;
+    box-sizing: border-box;
+    display: flex;
+    background: $primary-color;
+    color: $white;
+    & div {
+        display: flex;
+        @include centered();
+    }
+}
+
+.name {
+    width: 100%;
+}
+
+.icon {
+    min-width: 20px;
+    cursor: pointer;
+    &:hover {
+        color: $second-color;
+    }
+}
+
+.messages,
+.list {
+    height: 100%;
+    background: $background-color;
+}
+
+.messages {
+    font-size: 14px;
+    overflow: auto;
+}
+
+.message {
+    display: flex;
+    margin: 10px 5px;
+}
+
+.image {
+    background: $white;
+    height: 50px;
+    min-width: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-left: 5px;
+}
+
+.time {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 12px;
+}
+
+.text {
+    border: 1px solid #cfd2d5;
+    height: 50px;
+}
+
+.incoming {
+    & .image {
+        order: 1;
+    }
+    & .content {
+        margin-right: 5px;
+        margin-left: initial;
+    }
+}
+
+.list {
+    & div {
+        font-size: 14px;
+        border: 1px solid $border-color;
+        margin: 5px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        box-sizing: border-box;
+        padding-left: 10px;
+        cursor: pointer;
+    }
+}
+
+.input {
+    min-height: 15%;
+    border-top: 1px solid $border-color;
+    box-sizing: border-box;
+    display: flex;
+    @include centered();
+    background: $primary-color;
+    padding: 0 20px;
+    & textarea {
+        box-sizing: border-box;
+        outline: initial;
+        resize: none;
+        font-family: Comfortaa;
+        width: 100%;
+        background: initial;
+        color: $white;
+        border: 1px solid $white;
+        padding-left: 5px;
+        &:focus {
+            border-color: $second-color;
+        }
+    }
+}
+
+.button {
+    height: 40px;
+    width: 40px;
+    display: flex;
+    color: white;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid;
+    box-sizing: border-box;
+    border-left: initial;
+    cursor: pointer;
+    &:hover {
+        border-color: $second-color;
+        color: $second-color
+    }
+}
+
+// .chat-window, .hided-chat-window {
+//     position: fixed;
+//     right: 10px;
+//     bottom: 30px;
+//     min-width: 250px;
+//     z-index: 9999;
+// }
+// .chat-window {
+//     display: flex;
+//     height: 300px;
+// }
+// .hided-chat-window {
+//     display: none;
+//     height: 30px;
+// }
+// .chat-box, .users-box {
+//     height: inherit;
+//     width: 250px;
+//     border: 1px solid rgb(215, 218, 220);
+//     box-sizing: border-box;
+//     border-bottom-left-radius: 5px;
+//     border-bottom-right-radius: 5px;
+//     background-color: white;
+//     box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+// }
+// .users-box {
+//     margin-right: 20px;
+// }
+// .search-box {
+//     height: 10%;
+//     display: flex;
+//     justify-content: center;
+// }
+// .users-list {
+//     border-top: 1px solid rgb(215, 218, 220);
+//     box-sizing: border-box;
+//     padding: 2%;
+//     height: 90%;
+//     overflow: auto;
+// }
+// .search-input, .new-message {
+//     margin: auto;
+//     width: 80%;
+//     height: 100%;
+//     border: initial;
+//     box-sizing: border-box;
+// }
+// .header, .footer {
+//     display: flex;
+// }
+// .header {
+//     background-color: #333;
+//     color: white;
+// }
+// .title-box {
+//     width: 80%;
+//     height: 100%;
+//     justify-content: center;
+//     display: flex;
+// }
+// .title {
+//     margin: auto;
+// }
+// .show-users, .close {
+//     display: flex;
+//     justify-content: center;
+//     height: 100%;
+//     width: 10%;
+// }
+// fa {
+//     margin: auto;
+// }
+// .header {
+//     height: 10%;
+//     cursor: pointer;
+// }
+// .body {
+//     height: 75%;
+//     border-top: 1px solid rgb(215, 218, 220);
+//     border-bottom: 1px solid rgb(215, 218, 220);
+//     box-sizing: border-box;
+//     padding: 2%;
+//     overflow: auto;
+// }
+// .footer {
+//     height: 15%;
+//     justify-content: center;
+// }
+// textarea {
+//     resize: none;
+// }
+// input, textarea {
+//     outline: initial;
+// }
+// textarea::-webkit-scrollbar, 
+// .body::-webkit-scrollbar,
+// .users-list::-webkit-scrollbar {
+//     width: 5px;
+// }
+// textarea::-webkit-scrollbar-thumb,
+// .body::-webkit-scrollbar-thumb,
+// .users-list::-webkit-scrollbar-thumb{
+//     background-color: #333;
+//     border-radius: 10px;
+// }
+// .message {
+//     background-color: rgb(198, 204, 236);
+//     box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+//     border-radius: 5px;
+//     padding: 1%;
+//     margin-bottom: 5%;
+//     margin-right: 20%;
+// }
+// .incoming {
+//     margin-left: 20%;
+//     margin-right: initial;
+//     background-color: rgb(234, 234, 234);
+// }
+// .time {
+//     text-align: end;
+//     font-size: 10px;
+// }
+// .header.hide {
+//     height: 100%;
+// }
+// .title-box.hide {
+//     width: 90%;
+// }
+// .user {
+//     display: flex;
+//     min-height: 50px;
+//     box-shadow: 0 1px 3px 0 rgba(0,0,0,0.3);
+//     cursor: pointer;
+//     margin-bottom: 2%;
+// }
+// .photo-box {
+//     width: 30%;
+//     max-height: 50px;
+//     display: flex;
+// }
+// .photo-box img {
+//     height: 90%;
+//     border-radius: 10px;
+//     margin:auto;
+// }
+// .info-box {
+//     width: 70%
+// }

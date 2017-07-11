@@ -20,7 +20,7 @@ import { environment } from 'environments/environment';
 export class ClientPageComponent implements OnInit {
     client: User;
     role: number;
-    src = 'assets/images/profile.jpg';
+    src = 'assets/images/profile.png';
 
     constructor(
         private healthService: HealthService,

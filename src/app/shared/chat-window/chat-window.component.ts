@@ -19,11 +19,11 @@ import { ReadMessageService } from '../../shared/services/read-message.service';
 @Component({
     selector: 'health-chat-window',
     templateUrl: './chat-window.component.html',
-    styleUrls: ['./chat-window.component.css'],
+    styleUrls: ['./chat-window.component.scss'],
     providers: [HealthService],
 })
 export class ChatWindowComponent implements OnInit, OnDestroy {
-    @Input() currentUser: User;
+    currentUser: User;
     @Input() messages;
     @Input() unreadMessages;
     @Input() interlocutor;
@@ -42,62 +42,52 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     currentChatMessages;
 
     isShowUserBox = false;
-    queryUser;
+    queryUser = '';
     clientsFound = [];
 
     constructor(
         private socketService: SocketService,
         private authService: AuthService,
         private healthService: HealthService,
-        private readMessageService: ReadMessageService,
+        // private readMessageService: ReadMessageService,
     ) { }
 
     ngOnInit() {
-        if (this.isAdmin(this.currentUser.role)) {
-            this.healthService.getClients().subscribe(res => {
-                if (res.success) {
-                    this.clients = res.data;
-                    this.clientsFound = res.data;
-                    if (this.interlocutor) {
-                        return;
-                    } else if (this.unreadMessages.length > 0) {
-                        this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
-                        this.readMessageService.chatToNavbarChange(this.interlocutor.id);
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.currentUser = res.data;
+                this.healthService.getUsersByRole(this.currentUser.role).subscribe(r => {
+                    if (r.success) {
+                        this.clients = r.data;
+                        this.clientsFound = r.data;
+                        if (this.interlocutor) {
+                            return;
+                            // } else if (this.unreadMessages.length > 0) {
+                            //     this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
+                            //     // this.readMessageService.chatToNavbarChange(this.interlocutor.id);
+                        } else {
+                            this.interlocutor = this.clients[0];
+                        }
                     } else {
-                        this.interlocutor = this.clients[0];
+                        throw new Error(JSON.stringify(r.error));
                     }
-                } else {
-                    throw new Error(JSON.stringify(res.error));
-                }
-            });
-        } else {
-            this.healthService.getAdmins().subscribe(res => {
-                if (res.success) {
-                    this.clients = res.data;
-                    this.clientsFound = res.data;
-                    if (this.interlocutor) {
-                        return;
-                    } else if (this.unreadMessages.length > 0) {
-                        this.interlocutor = this.clients.find(c => c.id === this.unreadMessages.map(u => u.fromId)[0]);
-                        this.readMessageService.chatToNavbarChange(this.interlocutor.id);
-                    } else {
-                        this.interlocutor = this.clients[0];
-                    }
-                }
-            });
-        };
+                });
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
     }
 
     ngOnDestroy() { }
 
-    roll() {
-        this.readMessageService.navbarToChatObservable$.subscribe(res => {
-            if (res.fromId === this.interlocutor.id || res.toId === this.interlocutor.id) {
-                console.log(this.scrollBody.nativeElement);
-                this.scrollBody.nativeElement.scrollTop = this.scrollBody.nativeElement.scrollHeight - 221;
-            }
-        });
-    }
+    // roll() {
+    //     this.readMessageService.navbarToChatObservable$.subscribe(res => {
+    //         if (res.fromId === this.interlocutor.id || res.toId === this.interlocutor.id) {
+    //             console.log(this.scrollBody.nativeElement);
+    //             this.scrollBody.nativeElement.scrollTop = this.scrollBody.nativeElement.scrollHeight - 221;
+    //         }
+    //     });
+    // }
 
     onScroll(event) {
         console.log(event);
@@ -105,11 +95,11 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
     onClientClick(client) {
         this.interlocutor = client;
-        this.readMessageService.chatToNavbarChange(this.interlocutor.id);
+        // this.readMessageService.chatToNavbarChange(this.interlocutor.id);
     }
 
-    isAdmin(role) {
-        return role === 0 ? true : false;
+    get isAdmin() {
+        return this.currentUser.role === 0 ? true : false;
     }
 
     isIncoming(msg) {
@@ -125,7 +115,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
 
     get getCurrentChatMessages() {
         if (this.interlocutor) {
-            this.readMessageService.chatToNavbarChange(this.interlocutor.id);
+            // this.readMessageService.chatToNavbarChange(this.interlocutor.id);
             return this.messages
                 .filter(m => m.fromId === this.interlocutor.id || m.toId === this.interlocutor.id);
         }
@@ -135,7 +125,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
         if (msg.fromId === this.currentUser.id) {
             return 'Вы';
         } else {
-            if (this.isAdmin(this.currentUser)) {
+            if (this.isAdmin) {
                 return 'Клиент';
             } else {
                 return 'Док';
@@ -144,7 +134,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     sendMessage() {
-        if (this.isAdmin(this.currentUser.role)) {
+        if (this.isAdmin) {
             this.room = `${this.interlocutor.id}-${this.currentUser.id}`;
         } else {
             this.room = `${this.currentUser.id}-${this.interlocutor.id}`;
@@ -164,7 +154,7 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     }
 
     close() {
-        this.closeEvent.emit(true);
+        this.closeEvent.emit();
     }
 
     hide() {
@@ -191,6 +181,14 @@ export class ChatWindowComponent implements OnInit, OnDestroy {
     preventEnter(event: KeyboardEvent) {
         if (event.keyCode === 13) {
             event.preventDefault();
+        }
+    }
+
+    image(msg) {
+        if (this.isIncoming(msg)) {
+            return `${this.interlocutor.firstName[0]}${this.interlocutor.lastName[0]}`.toUpperCase();
+        } else {
+            return `${this.currentUser.firstName[0]}${this.currentUser.lastName[0]}`.toUpperCase();
         }
     }
 }

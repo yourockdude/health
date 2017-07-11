@@ -1,0 +1,212 @@
+@import '../../assets/styles/fonts.scss';
+@import '../../assets/styles/variables.scss';
+:host {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.header {
+    margin: 5px;
+}
+
+.schedule {
+    margin: 5px;
+}
+
+.container {
+    display: flex;
+    margin: 0 10%;
+    @media #{$tablet} {
+        margin: initial;
+    }
+    @media #{$phone} {
+        flex-direction: column;
+    }
+}
+
+.left,
+.right {
+    flex: 1;
+    margin: 5px;
+    box-sizing: border-box;
+    background: $background-color;
+    display: flex;
+    flex-direction: column;
+}
+
+.info,
+.pay {
+    display: flex;
+    @include centered();
+    margin: 10px;
+    text-align: center
+}
+
+.time {
+    margin: 10px;
+    display: flex;
+    justify-content: space-around;
+    & input {
+        background: initial;
+        border: initial;
+        box-sizing: border-box;
+        outline: initial;
+        padding: initial;
+        height: 30px;
+        border-bottom: 1px solid $border-color;
+        width: 50px;
+        text-align: center;
+        &:focus {
+            border-color: $second-color;
+        }
+    }
+}
+
+.date {
+    margin: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 20px;
+}
+
+.list {
+    height: 100%;
+    overflow: auto;
+    margin: 5px;
+    box-sizing: border-box;
+    padding-left: 10%;
+}
+
+.appointment {
+    display: flex;
+    margin: 5px 0;
+    & div:nth-child(1) {
+        flex: 1;
+    }
+    & div:nth-child(2) {
+        flex: 3;
+    }
+}
+
+.button {
+    display: flex;
+    @include centered();
+    color: lighten($primary-color, 50%);
+    background: lighten($primary-color, 5%);
+    cursor: pointer;
+    height: 40px;
+    &:hover {
+        background: darken($second-color, 5%);
+        color: $white;
+    }
+}
+
+.disabled {
+    cursor: context-menu;
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+// .schedule {
+//     margin: 2%;
+// }
+// .one-day-box {
+//     background: white;
+//     border: 1px solid #e1e1e1;
+//     color: black;
+//     display: flex;
+// }
+// .event-box,
+// .appointment-box {
+//     width: 100%;
+// }
+// .appointment {
+//     display: flex;
+//     flex-direction: column;
+//     height: 100%;
+// }
+// .date-box {
+//     display: flex;
+//     margin: 10px 0;
+// }
+// .date {
+//     margin: auto;
+//     font-size: 20px;
+//     font-weight: bold;
+// }
+// .events-list {
+//     width: 60%;
+//     margin: 10px auto;
+// }
+// .info-box,
+// .time-box,
+// .error-box,
+// .control-box,
+// .pay-box {
+//     margin: 10px auto;
+//     width: 100%;
+// }
+// .info-box,
+// .error-box {
+//     text-align: center;
+// }
+// .time-box {
+//     display: flex;
+//     justify-content: space-around;
+// }
+// .start-time input,
+// .end-time input {
+//     border: initial;
+//     outline: initial;
+//     border-bottom: 1px solid black;
+//     text-align: center;
+// }
+// .control-box,
+// .pay-box {
+//     display: flex;
+// }
+// .pay-box label {
+//     margin: auto;
+// }
+// .control-button {
+//     margin: auto;
+//     height: 40px;
+//     width: 200px;
+//     display: flex;
+//     box-shadow: -3px 4px 3px rgba(0, 0, 0, 0.2);
+//     border: 1px solid rgba(0, 0, 0, 0.1);
+//     cursor: pointer;
+// }
+// .control-button:hover {
+//     box-shadow: -3px 4px 3px rgba(0, 0, 0, 0.5);
+// }
+// .control-button:active {
+//     box-shadow: -3px 4px 3px rgba(0, 0, 0, 0.2);
+// }
+// .control-button div {
+//     margin: auto;
+// }
+// .clients-box {
+//     margin: 10px auto;
+// }
+// .clients-box div {
+//     margin: 10px auto;
+//     text-align: center;
+// }
+// .disabled {
+//     cursor: context-menu;
+//     opacity: 0.5;
+//     pointer-events: none;
+//     user-select: none;
+//     -webkit-touch-callout: none;
+//     -webkit-user-select: none;
+//     -moz-user-select: none;
+//     -ms-user-select: none;
+// }
