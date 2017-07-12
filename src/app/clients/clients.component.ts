@@ -9,7 +9,7 @@ import { User } from '../shared/models/user';
     moduleId: module.id,
     selector: 'health-clients',
     templateUrl: 'clients.component.html',
-    styleUrls: ['clients.component.css'],
+    styleUrls: ['clients.component.scss'],
     providers: [HealthService, AuthService],
 })
 

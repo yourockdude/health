@@ -52,7 +52,6 @@ export class AppComponent implements OnInit {
             this.authService.getUser().subscribe(res => {
                 if (res.success) {
                     this.currentUser = res.data;
-                    console.log(res.data)
                     if (this.currentUser.role === 0) {
                         this.enterAdminToRoom();
                     } else {

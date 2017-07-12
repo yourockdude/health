@@ -15,7 +15,7 @@ import { User } from '../shared/models/user';
     moduleId: module.id,
     selector: 'health-client',
     templateUrl: 'client.component.html',
-    styleUrls: ['client.component.css'],
+    styleUrls: ['client.component.scss'],
 })
 
 export class ClientComponent implements OnInit {
@@ -53,5 +53,9 @@ export class ClientComponent implements OnInit {
 
     openChat() {
         this.openChatService.change(this.client);
+    }
+
+    get isAdmin() {
+        return this.role === 0 ? true : false;
     }
 }
