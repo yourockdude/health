@@ -1,9 +1,9 @@
 <div class="name" *ngIf="user">{{user.firstName}} {{user.lastName}}</div>
 <div class="basic" *ngIf="user">
     <div class="image">
-        <img src="/assets/images/profile.png" alt="profile image">
+        <img src="{{src}}" alt="profile image">
         <input #profileImage accept="image/jpeg, image/png" type="file" (change)="onFileChange($event.target.files[0])">
-        <div (click)="choosePhoto()">загрузить</div>
+        <div (click)="choosePhoto()" *ngIf="isMyPage">Загрузить</div>
     </div>
     <div class="info">
         <div class="form" *ngIf="!editing;else editProfile">
@@ -74,15 +74,31 @@
                 </div>
             </div>
         </ng-template>
-        <div class="buttons" *ngIf="!editing;else editProfileControlBox">
-            <div (click)="edit()">Редактировать</div>
-        </div>
-        <ng-template #editProfileControlBox>
-            <div class="buttons">
+        <div class="buttons" [ngSwitch]="controls" *ngIf="isAdmin !=undefined">
+            <div *ngSwitchCase="'myPage'">
+                <div (click)="edit()">Редактировать</div>
+            </div>
+            <div *ngSwitchCase="'edit'">
                 <div (click)="cancel()">Отмена</div>
                 <div (click)="save()">Сохранить</div>
             </div>
-        </ng-template>
+            <div *ngSwitchCase="'admin'">
+                <div (click)="delete()">Удалить</div>
+                <div (click)="openChat()" *ngIf="user.role === 1">Связаться</div>
+            </div>
+            <div *ngSwitchCase="'user'">
+                <div (click)="openChat()">Связаться</div>
+            </div>
+        </div>
     </div>
 </div>
-<div class="addition" *ngIf="user">Дополнительная информация</div>
+<div class="addition" *ngIf="user">
+    <div>Дополнительная информация</div>
+    <ul>
+        <li>Оформлена подписка на 5 посещений</li>
+        <li>Прием 18.07.2017 с 17:00 по 18:00</li>
+    </ul>
+</div>
+<div class="files" *ngIf="user && isAdmin && !isMyPage">
+    <health-user-file *ngFor="let file of user.files" (deleteFileEvent)="deleteFile($event)" [file]="file" [isAdmin]="true"></health-user-file>
+</div>

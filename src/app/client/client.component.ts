@@ -40,7 +40,7 @@ export class ClientComponent implements OnInit {
 
     showClient() {
         this.router.navigate(
-            [{ outlets: { 'sidebar': ['clients', this.client.id] } }],
+            [{ outlets: { 'sidebar': ['profile', this.client.id] } }],
             {
                 relativeTo: this.activatedRoute.parent,
             }

@@ -5,12 +5,13 @@ import {
     ViewChild
 } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
+import { Params, ActivatedRoute, Router } from '@angular/router';
 import { HealthService } from '../shared/services/health.service';
 import { AuthService } from '../shared/services/auth.service';
 import { User } from '../shared/models/user';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { environment } from 'environments/environment';
-
+import { OpenChatService } from '../shared/services/open-chat.service';
 
 @Component({
     moduleId: module.id,
@@ -27,50 +28,36 @@ export class ProfileComponent implements OnInit {
     user: User;
     src = 'assets/images/profile.png';
     passwordInputShow = false;
-
-    myDatePickerOptions: INgxMyDpOptions = {
-        dateFormat: 'dd.mm.yyyy',
-        dayLabels: {
-            su: 'Вс',
-            mo: 'Пн',
-            tu: 'Вт',
-            we: 'Ср',
-            th: 'Чт',
-            fr: 'Пт',
-            sa: 'Сб'
-        },
-        monthLabels: {
-            1: 'Янв',
-            2: 'Фев',
-            3: 'Мар',
-            4: 'Апр',
-            5: 'Май',
-            6: 'Июн',
-            7: 'Июл',
-            8: 'Авг',
-            9: 'Сен',
-            10: 'Окт',
-            11: 'Ноя',
-            12: 'Дек'
-        },
-        todayBtnTxt: 'Сегодня',
-        alignSelectorRight: true
-    };
+    myDatePickerOptions: INgxMyDpOptions = environment.datePickerOptions;
+    id: string;
+    isAdmin: boolean;
+    isMyPage = true;
+    files;
 
     constructor(
         private formBuilder: FormBuilder,
         private healthService: HealthService,
         private authService: AuthService,
+        private activatedRoute: ActivatedRoute,
+        private openChatService: OpenChatService,
+        private router: Router,
     ) {
-        this.authService.getUser().subscribe(res => {
-            if (res.success) {
-                this.user = res.data;
-                if (this.user.photo.length > 0) {
-                    this.src = `${environment.server}${this.user.photo}`;
-                }
-                this.buildProfileForm(this.user);
+        this.authService.getUser().subscribe(r => {
+            if (r.success) {
+                this.isAdmin = r.data.role === 0 ? true : false;
+            }
+        });
+        this.activatedRoute.params.subscribe((params: Params) => {
+            this.id = params['id'];
+            if (this.id) {
+                this.isMyPage = false;
+                this.healthService.getUsersById(this.id).subscribe(res => {
+                    this.commonPart(res);
+                });
             } else {
-                throw new Error(JSON.stringify(res.error));
+                this.authService.getUser().subscribe(res => {
+                    this.commonPart(res);
+                });
             }
         });
     }
@@ -79,6 +66,18 @@ export class ProfileComponent implements OnInit {
 
     edit(): void {
         this.editing = true;
+    }
+
+    commonPart(res) {
+        if (res.success) {
+            this.user = res.data;
+            if (this.user.photo.length > 0) {
+                this.src = this.user.photo;
+            }
+            this.buildProfileForm(this.user);
+        } else {
+            throw new Error(JSON.stringify(res.error));
+        }
     }
 
     save(): void {
@@ -105,7 +104,18 @@ export class ProfileComponent implements OnInit {
     onFileChange(file: File) {
         this.healthService.uploadProfilePhoto(file).subscribe(res => {
             if (res.success) {
-                this.src = `${environment.server}${res.data}`;
+                this.user.photo = res.data;
+                this.healthService.editProfile(this.user).subscribe(r => {
+                    if (r.success) {
+                        this.user.photo = res.data;
+                        if (this.user.photo.length > 0) {
+                            this.src = this.user.photo;
+                        }
+                        this.buildProfileForm(this.user);
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                });
             } else {
                 throw new Error(JSON.stringify(res.error));
             }
@@ -130,6 +140,41 @@ export class ProfileComponent implements OnInit {
             'birth': [birth],
             'phone': [phone],
             'location': [location],
+        });
+    }
+
+    get controls() {
+        if (this.isMyPage && !this.editing) {
+            return 'myPage';
+        } else if (this.editing) {
+            return 'edit';
+        } else if (this.isAdmin) {
+            return 'admin';
+        } else if (!this.isAdmin) {
+            return 'user';
+        }
+    }
+
+    openChat() {
+        this.openChatService.change(this.user);
+    }
+
+    deleteFile(file) {
+        console.log(file);
+    }
+
+    delete() {
+        this.healthService.deleteUser(this.user.id).subscribe(res => {
+            if (res.success) {
+                this.router.navigate(
+                    [{ outlets: { 'sidebar': ['clients'] } }],
+                    {
+                        relativeTo: this.activatedRoute.parent,
+                    }
+                );
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
         });
     }
 }

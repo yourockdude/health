@@ -1,6 +1,6 @@
 <div class="profile">
     <div class="image">
-        <img src="assets/images/profile.png" alt="">
+        <img src="{{client.photo}}" alt="">
     </div>
     <div class="info">
         <div>Фамилия {{client.lastName}}</div>
@@ -15,7 +15,7 @@
     <div *ngIf="isAdmin" (click)="deleteClient()">
         <fa [name]="'trash'"></fa>
     </div>
-    <div (click)="openChat()">
+    <div *ngIf="!(role === 0 && client.role === 0)" (click)="openChat()">
         <fa [name]="'envelope-o'"></fa>
     </div>
 </div>

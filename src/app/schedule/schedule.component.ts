@@ -9,19 +9,9 @@ import { AuthService } from '../shared/services/auth.service';
 import { toggleLoader } from '../shared/utils/toggle-loader';
 import { User } from '../shared/models/user';
 
-const colors: any = {
-    red: {
-        primary: '#ad2121',
-        secondary: '#FAE3E3'
-    },
-    blue: {
-        primary: '#1e90ff',
-        secondary: '#D1E8FF'
-    },
-    yellow: {
-        primary: '#e3bc08',
-        secondary: '#FDF1BA'
-    }
+const color: any = {
+    primary: '#20b2aa',
+    secondary: '#20b2aa'
 };
 
 @Component({
@@ -173,7 +163,7 @@ export class ScheduleComponent implements OnInit {
                 title: `${this.user.firstName} ${this.user.lastName}`,
                 start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
                 end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
-                color: colors.red,
+                color: color,
             };
             this.healthService.addEvent(event).subscribe(
                 res => {

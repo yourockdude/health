@@ -20,8 +20,11 @@
             <div *ngIf="isAdmin && editAppointment">
                 редактирование
             </div>
-             <div *ngIf="isAdmin && !editAppointment">
+            <div *ngIf="isAdmin && !editAppointment">
                 добавить нового
+                <input auto-complete [list-formatter]="listFormatter" [value-formatter]="valueFormatter" [match-formatted]="matchFormatted"
+                    [(ngModel)]="clientName" [no-match-found-text]="noMatchFoundText" (valueChanged)="onValueChanged($event)"
+                    [source]="allClients" />
             </div>
             <div class="info">Введите удобное для Вас время</div>
             <div class="time" [formGroup]="newAppointmentForm">

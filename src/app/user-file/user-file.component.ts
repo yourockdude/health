@@ -8,7 +8,6 @@ import {
 import { setIcon } from '../shared/utils/set-icon';
 import { HealthService } from '../shared/services/health.service';
 import { UserFile } from '../shared/models/user-file';
-import { environment } from '../../environments/environment';
 
 @Component({
     moduleId: module.id,
@@ -21,12 +20,13 @@ import { environment } from '../../environments/environment';
 export class UserFileComponent implements OnInit {
     @Input() file: UserFile;
     @Output() deleteFileEvent = new EventEmitter();
+    @Input() isAdmin: boolean;
 
     icon: string;
     view = false;
     src: string;
     extension: string;
-    allowExtensionForView = ['png', 'pdf'];
+    allowExtensionForView = ['png', 'jpg', 'pdf'];
     rename = false;
     delete = false;
     value: string;
@@ -38,43 +38,55 @@ export class UserFileComponent implements OnInit {
     ) { }
 
     ngOnInit(): void {
-        this.src = `${environment.server}${this.file.path}`;
+        this.src = this.file.path;
         this.extension = this.file.name.split('.').pop();
         this.icon = setIcon(this.extension);
         this.originalName = this.getNameWithoutExtension(this.file.originalName);
     }
 
     deleteFile(): void {
-        this.healthService.deleteFile(this.file.id).subscribe(
-            res => {
-                if (res.success) {
-                    this.deleteFileEvent.emit(this.file);
-                } else {
-                    throw new Error(JSON.stringify(res.error));
-                }
-            },
-            (err) => { },
-            () => {
-                this.delete = false;
-                this.flip = !this.flip;
-            });
+        if (this.isAdmin) {
+            console.log('coming soon...');
+            this.delete = false;
+            this.flip = !this.flip;
+        } else {
+            this.healthService.deleteFile(this.file.id).subscribe(
+                res => {
+                    if (res.success) {
+                        this.deleteFileEvent.emit(this.file);
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                (err) => { },
+                () => {
+                    this.delete = false;
+                    this.flip = !this.flip;
+                });
+        }
     }
 
     renameFile(): void {
-        this.healthService.renameFile(this.file.id, `${this.originalName}.${this.extension}`).subscribe(
-            res => {
-                if (res.success) {
-                    this.file.originalName = `${this.originalName}.${this.extension}`;
-                } else {
-                    throw new Error(JSON.stringify(res.error));
+        if (this.isAdmin) {
+            console.log('coming soon...');
+            this.rename = false;
+            this.flip = !this.flip;
+        } else {
+            this.healthService.renameFile(this.file.id, `${this.originalName}.${this.extension}`).subscribe(
+                res => {
+                    if (res.success) {
+                        this.file.originalName = `${this.originalName}.${this.extension}`;
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                (err) => { },
+                () => {
+                    this.rename = false;
+                    this.flip = !this.flip;
                 }
-            },
-            (err) => { },
-            () => {
-                this.rename = false;
-                this.flip = !this.flip;
-            }
-        );
+            );
+        }
     }
 
     openDialog(value: string): void {

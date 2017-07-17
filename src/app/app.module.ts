@@ -15,7 +15,6 @@ import { SidenavModule } from './sidenav/sidenav.module';
 import { DocumentsModule } from './documents/documents.module';
 import { ProfileModule } from './profile/profile.module';
 import { ClientsModule } from './clients/clients.module';
-import { ClientPageModule } from './client-page/client-page.module';
 import { AuthService } from './shared/services/auth.service';
 import { RoleGuard } from './shared/services/role-guard.service';
 import { NavbarModule } from './shared/navbar/navbar.module';
@@ -51,7 +50,6 @@ export function authHttpServiceFactory(
         ScheduleModule,
         ProfileModule,
         ClientsModule,
-        ClientPageModule,
         AuthModule,
         NavbarModule,
         FooterModule,

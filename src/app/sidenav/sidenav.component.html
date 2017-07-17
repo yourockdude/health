@@ -4,11 +4,12 @@
             <img src="/assets/images/profile.png" alt="">
         </div>
         <div class="profile-name">{{user.firstName}} {{user.lastName}}</div>
+        <div class="profile-name">{{user.role === 0 ? 'admin' : 'user'}}</div>
     </div>
 
     <div class="navigation">
         <div [routerLink]="['/sidenav']" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Календарь</div>
-        <div [routerLink]="[{outlets: {sidebar: ['profile']}}]" routerLinkActive="active">Профиль</div>
+        <div [routerLink]="[{outlets: {sidebar: ['profile']}}]" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Профиль</div>
         <div [routerLink]="[{outlets: {sidebar: ['documents']}}]" routerLinkActive="active">Файлы</div>
         <div [routerLink]="[{outlets: {sidebar: ['clients']}}]" routerLinkActive="active">{{isAdmin ? 'Пользователи' : 'Доктора'}}</div>
     </div>

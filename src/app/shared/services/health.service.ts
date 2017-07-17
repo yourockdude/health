@@ -25,6 +25,10 @@ export class HealthService {
         return this.authHttp.post(`${environment.api}/events`, event)
             .map(res => res.json());
     }
+    addEventAsAdmin(event: CalendarEvent, id: string): Observable<CustomResponse> {
+        return this.authHttp.post(`${environment.api}/events/${id}`, event)
+            .map(res => res.json());
+    }
 
     editEvent(event): Observable<CustomResponse> {
         return this.authHttp.put(`${environment.api}/events/${event.ownerId}`, event)

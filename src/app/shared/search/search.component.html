@@ -1,13 +1,9 @@
-<div class="search-container">
-    <div class="search">
-        <div class="query">
-            <div class="search-icon">
-                <fa [name]="'search'"></fa>
-            </div>
-            <input type="text" [(ngModel)]="query" (keyup)="onKeyUp()">
-            <div class="clear-button" (click)="clear()">
-                <fa [name]="'times'"></fa>
-            </div>
-        </div>
+<div class="search">
+    <div class="left">
+        <fa [name]="'search'"></fa>
+    </div>
+    <input type="text" [(ngModel)]="query" (keyup)="onKeyUp()">
+    <div class="right" (click)="clear()">
+        <fa [name]="'times'"></fa>
     </div>
 </div>
