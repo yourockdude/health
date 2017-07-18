@@ -17,7 +17,7 @@
 .container {
     display: flex;
     margin: 0 10%;
-    @media #{$tablet} {
+    @media screen and (max-width: 1400px) {
         margin: initial;
     }
     @media #{$phone} {
@@ -93,13 +93,18 @@
 .button {
     display: flex;
     @include centered();
-    color: lighten($primary-color, 50%);
-    background: lighten($primary-color, 5%);
-    cursor: pointer;
-    height: 40px;
-    &:hover {
-        background: darken($second-color, 5%);
-        color: $white;
+    & div {
+        color: lighten($primary-color, 50%);
+        background: lighten($primary-color, 5%);
+        cursor: pointer;
+        height: 40px;
+        flex: 1;
+        display: flex;
+        @include centered();
+        &:hover {
+            background: darken($second-color, 5%);
+            color: $white;
+        }
     }
 }
 
@@ -112,6 +117,26 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+.choose {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    & div:nth-child(1) {
+        margin: 10px;
+    }
+    & input {
+        height: 25px;
+        background: initial;
+        outline: initial;
+        border: 1px solid $border-color;
+        font-family: Comfortaa;
+        &:focus {
+            border-color: $second-color;
+        }
+    }
 }
 
 // .schedule {

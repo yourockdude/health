@@ -5,7 +5,7 @@
     <div class="info">
         <div>Фамилия {{client.lastName}}</div>
         <div>Имя {{client.firstName}}</div>
-        <div>Отчество {{client.middleName}}</div>
+        <div *ngIf="client.middleName">Отчество {{client.middleName}}</div>
     </div>
 </div>
 <div class="control">

@@ -1,9 +1,10 @@
 <div class="name" *ngIf="user">{{user.firstName}} {{user.lastName}}</div>
 <div class="basic" *ngIf="user">
     <div class="image">
-        <img src="{{src}}" alt="profile image">
+        <div class="spinner" *ngIf="loading"></div>
+        <img src="{{src}}" alt="profile image" *ngIf="!loading">
         <input #profileImage accept="image/jpeg, image/png" type="file" (change)="onFileChange($event.target.files[0])">
-        <div (click)="choosePhoto()" *ngIf="isMyPage">Загрузить</div>
+        <div class="upload" (click)="choosePhoto()" *ngIf="isMyPage && !loading">Загрузить</div>
     </div>
     <div class="info">
         <div class="form" *ngIf="!editing;else editProfile">

@@ -28,6 +28,7 @@ export class DragNDropComponent implements OnInit, OnDestroy {
     forbiddenFiles: string[] = [];
     allowFilesToUpload: File[] = [];
     subscription: Subscription;
+    loading = false;
 
     constructor(
         private dragNDropService: DragNDropService,
@@ -35,6 +36,7 @@ export class DragNDropComponent implements OnInit, OnDestroy {
     ) {
         this.subscription = this.dragNDropService.observable$.subscribe(res => {
             if (res) {
+                this.loading = false;
                 this.allowFilesToUpload = this.forbiddenFiles = [];
             }
         });
@@ -75,6 +77,7 @@ export class DragNDropComponent implements OnInit, OnDestroy {
     }
 
     upload() {
+        this.loading = true;
         this.uploadEvent.emit(this.allowFilesToUpload);
     }
 

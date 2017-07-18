@@ -17,11 +17,13 @@
             </div>
         </div>
         <div class="right" *ngIf="isAuth">
-            <div *ngIf="isAdmin && editAppointment">
-                редактирование
+            <div class="info" *ngIf="isAdmin && editAppointment">
+                Вы редактируете {{editEvent.title}} {{editEvent.start | timeFormat}} - {{editEvent.end | timeFormat}}
             </div>
-            <div *ngIf="isAdmin && !editAppointment">
-                добавить нового
+            <div class="choose" *ngIf="isAdmin && !editAppointment">
+                <div>
+                    Сделать новую запись
+                </div>
                 <input auto-complete [list-formatter]="listFormatter" [value-formatter]="valueFormatter" [match-formatted]="matchFormatted"
                     [(ngModel)]="clientName" [no-match-found-text]="noMatchFoundText" (valueChanged)="onValueChanged($event)"
                     [source]="allClients" />
@@ -34,63 +36,13 @@
                     (focusout)="onFocusOut(false)" placeholder="00:00">
             </div>
             <div class="info" *ngIf="timeValidation">{{timeValidation}}</div>
-            <div class="pay">
+            <div class="pay" *ngIf="!isAdmin">
                 <label><input type="checkbox" id="pay" [checked]="payed" (change)="payed = !payed">Оплатить</label>
             </div>
-            <div class="button" (click)="addEvent()" [ngClass]="{disabled: !allowToSaveEvent}">
-                <div>Записаться</div>
+            <div class="button">
+                <div (click)="addEvent()" [ngClass]="{disabled: !allowToSaveEvent}">Запись</div>
+                <div *ngIf="editAppointment" (click)="cancel()">Отмена</div>
             </div>
         </div>
     </div>
 </ng-template>
-
-<!--<div class="schedule">
-
-</div>
-<ng-template #customOneDayViewTemplate>
-    <div class="one-day-box">
-        <div class="appointment-box" *ngIf="isAuth">
-        </div>
-        <ng-template #appointment>
-            <div class="appointment">
-                <div class="clients-box" *ngIf="isAdmin && !editAppointment">
-                    <div>
-                        Выберите клиента
-                    </div>
-                    <input auto-complete [list-formatter]="listFormatter" [value-formatter]="valueFormatter" [match-formatted]="matchFormatted"
-                        [(ngModel)]="clientName" [no-match-found-text]="noMatchFoundText" (valueChanged)="onValueChanged($event)"
-                        [source]="allClients" />
-                </div>
-                <div class="clients-box" *ngIf="isAdmin && editAppointment">
-                    <div>Вы редактируете {{editEvent?.start | timeFormat}} - {{editEvent?.end | timeFormat}} {{editEvent?.title}}</div>
-                </div>
-                <div class="info-box" *ngIf="!isAdmin">Введите удобное для Вас время приёма</div>
-                <div class="time-box" [formGroup]="newAppointmentForm">
-                    <div class="start-time">
-                        <input type="text" formControlName="start" [textMask]="{mask: mask(newAppointmentForm.value.start), keepCharPositions:true}"
-                            (focusout)="onFocusOut(true)" placeholder="00:00">
-                    </div>
-                    <div class="end-time">
-                        <input type="text" formControlName="end" [textMask]="{mask: mask(newAppointmentForm.value.end), keepCharPositions:true}"
-                            (focusout)="onFocusOut(false)" placeholder="00:00">
-                    </div>
-                </div>
-                <div class="error-box">
-                    <div class="error">{{timeValidation}}</div>
-                </div>
-                <div class="pay-box" *ngIf="!isAdmin">
-                    <label><input type="checkbox" id="pay" [checked]="payed" (change)="payed = !payed">Оплатить</label>
-                </div>
-                <div class="info-box" *ngIf="!payed && !isAdmin">Чтобы продолжить Вам необхдимо оплатить приём</div>
-                <div class="control-box">
-                    <div class="control-button" (click)="addEvent()" [ngClass]="{disabled: !allowToSaveEvent}">
-                        <div>Записаться</div>
-                    </div>
-                    <div class="control-button" (click)="cancel()">
-                        <div>Отмена</div>
-                    </div>
-                </div>
-            </div>
-        </ng-template>
-    </div>
-</ng-template>-->

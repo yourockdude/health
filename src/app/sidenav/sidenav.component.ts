@@ -6,6 +6,7 @@ import { OpenSidenavService } from '../shared/services/open-sidenav.service';
 import { environment } from 'environments/environment';
 import { OpenChatService } from '../shared/services/open-chat.service';
 import { ReadMessageService } from '../shared/services/read-message.service';
+import { ChangePhototService } from '../shared/services/change-photo.service';
 
 @Component({
     moduleId: module.id,
@@ -14,6 +15,7 @@ import { ReadMessageService } from '../shared/services/read-message.service';
     styleUrls: ['sidenav.component.scss'],
     providers: [
         ReadMessageService,
+        ChangePhototService,
     ]
 })
 
@@ -30,12 +32,13 @@ export class SidenavComponent implements OnInit {
         private router: Router,
         private authService: AuthService,
         private readMessageService: ReadMessageService,
-        // private openSidenavService: OpenSidenavService,
         private openChatService: OpenChatService,
+        private changePhototService: ChangePhototService,
     ) {
-        // this.openSidenavService.observable$.subscribe(res => {
-        //     this.isOpen = res;
-        // });
+        changePhototService.observable$.subscribe(res => {
+            this.src = res;
+        });
+
         readMessageService.chatToNavbarObservable$.subscribe(res => {
             const index = this.unreadMessages.map(u => u.fromId).indexOf(res);
             if (res && index > -1) {
@@ -46,7 +49,7 @@ export class SidenavComponent implements OnInit {
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.user = res.data;
-                this.src = `${environment.server}${this.user.photo}`;
+                this.src = this.user.photo;
                 this.isAdmin = this.user.role === 0 ? true : false;
             }
         });
@@ -62,5 +65,4 @@ export class SidenavComponent implements OnInit {
     openChat() {
         this.openChatService.change();
     }
-
 }

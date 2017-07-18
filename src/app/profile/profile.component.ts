@@ -12,6 +12,7 @@ import { User } from '../shared/models/user';
 import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { environment } from 'environments/environment';
 import { OpenChatService } from '../shared/services/open-chat.service';
+import { ChangePhototService } from '../shared/services/change-photo.service';
 
 @Component({
     moduleId: module.id,
@@ -33,6 +34,7 @@ export class ProfileComponent implements OnInit {
     isAdmin: boolean;
     isMyPage = true;
     files;
+    loading = false;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -41,6 +43,7 @@ export class ProfileComponent implements OnInit {
         private activatedRoute: ActivatedRoute,
         private openChatService: OpenChatService,
         private router: Router,
+        private changePhototService: ChangePhototService,
     ) {
         this.authService.getUser().subscribe(r => {
             if (r.success) {
@@ -102,6 +105,7 @@ export class ProfileComponent implements OnInit {
     }
 
     onFileChange(file: File) {
+        this.loading = true;
         this.healthService.uploadProfilePhoto(file).subscribe(res => {
             if (res.success) {
                 this.user.photo = res.data;
@@ -112,6 +116,8 @@ export class ProfileComponent implements OnInit {
                             this.src = this.user.photo;
                         }
                         this.buildProfileForm(this.user);
+                        this.changePhototService.change(this.src);
+                        this.loading = false;
                     } else {
                         throw new Error(JSON.stringify(res.error));
                     }

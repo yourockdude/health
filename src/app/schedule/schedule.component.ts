@@ -23,7 +23,6 @@ const color: any = {
 })
 
 export class ScheduleComponent implements OnInit {
-    clientId: string;
 
     // --------------------------begin calendar options ------------------------
     view = 'month';
@@ -52,6 +51,7 @@ export class ScheduleComponent implements OnInit {
     editAppointment = false;
     editEvent;
     reservedTime = [];
+    client: User;
 
     // --------------------------begin autocomplite options ------------------------
     allClients: User[];
@@ -157,7 +157,39 @@ export class ScheduleComponent implements OnInit {
                 }
             });
         } else if (this.isAdmin) {
-            console.log('добавление админом нового события');
+            const event = {
+                title: `${this.client.firstName} ${this.client.lastName}`,
+                start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
+                end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
+                color: color,
+            };
+            this.healthService.addEventAsAdmin(event, this.client.id).subscribe(
+                res => {
+                    if (res.success) {
+                        this.showAppointmentForm = false;
+                        this.fetchEvents();
+                        this.oneDayEvents.push({
+                            id: res.data.id,
+                            title: event.title,
+                            start: event.start,
+                            end: event.end
+                        });
+                        this.oneDayEvents.sort((a, b) => {
+                            return a.start.getTime() - b.start.getTime();
+                        });
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                err => {
+                    throw new Error(JSON.stringify(err));
+                },
+                () => {
+                    this.clientName = '';
+                    this.buildForm();
+                }
+            );
+            console.log(event);
         } else {
             const event = {
                 title: `${this.user.firstName} ${this.user.lastName}`,
@@ -227,7 +259,6 @@ export class ScheduleComponent implements OnInit {
     }
 
     cancel(): void {
-        this.showAppointmentForm = false;
         this.editAppointment = false;
         this.buildForm();
         this.payed = false;
@@ -350,7 +381,7 @@ export class ScheduleComponent implements OnInit {
     }
 
     onValueChanged(user: User): void {
-        this.clientId = user.id;
+        this.client = user;
         console.log(user);
     }
 }
