@@ -12,7 +12,7 @@
     <div class="button" [routerLink]="['/sidenav']" routerLinkActive="active">Расписание</div>
     <div class="button" [routerLink]="['/prices']" routerLinkActive="active">Цены</div>
 </div>
-<div class="right" [ngClass.xs]="{hide: hide || path === '/auth'}" [ngClass]="{'hide': path === '/auth'}">
+<div class="right" [ngClass.xs]="{hide: hide || !show}" [ngClass]="{'hide': !show}">
     <div class="button" (click)="onAuthClick()">
         {{isAuth ? 'Выйти' : 'Войти'}}
     </div>

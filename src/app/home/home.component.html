@@ -1,0 +1,33 @@
+<div class="appointment">
+    <div [routerLink]="['/auth']">Войти</div>
+</div>
+<div class="middle">
+    <div class="content">
+        <div class="title">
+            health
+        </div>
+        <div class="description">
+            Lorem ipsum dolor sit amet, commune assentior te his. Ne qui utamur copiosae, mutat assum no pro, propriae detraxit definitiones
+            per ex. Vide sonet abhorreant eam ei, id vel ignota cetero nostrud. Idque error ullamcorper mel id, eros scripserit
+            ne nec. Est id aeterno imperdiet abhorreant.
+        </div>
+    </div>
+</div>
+<div class="bottom">
+    <div class="tabs">
+        <div (click)="currentTab='doc'">Доктора</div>
+        <div (click)="currentTab='price'">Цены</div>
+    </div>
+    <div class="content" *ngIf="currentTab === 'doc'">
+        <div class="doc" *ngFor="let doc of doctors; let index=index" [routerLink]="['/doctor', doc.id]">
+            <img src="assets/images/avatar{{index}}.png" alt="">
+            <div>
+                <h4><b>{{doc.firstName}} {{doc.lastName}}</b></h4>
+                <p>Терапевт</p>
+            </div>
+        </div>
+    </div>
+    <div class="content" *ngIf="currentTab === 'price'">
+        Цены на услуги
+    </div>
+</div>

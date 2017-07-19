@@ -1,10 +1,17 @@
 @font-face {
     font-family: 'Comfortaa';
     src: url('/assets/fonts/subset-Comfortaa.eot');
-    src: url('/assets/fonts/subset-Comfortaa.eot?#iefix') format('embedded-opentype'), 
-		url('/assets/fonts/subset-Comfortaa.woff2') format('woff2'), 
-		url('/assets/fonts/subset-Comfortaa.woff') format('woff'), 
-		url('/assets/fonts/subset-Comfortaa.ttf') format('truetype');
+    src: url('/assets/fonts/subset-Comfortaa.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/subset-Comfortaa.woff2') format('woff2'), url('/assets/fonts/subset-Comfortaa.woff') format('woff'), url('/assets/fonts/subset-Comfortaa.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
+}
+
+@font-face {
+	font-family: 'Rubik';
+	src: url('/assets/fonts/Rubik-Regular.eot');
+	src: url('/assets/fonts/Rubik-Regular.eot?#iefix') format('embedded-opentype'),
+		url('/assets/fonts/Rubik-Regular.woff') format('woff'),
+		url('/assets/fonts/Rubik-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
 }

@@ -5,8 +5,8 @@
 
 export const environment = {
     production: false,
-    api: 'http://yourockhosp.herokuapp.com/yourockhosp_api',
-    server: 'http://yourockhosp.herokuapp.com/',
+    api: 'http://localhost:3000/yourockhosp_api',
+    server: 'http://localhost:3000/',
     allowedFiles: [
         'xls',
         'xlsx',

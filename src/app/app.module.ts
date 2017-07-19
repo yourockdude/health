@@ -22,6 +22,9 @@ import { GlobalErrorHandlerService } from './shared/services/global-error-handle
 import { FooterModule } from './shared/footer/footer.module';
 import { AuthHttp, AuthConfig } from 'angular2-jwt';
 import { ChatWindowModule } from './shared/chat-window/chat-window.module';
+import { HomeModule } from './home/home.module';
+import { DoctorModule } from './doctor/doctor.module';
+import { IntermediateModule } from './intermediate/intermediate.module';
 
 export function authHttpServiceFactory(
     http: Http,
@@ -53,6 +56,9 @@ export function authHttpServiceFactory(
         AuthModule,
         NavbarModule,
         FooterModule,
+        HomeModule,
+        DoctorModule,
+        IntermediateModule,
         ChatWindowModule,
     ],
     exports: [

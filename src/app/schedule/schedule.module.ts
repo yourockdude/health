@@ -10,6 +10,7 @@ import { CalendarHeaderComponent } from './calendar-header/calendar-header.compo
 import { TextMaskModule } from 'angular2-text-mask';
 import { EventModule } from '../event/event.module';
 import { NguiAutoCompleteModule } from '@ngui/auto-complete';
+import { ProfileGuard } from '../shared/services/profile-guard.service';
 
 @NgModule({
     imports: [
@@ -25,6 +26,6 @@ import { NguiAutoCompleteModule } from '@ngui/auto-complete';
         ScheduleComponent,
         CalendarHeaderComponent,
     ],
-    providers: [AuthGuard],
+    providers: [AuthGuard, ProfileGuard],
 })
 export class ScheduleModule { }

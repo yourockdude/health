@@ -1,0 +1,40 @@
+<div class="home">
+    <div [routerLink]="['/home']">Главная</div>
+</div>
+
+<div class="container" *ngIf="user">
+    <div class="image" (click)="choosePhoto()">
+        <img src="{{src}}" alt="profile image" *ngIf="!loading">
+        <input #profileImage accept="image/jpg, image/png" type="file" (change)="onFileChange($event.target.files[0])">
+    </div>
+    <form [formGroup]="form">
+        <div>
+            <div>
+                Отчество
+            </div>
+            <div>
+                <input type="" name="" value="" formControlName="middleName">
+            </div>
+        </div>
+        <div>
+            <div>
+                Телефон
+            </div>
+            <div>
+                <input type="" name="" value="" formControlName="phone">
+            </div>
+        </div>
+        <div>
+            <div>
+                Адрес
+            </div>
+            <div>
+                <input type="" name="" value="" formControlName="location">
+            </div>
+        </div>
+    </form>
+</div>
+
+<div class="submit" *ngIf="user">
+    <div (click)="updateProfile()" [ngClass]="{disabled: isDisabled}">Продолжить</div>
+</div>

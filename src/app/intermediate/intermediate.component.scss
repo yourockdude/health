@@ -1,0 +1,52 @@
+.home,
+.submit {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    & div {
+        background: #ffdb4d;
+        height: 50px;
+        width: 150px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.home {
+    justify-content: flex-end;
+}
+
+.submit {
+    justify-content: center;
+}
+
+.container {
+    max-width: 800px;
+    display: flex;
+    margin: auto;
+}
+
+.image {
+    width: 300px;
+    margin-right: 20px;
+    & input {
+        display: none;
+    }
+    & img {
+        width: 100%;
+    }
+}
+
+.disabled {
+    cursor: context-menu;
+    opacity: 0.3;
+    pointer-events: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}

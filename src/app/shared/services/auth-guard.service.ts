@@ -8,7 +8,7 @@ import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    authPath = '';
+    authPath = 'auth';
 
     constructor(
         private authService: AuthService,

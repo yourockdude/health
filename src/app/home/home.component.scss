@@ -1,0 +1,84 @@
+@import '../../assets/styles/fonts.scss';
+$background-color: #00abc9;
+:host {
+    flex: 1;
+    font-family: Rubik;
+}
+
+.auth {
+    height: 70px;
+    display: flex
+}
+
+.top {
+    width: 100vw;
+    & img {
+        width: 100%;
+    }
+}
+
+.tabs {
+    display: flex;
+    margin: 20px;
+    & div {
+        margin: 5px;
+        cursor: pointer;
+    }
+}
+
+.bottom,
+.middle {
+    display: flex;
+    justify-content: center;
+}
+
+.bottom {
+    flex-direction: column;
+    align-items: center;
+}
+
+.content {
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+}
+
+.middle {
+    & .content {
+        flex-direction: column;
+    }
+}
+
+.doc {
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    max-width: 250px;
+    & img {
+        width: 100%;
+    }
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+    & div {
+        padding: 2px 16px;
+    }
+}
+
+.home,
+.appointment {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    & div {
+        background: #ffdb4d;
+        height: 50px;
+        width: 150px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

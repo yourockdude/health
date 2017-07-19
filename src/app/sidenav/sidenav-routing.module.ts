@@ -9,11 +9,13 @@ import { ClientsComponent } from '../clients/clients.component';
 
 import { AuthGuard } from '../shared/services/auth-guard.service';
 import { RoleGuard } from '../shared/services/role-guard.service';
+import { ProfileGuard } from '../shared/services/profile-guard.service';
 
 const routes: Routes = [
     {
         path: 'sidenav',
         component: SidenavComponent,
+        canActivate: [ProfileGuard],
         children: [
             {
                 path: '',

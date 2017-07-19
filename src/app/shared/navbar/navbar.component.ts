@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, RoutesRecognized } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { JwtHelper } from 'angular2-jwt';
 import { MessagesService } from '../services/messages.service';
@@ -34,10 +34,8 @@ export class NavbarComponent implements OnInit {
         private passUserService: PassUserService,
         private router: Router,
     ) {
-        this.router.events.subscribe((val) => {
-            if (val instanceof NavigationEnd) {
-                this.path = val.url;
-            }
+        this.router.events.subscribe((res: RoutesRecognized) => {
+            this.path = res.url;
         });
 
         passUserService.observable$.subscribe(res => {
@@ -50,6 +48,11 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit(): void { }
+
+    get show() {
+        console.log(this.path);
+        return this.path === '/auth' ? true : false;
+    }
 
     openHeaderNav() {
         this.hide = this.hide ? false : true;

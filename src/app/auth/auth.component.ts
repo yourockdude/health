@@ -236,7 +236,28 @@ export class AuthComponent implements OnInit {
     saveTokenAndRedirect(token: string) {
         localStorage.setItem('token', token);
         this.passUserService.change(true);
-        this.router.navigate(['/sidenav']);
+        if (this.isSignIn) {
+            this.authService.getUser().subscribe(res => {
+                if (res.success) {
+                    const user: User = res.data;
+                    const requiredField = [
+                        user.middleName,
+                        user.gender,
+                        user.phone,
+                        user.photo,
+                    ];
+                    if (requiredField.includes('')) {
+                        this.router.navigate(['/intermediate']);
+                    } else {
+                        this.router.navigate(['/sidenav']);
+                    }
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            });
+        } else {
+            this.router.navigate(['/intermediate']);
+        }
     }
 
     disabledSendingButton() {

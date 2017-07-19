@@ -1,7 +1,7 @@
 @import '../../../assets/styles/fonts.scss';
 @import '../../../assets/styles/variables.scss';
 :host {
-    font-family: Comfortaa;
+    font-family: Rubik;
     display: flex;
     position: fixed;
     z-index: 1;
@@ -44,7 +44,7 @@
         box-sizing: border-box;
         background: initial;
         outline: initial;
-        font-family: Comfortaa;
+        font-family: Rubik;
         color: white;
         border: 1px solid $white;
         &:focus {
@@ -164,7 +164,7 @@
         box-sizing: border-box;
         outline: initial;
         resize: none;
-        font-family: Comfortaa;
+        font-family: Rubik;
         width: 100%;
         background: initial;
         color: $white;

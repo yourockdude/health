@@ -38,7 +38,7 @@ export class AuthService {
 
     signOut(): void {
         localStorage.removeItem('token');
-        // this.router.navigate([this.authorizationPath]);
+        this.router.navigate(['home']);
     }
 
     getUser(): Observable<CustomResponse> {

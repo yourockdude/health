@@ -1,6 +1,6 @@
 <div class="main">
 
-    <health-navbar></health-navbar>
+    <health-navbar *ngIf="show"></health-navbar>
 
     <health-chat-window 
         *ngIf="isOpen" 
@@ -12,6 +12,6 @@
 
     <router-outlet></router-outlet>
 
-    <health-footer></health-footer>
+    <health-footer *ngIf="show"></health-footer>
 
 </div>

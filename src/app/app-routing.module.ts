@@ -5,7 +5,7 @@ import { AuthGuard } from './shared/services/auth-guard.service';
 const routes: Routes = [
     {
         path: '',
-        redirectTo: 'sidenav',
+        redirectTo: 'home',
         canActivate: [AuthGuard],
         pathMatch: 'full'
     },
@@ -13,11 +13,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, [{ useHash: true }
-            /* define app module routes here, e.g., to lazily load a module
-               (do not place feature module routes here, use an own -routing.module.ts in the feature instead)
-             */
-        ])
+        RouterModule.forRoot(routes)
     ],
     exports: [RouterModule]
 })

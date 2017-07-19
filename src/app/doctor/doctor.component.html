@@ -1,0 +1,19 @@
+<div class="home">
+    <div [routerLink]="['/home']">Главная</div>
+</div>
+<div *ngIf="doctor" class="doctor">
+    <div class="title">{{doctor.firstName}} {{doctor.lastName}}</div>
+    <div class="profile">
+        <img src="{{doctor.photo}}" alt="">
+        <div class="info">
+            <div>Терапевт</div>
+            Lorem ipsum dolor sit amet, commune assentior te his. Ne qui utamur copiosae, mutat assum no pro, propriae detraxit definitiones
+            per ex. Vide sonet abhorreant eam ei, id vel ignota cetero nostrud. Idque error ullamcorper mel id, eros scripserit
+            ne nec. Est id aeterno imperdiet abhorreant.
+        </div>
+    </div>
+</div>
+
+<div class="appointment">
+    <div [routerLink]="['/auth']">Записаться</div>
+</div>

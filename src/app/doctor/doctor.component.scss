@@ -1,0 +1,61 @@
+:host {
+    display: flex;
+    flex-direction: column;
+}
+
+.home,
+.appointment {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    & div {
+        background: #ffdb4d;
+        height: 50px;
+        width: 150px;
+        margin: 10px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+.home {
+    justify-content: flex-end;
+}
+
+.appointment {
+    justify-content: center;
+}
+
+.doctor {
+    max-width: 800px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.profile {
+    display: flex;
+    & img {
+        max-width: 200px;
+        max-height: 200px;
+        height: auto;
+        margin-right: 20px;
+    }
+}
+
+.info {
+    & div {
+        font-size: 20px;
+        font-weight: bold;
+    }
+}

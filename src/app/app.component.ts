@@ -10,6 +10,7 @@ import { OpenChatService } from './shared/services/open-chat.service';
 import { PassUserService } from './shared/services/pass-user.service';
 import { OpenSidenavService } from './shared/services/open-sidenav.service';
 import { NotificationService } from './shared/services/notification.service';
+import { Router, NavigationEnd, RoutesRecognized } from '@angular/router';
 
 @Component({
     selector: 'health-root',
@@ -35,6 +36,7 @@ export class AppComponent implements OnInit {
     currentUser;
     jwtHelper = new JwtHelper();
     messages = [];
+    show = true;
 
     constructor(
         private authService: AuthService,
@@ -42,7 +44,21 @@ export class AppComponent implements OnInit {
         private socketService: SocketService,
         private messagesService: MessagesService,
         private openChatService: OpenChatService,
+        private router: Router,
     ) {
+        router.events.subscribe((res: RoutesRecognized) => {
+            const url = res.url.split('/')[1];
+            if (url === '' ||
+                url.includes('home') ||
+                url.includes('doctor') ||
+                url.includes('intermediate') ||
+                url.includes('auth')
+            ) {
+                this.show = false;
+            } else {
+                this.show = true;
+            }
+        });
         openChatService.observable$.subscribe(res => {
             this.interlocutor = res;
             this.openChat();
@@ -99,7 +115,6 @@ export class AppComponent implements OnInit {
     }
 
     close() {
-        console.log('adad')
         this.isOpen = false;
     }
 

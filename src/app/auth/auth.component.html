@@ -1,4 +1,9 @@
 <div class="auth-form">
+    <div class="logo">
+        <div [routerLink]="['/home']">
+            company<span>logo</span>
+        </div>
+    </div>
     <div class="switch">
         <div class="button" (click)="switch('signIn')" [ngClass]="{active: isSignIn}">Войти</div>
         <div class="button" (click)="switch('signUp')" [ngClass]="{active: !isSignIn}">Регистрация</div>
