@@ -101,5 +101,5 @@
     </ul>
 </div>
 <div class="files" *ngIf="user && isAdmin && !isMyPage">
-    <health-user-file *ngFor="let file of user.files" (deleteFileEvent)="deleteFile($event)" [file]="file" [isAdmin]="true"></health-user-file>
+    <health-user-file *ngFor="let file of user.files" (deleteFileEvent)="deleteFile($event)" [file]="file" [isAdmin]="true" [user]="user"></health-user-file>
 </div>

@@ -50,8 +50,7 @@ export class NavbarComponent implements OnInit {
     ngOnInit(): void { }
 
     get show() {
-        console.log(this.path);
-        return this.path === '/auth' ? true : false;
+        return this.path === '/auth' ? false : true;
     }
 
     openHeaderNav() {

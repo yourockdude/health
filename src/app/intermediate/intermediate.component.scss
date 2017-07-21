@@ -32,6 +32,11 @@
 .image {
     width: 300px;
     margin-right: 20px;
+    cursor: pointer;
+    border: 1px solid gray;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     & input {
         display: none;
     }
@@ -49,4 +54,36 @@
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
+}
+
+.doc-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.doctors {
+    display: flex;
+    justify-content: space-around;
+    width: 800px;
+}
+
+.doc {
+    cursor: pointer;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+    max-width: 250px;
+    & img {
+        width: 100%;
+    }
+    &:hover {
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    }
+    & div {
+        padding: 2px 16px;
+    }
+}
+
+.active {
+    background: gray;
 }

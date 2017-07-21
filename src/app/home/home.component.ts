@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HealthService } from '../shared/services/health.service';
 import { User } from '../shared/models/user';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
     selector: 'health-home',
@@ -13,6 +14,7 @@ export class HomeComponent implements OnInit {
     currentTab = 'doc';
     constructor(
         private healthService: HealthService,
+        private authService: AuthService,
     ) {
         this.healthService.getAdmins().subscribe(res => {
             if (res.success) {
@@ -24,4 +26,11 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    get nextRoute() {
+        if (this.authService.isAuth()) {
+            return ['/sidenav'];
+        }
+        return ['/auth'];
+    }
 }

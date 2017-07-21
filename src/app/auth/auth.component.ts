@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../shared/services/auth.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FacebookService, InitParams, LoginResponse } from 'ngx-facebook';
 import { environment } from '../../environments/environment';
 import { AuthService as GoogleService } from 'angular2-social-login';
 import { User } from '../shared/models/user';
 import { ValidationService } from '../shared/services/validation.service';
 import { PassUserService } from '../shared/services/pass-user.service';
+import { HealthService } from '../shared/services/health.service';
 declare const VK;
 
 @Component({
@@ -25,6 +26,8 @@ export class AuthComponent implements OnInit {
     info = '';
     isSocialSignUp = false;
     currentSocialId;
+    id: string;
+    doctor: User;
 
     constructor(
         private formBuilder: FormBuilder,
@@ -34,7 +37,19 @@ export class AuthComponent implements OnInit {
         private googleService: GoogleService,
         private validationService: ValidationService,
         private passUserService: PassUserService,
+        private activatedRoute: ActivatedRoute,
+        private healthService: HealthService,
     ) {
+        this.id = this.activatedRoute.snapshot.params.id;
+        if (this.id) {
+            this.healthService.getUsersById(this.id).subscribe(res => {
+                if (res.success) {
+                    this.doctor = res.data;
+                } else {
+                    throw new Error(JSON.stringify(res.error));
+                }
+            });
+        }
         this.buildSignInForm({});
         this.buildSignUpForm({});
         const initParams: InitParams = {
@@ -79,6 +94,7 @@ export class AuthComponent implements OnInit {
             'gId': [gId],
             'fId': [fId],
             'vId': [vId],
+            'doctors': [],
         }, {
                 validator: ValidationService.confirmPasswordValidator,
             });
@@ -124,6 +140,7 @@ export class AuthComponent implements OnInit {
 
     signUp() {
         this.signUpForm.value.role = 1;
+        this.signUpForm.value.doctors = [this.doctor];
         this.authService.signUp(this.signUpForm.value).subscribe(res => {
             if (res.success) {
                 this.saveTokenAndRedirect(res.data);
@@ -236,28 +253,24 @@ export class AuthComponent implements OnInit {
     saveTokenAndRedirect(token: string) {
         localStorage.setItem('token', token);
         this.passUserService.change(true);
-        if (this.isSignIn) {
-            this.authService.getUser().subscribe(res => {
-                if (res.success) {
-                    const user: User = res.data;
-                    const requiredField = [
-                        user.middleName,
-                        user.gender,
-                        user.phone,
-                        user.photo,
-                    ];
-                    if (requiredField.includes('')) {
-                        this.router.navigate(['/intermediate']);
-                    } else {
-                        this.router.navigate(['/sidenav']);
-                    }
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                const user: User = res.data;
+                const requiredField = [
+                    user.middleName,
+                    user.gender,
+                    user.phone,
+                    user.photo,
+                ];
+                if (requiredField.includes('') && user.role === 1) {
+                    this.router.navigate(['/intermediate', this.id ? this.id : '']);
                 } else {
-                    throw new Error(JSON.stringify(res.error));
+                    this.router.navigate(['/sidenav']);
                 }
-            });
-        } else {
-            this.router.navigate(['/intermediate']);
-        }
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
     }
 
     disabledSendingButton() {

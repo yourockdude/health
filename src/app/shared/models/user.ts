@@ -17,4 +17,5 @@ export class User {
     fId?: string;
     vId?: string;
     gId?: string;
+    doctors?: User[];
 }

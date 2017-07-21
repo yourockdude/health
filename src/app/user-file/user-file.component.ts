@@ -8,6 +8,7 @@ import {
 import { setIcon } from '../shared/utils/set-icon';
 import { HealthService } from '../shared/services/health.service';
 import { UserFile } from '../shared/models/user-file';
+import { User } from '../shared/models/user';
 
 @Component({
     moduleId: module.id,
@@ -21,6 +22,7 @@ export class UserFileComponent implements OnInit {
     @Input() file: UserFile;
     @Output() deleteFileEvent = new EventEmitter();
     @Input() isAdmin: boolean;
+    @Input() user: User;
 
     icon: string;
     view = false;
@@ -46,9 +48,19 @@ export class UserFileComponent implements OnInit {
 
     deleteFile(): void {
         if (this.isAdmin) {
-            console.log('coming soon...');
-            this.delete = false;
-            this.flip = !this.flip;
+            this.healthService.deleteFileAsAdmin(this.user.id, this.file.id).subscribe(
+                res => {
+                    if (res.success) {
+                        this.deleteFileEvent.emit(this.file);
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                (err) => { },
+                () => {
+                    this.delete = false;
+                    this.flip = !this.flip;
+                });
         } else {
             this.healthService.deleteFile(this.file.id).subscribe(
                 res => {
@@ -68,9 +80,20 @@ export class UserFileComponent implements OnInit {
 
     renameFile(): void {
         if (this.isAdmin) {
-            console.log('coming soon...');
-            this.rename = false;
-            this.flip = !this.flip;
+            this.healthService.renameFileAsAdmin(this.user.id, this.file.id, `${this.originalName}.${this.extension}`).subscribe(
+                res => {
+                    if (res.success) {
+                        this.file.originalName = `${this.originalName}.${this.extension}`;
+                    } else {
+                        throw new Error(JSON.stringify(res.error));
+                    }
+                },
+                (err) => { },
+                () => {
+                    this.rename = false;
+                    this.flip = !this.flip;
+                }
+            );
         } else {
             this.healthService.renameFile(this.file.id, `${this.originalName}.${this.extension}`).subscribe(
                 res => {

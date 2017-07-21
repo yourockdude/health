@@ -13,6 +13,7 @@ import { INgxMyDpOptions } from 'ngx-mydatepicker';
 import { environment } from 'environments/environment';
 import { OpenChatService } from '../shared/services/open-chat.service';
 import { ChangePhototService } from '../shared/services/change-photo.service';
+import { UserFile } from '../shared/models/user-file';
 
 @Component({
     moduleId: module.id,
@@ -165,8 +166,8 @@ export class ProfileComponent implements OnInit {
         this.openChatService.change(this.user);
     }
 
-    deleteFile(file) {
-        console.log(file);
+    deleteFile(file: UserFile): void {
+        this.user.files.splice(this.user.files.indexOf(file), 1);
     }
 
     delete() {

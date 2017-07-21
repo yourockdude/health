@@ -22,4 +22,5 @@ export class CalendarEvent {
     };
     draggable?: boolean;
     ownerId?: string;
+    doctorId: string;
 };

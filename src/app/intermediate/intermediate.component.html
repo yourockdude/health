@@ -4,7 +4,8 @@
 
 <div class="container" *ngIf="user">
     <div class="image" (click)="choosePhoto()">
-        <img src="{{src}}" alt="profile image" *ngIf="!loading">
+        <div *ngIf="!src">Загрузить фото</div>
+        <img src="{{src}}" alt="profile image" *ngIf="src">
         <input #profileImage accept="image/jpg, image/png" type="file" (change)="onFileChange($event.target.files[0])">
     </div>
     <form [formGroup]="form">
@@ -33,6 +34,19 @@
             </div>
         </div>
     </form>
+</div>
+
+<div class="doc-container">
+    Выберите хотябы одного доктора:
+    <div class="doctors">
+        <div class="doc" *ngFor="let doc of doctors; let index=index" (click)="onDocClick(doc)" [ngClass]="{active: selectedDoctors.includes(doc)}">
+            <img src="assets/images/avatar{{index}}.png" alt="">
+            <div>
+                <h4><b>{{doc.firstName}} {{doc.lastName}}</b></h4>
+                <p>Терапевт</p>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="submit" *ngIf="user">

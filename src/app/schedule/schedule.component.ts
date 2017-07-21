@@ -52,6 +52,10 @@ export class ScheduleComponent implements OnInit {
     editEvent;
     reservedTime = [];
     client: User;
+    userDoctors: User[];
+    selectedDoctorId: string;
+    allDoctors: User[] = [];
+    isOpenDoctorList = false;
 
     // --------------------------begin autocomplite options ------------------------
     allClients: User[];
@@ -74,25 +78,35 @@ export class ScheduleComponent implements OnInit {
         private formBuilder: FormBuilder,
         private authService: AuthService,
     ) {
-        if (this.isAuth) {
-            this.authService.getUser().subscribe(res => {
-                if (res.success) {
-                    this.user = res.data;
-                    this.isAdmin = res.data.role === 0 ? true : false;
-                    if (this.isAdmin) {
-                        this.healthService.getClients().subscribe(r => {
-                            if (r.success) {
-                                this.allClients = r.data;
-                            } else {
-                                throw new Error(JSON.stringify(r.error));
-                            }
-                        });
-                    }
+        this.authService.getUser().subscribe(res => {
+            if (res.success) {
+                this.user = res.data;
+                this.userDoctors = this.user.doctors;
+                this.isAdmin = res.data.role === 0 ? true : false;
+                if (this.isAdmin) {
+                    this.fetchEvents(this.user.id);
+                    this.healthService.getClients().subscribe(r => {
+                        if (r.success) {
+                            this.allClients = r.data;
+                        } else {
+                            throw new Error(JSON.stringify(r.error));
+                        }
+                    });
                 } else {
-                    throw new Error(JSON.stringify(res.error));
+                    this.selectedDoctorId = this.user.doctors[0].id;
+                    this.fetchEvents(this.selectedDoctorId);
                 }
-            });
-        }
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
+        this.healthService.getAdmins().subscribe(res => {
+            if (res.success) {
+                this.allDoctors = res.data;
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
         this.selectDay = (day: CalendarMonthViewDay): void => {
             if (this.selectedDay && day.date.getTime() === this.selectedDay.date.getTime()) {
                 day.cssClass = 'cal-day-selected';
@@ -102,7 +116,6 @@ export class ScheduleComponent implements OnInit {
                 day.cssClass = 'cal-day-disabled';
             }
         };
-        this.fetchEvents();
         this.buildForm();
     }
 
@@ -120,14 +133,14 @@ export class ScheduleComponent implements OnInit {
         }
     }
 
-    fetchEvents(): void {
+    fetchEvents(id: string): void {
         this.healthService.getEvents().subscribe(res => {
             if (res.success) {
                 this.events = res.data.map(result => {
                     result.start = new Date(result.start);
                     result.end = new Date(result.end);
                     return result;
-                });
+                }).filter(e => e.doctorId === id);
                 this.events.sort((a, b) => {
                     return a.start.getTime() - b.start.getTime();
                 });
@@ -150,8 +163,8 @@ export class ScheduleComponent implements OnInit {
             this.editEvent.end = this.combineDate(this.newAppointmentForm.value.end, this.viewDate);
             this.healthService.editEvent(this.editEvent).subscribe(res => {
                 if (res.success) {
-                    this.showAppointmentForm = false;
-                    console.log(res.data);
+                    this.editAppointment = false;
+                    this.buildForm();
                 } else {
                     throw new Error(JSON.stringify(res.error));
                 }
@@ -162,12 +175,13 @@ export class ScheduleComponent implements OnInit {
                 start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
                 end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
                 color: color,
+                doctorId: this.user.id,
             };
             this.healthService.addEventAsAdmin(event, this.client.id).subscribe(
                 res => {
                     if (res.success) {
                         this.showAppointmentForm = false;
-                        this.fetchEvents();
+                        this.fetchEvents(this.user.id);
                         this.oneDayEvents.push({
                             id: res.data.id,
                             title: event.title,
@@ -196,12 +210,13 @@ export class ScheduleComponent implements OnInit {
                 start: this.combineDate(this.newAppointmentForm.value.start, this.viewDate),
                 end: this.combineDate(this.newAppointmentForm.value.end, this.viewDate),
                 color: color,
+                doctorId: this.selectedDoctorId,
             };
             this.healthService.addEvent(event).subscribe(
                 res => {
                     if (res.success) {
                         this.showAppointmentForm = false;
-                        this.fetchEvents();
+                        this.fetchEvents(this.selectedDoctorId);
                         // this.events.push(res.data);
                         this.oneDayEvents.push({
                             id: res.data.id,
@@ -231,7 +246,11 @@ export class ScheduleComponent implements OnInit {
         this.healthService.deleteEvent(e.id).subscribe(res => {
             if (res.success) {
                 this.oneDayEvents.splice(this.oneDayEvents.indexOf(e), 1);
-                this.fetchEvents();
+                if (this.isAdmin) {
+                    this.fetchEvents(this.user.id);
+                } else {
+                    this.fetchEvents(this.selectedDoctorId);
+                }
             } else {
                 throw new Error(JSON.stringify(res.error));
             }
@@ -383,5 +402,26 @@ export class ScheduleComponent implements OnInit {
     onValueChanged(user: User): void {
         this.client = user;
         console.log(user);
+    }
+
+    selectDoctor(doctor) {
+        this.selectedDoctorId = doctor.id;
+        this.fetchEvents(this.selectedDoctorId);
+    }
+
+    addDoctor(doctor) {
+        this.healthService.editProfile(this.user).subscribe(res => {
+            if (res.success) {
+                this.userDoctors.push(doctor);
+                this.isOpenDoctorList = false;
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
+    }
+
+    openDoctorList() {
+        this.allDoctors = this.allDoctors.filter(f => this.userDoctors.map(m => m.id).indexOf(f.id) === -1);
+        this.isOpenDoctorList = !this.isOpenDoctorList;
     }
 }

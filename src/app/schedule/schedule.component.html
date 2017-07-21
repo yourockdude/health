@@ -1,6 +1,17 @@
 <div class="header">
     <health-calendar-header [(view)]="view" (viewDateChange)="selectToday($event)" [(viewDate)]="viewDate">
     </health-calendar-header>
+    <div class="tabs" *ngIf="!isAdmin">
+        <div class="tab" *ngFor="let doctor of userDoctors" (click)="selectDoctor(doctor)">
+            {{doctor.lastName}}
+        </div>
+        <div class="tab" (click)="openDoctorList()">
+            <fa [name]="'plus'"></fa>
+        </div>
+    </div>
+    <div class="doctors-list" *ngIf="isOpenDoctorList">
+        <div *ngFor="let doctor of allDoctors" (click)="addDoctor(doctor)">{{doctor.lastName}}</div>
+    </div>
 </div>
 <div class="schedule">
     <mwl-calendar-month-view [weekStartsOn]="weekStartsOn" [locale]="locale" [viewDate]="viewDate" [events]="events" [activeDayIsOpen]="activeDayIsOpen"

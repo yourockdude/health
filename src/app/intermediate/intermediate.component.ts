@@ -20,8 +20,10 @@ import { Router } from '@angular/router';
 export class IntermediateComponent implements OnInit {
     @ViewChild('profileImage') profileImage: ElementRef;
     user: User;
-    src = 'assets/images/profile.png';
+    src: string;
     form: FormGroup;
+    doctors: User[];
+    selectedDoctors = [];
 
     constructor(
         private healthService: HealthService,
@@ -29,6 +31,13 @@ export class IntermediateComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: Router,
     ) {
+        this.healthService.getAdmins().subscribe(res => {
+            if (res.success) {
+                this.doctors = res.data;
+            } else {
+                throw new Error(JSON.stringify(res.error));
+            }
+        });
         this.authService.getUser().subscribe(res => {
             if (res.success) {
                 this.user = res.data;
@@ -49,11 +58,12 @@ export class IntermediateComponent implements OnInit {
             'middleName': [middleName, ValidationService.emptyFieldValidator],
             'phone': [phone, ValidationService.emptyFieldValidator],
             'location': [location, ValidationService.emptyFieldValidator],
+            'doctors': [],
         });
     }
 
     get isDisabled() {
-        if (this.form.valid && this.user.photo) {
+        if (this.form.valid && this.user.photo && this.selectedDoctors.length > 0) {
             return false;
         }
         return true;
@@ -65,9 +75,9 @@ export class IntermediateComponent implements OnInit {
     }
 
     updateProfile() {
+        this.form.value.doctors = this.selectedDoctors;
         this.healthService.editProfile(this.form.value).subscribe(res => {
             if (res.success) {
-                console.log(res);
                 this.router.navigate(['sidenav']);
             } else {
                 throw new Error(JSON.stringify(res.error));
@@ -93,5 +103,13 @@ export class IntermediateComponent implements OnInit {
                 throw new Error(JSON.stringify(res.error));
             }
         });
+    }
+
+    onDocClick(doc, element) {
+        if (this.selectedDoctors.includes(doc)) {
+            this.selectedDoctors.splice(this.selectedDoctors.indexOf(doc), 1);
+        } else {
+            this.selectedDoctors.push(doc);
+        }
     }
 }

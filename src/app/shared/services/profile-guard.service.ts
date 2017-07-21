@@ -21,7 +21,9 @@ export class ProfileGuard implements CanActivate {
                     user.phone,
                     user.photo,
                 ];
-                if (requiredField.includes('')) {
+                if (user.role === 0) {
+                    return true;
+                } else if (requiredField.includes('')) {
                     this.router.navigate(['/intermediate']);
                     return false;
                 } else {

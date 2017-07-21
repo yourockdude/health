@@ -10,6 +10,11 @@ const routes: Routes = [
         component: IntermediateComponent,
         canActivate: [AuthGuard],
     },
+    {
+        path: 'intermediate/:id',
+        component: IntermediateComponent,
+        canActivate: [AuthGuard],
+    },
 ];
 
 @NgModule({

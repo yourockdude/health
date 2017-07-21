@@ -21,17 +21,17 @@ export class HealthService {
             .map(res => res.json());
     }
 
-    addEvent(event: CalendarEvent): Observable<CustomResponse> {
+    addEvent(event: any): Observable<CustomResponse> {
         return this.authHttp.post(`${environment.api}/events`, event)
             .map(res => res.json());
     }
-    addEventAsAdmin(event: CalendarEvent, id: string): Observable<CustomResponse> {
+    addEventAsAdmin(event: any, id: string): Observable<CustomResponse> {
         return this.authHttp.post(`${environment.api}/events/${id}`, event)
             .map(res => res.json());
     }
 
     editEvent(event): Observable<CustomResponse> {
-        return this.authHttp.put(`${environment.api}/events/${event.ownerId}`, event)
+        return this.authHttp.put(`${environment.api}/events/${event.id}`, event)
             .map(res => res.json());
     }
 
@@ -95,14 +95,28 @@ export class HealthService {
             .map(res => res.json());
     }
 
-    renameFile(id: number, name: string): Observable<CustomResponse> {
+    renameFile(id: string, name: string): Observable<CustomResponse> {
         return this.authHttp.put(`${environment.api}/files`, { fid: id, newName: name })
             .map(res => res.json());
     }
 
-    deleteFile(id: number): Observable<CustomResponse> {
+    renameFileAsAdmin(userId: string, fileId: string, newName: string) {
+        return this.authHttp.put(`${environment.api}/admin/files`, { uid: userId, fid: fileId, newName: newName })
+            .map(res => res.json());
+    }
+
+    deleteFile(id: string): Observable<CustomResponse> {
         const body = { fid: id };
         return this.authHttp.delete(`${environment.api}/files`, new RequestOptions({ body: body }))
+            .map(res => res.json());
+    }
+
+    deleteFileAsAdmin(userId: string, fileId: string): Observable<CustomResponse> {
+        const body = {
+            uid: userId,
+            fid: fileId,
+        };
+        return this.authHttp.delete(`${environment.api}/admin/files`, new RequestOptions({ body: body }))
             .map(res => res.json());
     }
 
@@ -110,6 +124,16 @@ export class HealthService {
         const body = new FormData();
         body.append('user_photo', file);
         return this.authHttp.post(`${environment.api}/user_photo`, body)
+            .map(res => res.json());
+    }
+
+    getWorkTime() {
+        return this.authHttp.get(`${environment.api}/hospGlobal`)
+            .map(res => res.json());
+    }
+
+    editWorkTime(time) {
+        return this.authHttp.put(`${environment.api}/hospGlobal`, time)
             .map(res => res.json());
     }
 }

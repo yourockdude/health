@@ -1,5 +1,5 @@
 export class UserFile {
-    id: number;
+    id: string;
     name: string;
     originalName: string;
     path: string;

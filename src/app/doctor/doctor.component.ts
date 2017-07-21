@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HealthService } from '../shared/services/health.service';
 import { User } from '../shared/models/user';
+import { AuthService } from '../shared/services/auth.service';
 
 @Component({
     selector: 'health-doctor',
@@ -15,6 +16,7 @@ export class DoctorComponent implements OnInit {
     constructor(
         private activatedRoute: ActivatedRoute,
         private healthService: HealthService,
+        private authService: AuthService,
     ) {
         const id = this.activatedRoute.snapshot.params.id;
         this.healthService.getUsersById(id).subscribe(res => {
@@ -27,4 +29,11 @@ export class DoctorComponent implements OnInit {
     }
 
     ngOnInit() { }
+
+    get nextRoute() {
+        if (this.authService.isAuth()) {
+            return ['/sidenav'];
+        }
+        return ['/auth', this.doctor && this.doctor.id];
+    }
 }
